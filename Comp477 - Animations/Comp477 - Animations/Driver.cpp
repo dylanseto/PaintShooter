@@ -47,10 +47,6 @@ GLfloat deltaTime = 0.0f;	// Time between current frame and last frame
 GLfloat lastFrame = 0.0f;  	// Time of last frame
 
 
-// Buffer Objects
-// GLuint VAO, VBO, EBO;
-
-
 // ========== Main Method ========== //
 int main() {
 
@@ -96,6 +92,7 @@ int main() {
 		lastFrame = currentFrame;
 		do_movement(deltaTime);
 
+		// Call Window Draw Update
 		animationWindow.update();
 	}
 
