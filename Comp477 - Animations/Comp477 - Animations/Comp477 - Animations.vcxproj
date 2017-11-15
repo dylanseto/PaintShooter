@@ -122,6 +122,7 @@
   <ItemGroup>
     <ClInclude Include="CommonLibrary.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="Rectangle.h" />
     <ClInclude Include="Shaders\Shader.h" />
     <ClInclude Include="VertexManager.h" />
     <ClInclude Include="WorldMesh.h" />
@@ -129,6 +130,7 @@
   <ItemGroup>
     <ClCompile Include="Driver.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="VertexManager.cpp" />
     <ClCompile Include="WorldMesh.cpp" />
   </ItemGroup>
