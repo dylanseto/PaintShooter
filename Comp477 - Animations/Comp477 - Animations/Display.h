@@ -15,11 +15,13 @@ class Display {
 		GLuint EBO;
 
 		bool isClosed();
-		void update();
+		void render();
 		void setShader(Shader* shader);
 		void setCamera(Camera* cam);
 		void setVertices(std::vector<GLfloat>* vertices);
 		void setIndices(std::vector<GLuint>* indices);
+
+		void sendStaticDataToBuffer();
 
 	private:
 		

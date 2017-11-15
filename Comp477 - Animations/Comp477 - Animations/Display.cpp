@@ -117,7 +117,7 @@ void Display::initGLBuffers() {
 
 
 // ========== Update Window on Draw ========== // 
-void Display::update() {
+void Display::render() {
 
 	// Rendering Commands
 	glClearColor((float)114 / (float)255, (float)220 / (float)255, (float)255 / (float)255, 1.0f);
@@ -150,6 +150,15 @@ void Display::update() {
 	glfwSwapBuffers(window);
 }
 
+
+// ========== Send Static Data to Buffers ========== 
+void Display::sendStaticDataToBuffer() {
+	glBindVertexArray(VAO);
+	glBufferData(GL_ARRAY_BUFFER, localVertices->size() * sizeof(GLfloat), &localVertices->front(), GL_STATIC_DRAW);	// Copy our vertices to the buffer
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, localIndices->size() * sizeof(GLuint), &localIndices->front(), GL_STATIC_DRAW);
+
+}
 
 
 // ========== Check whether window is closed ========== // 

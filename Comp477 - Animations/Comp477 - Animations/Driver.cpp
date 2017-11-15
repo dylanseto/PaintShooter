@@ -70,15 +70,10 @@ int main() {
 	// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
-	// =============== SEND DATA TO GPU =============== 
-	glBindVertexArray(animationWindow.VAO);
-	glBufferData(GL_ARRAY_BUFFER, vertices->size() * sizeof(GLfloat), &vertices->front(), GL_STATIC_DRAW);	// Copy our vertices to the buffer
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, animationWindow.EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices->size() * sizeof(GLuint), &indices->front(), GL_STATIC_DRAW);
-
+	// =============== SEND STATIC DATA TO GPU =============== 
+	animationWindow.sendStaticDataToBuffer();
 
 	// =============== Game Loop ================= //
-
 	while (!animationWindow.isClosed()) {
 
 		// Check and call events
@@ -92,8 +87,14 @@ int main() {
 		lastFrame = currentFrame;
 		do_movement(deltaTime);
 
-		// Call Window Draw Update
-		animationWindow.update();
+		/*
+		*	UPDATE OUR DYNAMIC OBJECT HERE BASED ON TIME
+		*		- Pass in the deltaTime above to calculate new position
+		*		- Send new positions to be displayed
+		*/
+
+		// ========== Call Window to Render Image ========== 
+		animationWindow.render();
 	}
 
 	return 0;
