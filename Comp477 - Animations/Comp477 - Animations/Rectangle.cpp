@@ -14,91 +14,101 @@ Rectangle::Rectangle(GLfloat length, GLfloat height, GLfloat depth)
 		{
 			for (int z = 0; z <= 1; z++)
 			{
-				if (x == 0 && y == 0 & 7 z == 0) continue;
-
 				//position
-				localVertices.push_back(x);
-				localVertices.push_back(y);
-				localVertices.push_back(z);
+				localVertices.push_back(x*length*UNIT);
+				localVertices.push_back(y*height*UNIT);
+				localVertices.push_back(z*height*UNIT);
 
 				cout << "Index " << i << ":(" << x << "," << y << "," << z << ")" << endl;
 				i++;
 
 				// Adding Default Color 
 				localVertices.push_back(1.0f);
-				localVertices.push_back(1.0f);
+				localVertices.push_back(0.0f);
 				localVertices.push_back(1.0f);
 
-				//Texture?
-				localVertices.push_back(1.0f);
-				localVertices.push_back(0.0f);
+
+				if (x % 2 == 0 && y % 2 == 0) {
+					localVertices.push_back(1.0f);
+					localVertices.push_back(1.0f);
+				}
+
+				else if (x % 2 == 0 && y % 2 != 0) {
+					localVertices.push_back(1.0f);
+					localVertices.push_back(0.0f);
+				}
+
+				else if (x % 2 != 0 && y % 2 == 0) {
+					localVertices.push_back(1.0f);
+					localVertices.push_back(1.0f);
+				}
+				else {
+					localVertices.push_back(1.0f);
+					localVertices.push_back(0.0f);
+				}
+
 			}
 		}
 	}
-	////position
-	//localVertices.push_back(1);
-	//localVertices.push_back(1);
-	//localVertices.push_back(0);
-
-	//// Adding Default Color 
-	//localVertices.push_back(1.0f);
-	//localVertices.push_back(1.0f);
-	//localVertices.push_back(1.0f);
-
-	////Texture?
-	//localVertices.push_back(1.0f);
-	//localVertices.push_back(0.0f);
-
-	////position
-	//localVertices.push_back(1);
-	//localVertices.push_back(0);
-	//localVertices.push_back(0);
-
-	//// Adding Default Color 
-	//localVertices.push_back(1.0f);
-	//localVertices.push_back(1.0f);
-	//localVertices.push_back(1.0f);
-
-	////Texture?
-	//localVertices.push_back(1.0f);
-	//localVertices.push_back(0.0f);
-
-	////position
-	//localVertices.push_back(2);
-	//localVertices.push_back(1);
-	//localVertices.push_back(0);
-
-	//// Adding Default Color 
-	//localVertices.push_back(1.0f);
-	//localVertices.push_back(1.0f);
-	//localVertices.push_back(1.0f);
-
-	////Texture?
-	//localVertices.push_back(1.0f);
-	//localVertices.push_back(0.0f);
-
-	////position
-	//localVertices.push_back(2);
-	//localVertices.push_back(0);
-	//localVertices.push_back(0);
-
-	//// Adding Default Color 
-	//localVertices.push_back(1.0f);
-	//localVertices.push_back(1.0f);
-	//localVertices.push_back(1.0f);
-
-	////Texture?
-	//localVertices.push_back(1.0f);
-	//localVertices.push_back(0.0f);
 
 	//Indices
+
+	//Right side
 	localIndices.push_back(0);
 	localIndices.push_back(1);
 	localIndices.push_back(2);
 
+	localIndices.push_back(3);
 	localIndices.push_back(1);
 	localIndices.push_back(2);
+
+	//Left Side
+	localIndices.push_back(4);
+	localIndices.push_back(5);
+	localIndices.push_back(6);
+
+	localIndices.push_back(7);
+	localIndices.push_back(5);
+	localIndices.push_back(6);
+
+
+	//Top
+	localIndices.push_back(0);
+	localIndices.push_back(1);
+	localIndices.push_back(5);
+
+	localIndices.push_back(0);
+	localIndices.push_back(4);
+	localIndices.push_back(5);
+
+	//Bottom
 	localIndices.push_back(3);
+	localIndices.push_back(6);
+	localIndices.push_back(2);
+
+	localIndices.push_back(3);
+	localIndices.push_back(6);
+	localIndices.push_back(7);
+
+
+	//Front
+	localIndices.push_back(1);
+	localIndices.push_back(3);
+	localIndices.push_back(5);
+
+	localIndices.push_back(7);
+	localIndices.push_back(3);
+	localIndices.push_back(5);
+
+	//Back
+	localIndices.push_back(0);
+	localIndices.push_back(2);
+	localIndices.push_back(4);
+
+	localIndices.push_back(6);
+	localIndices.push_back(2);
+	localIndices.push_back(4);
+
 }
 
 // Getter: Get Local Vertices
