@@ -15,9 +15,9 @@ Rectangle::Rectangle(GLfloat length, GLfloat height, GLfloat depth)
 			for (int z = 0; z <= 1; z++)
 			{
 				//position
-				localVertices.push_back(x*length*UNIT);
-				localVertices.push_back(y*height*UNIT);
-				localVertices.push_back(z*height*UNIT);
+				localVertices.push_back(x * length * UNIT);
+				localVertices.push_back(y * height * UNIT);
+				localVertices.push_back(z * height * UNIT);
 
 				cout << "Index " << i << ":(" << x << "," << y << "," << z << ")" << endl;
 				i++;
@@ -28,24 +28,12 @@ Rectangle::Rectangle(GLfloat length, GLfloat height, GLfloat depth)
 				localVertices.push_back(1.0f);
 
 
-				if (x % 2 == 0 && y % 2 == 0) {
-					localVertices.push_back(1.0f);
-					localVertices.push_back(1.0f);
-				}
+				// Adding Textures
+				localVertices.push_back(1.0f);
+				localVertices.push_back(1.0f);
 
-				else if (x % 2 == 0 && y % 2 != 0) {
-					localVertices.push_back(1.0f);
-					localVertices.push_back(0.0f);
-				}
-
-				else if (x % 2 != 0 && y % 2 == 0) {
-					localVertices.push_back(1.0f);
-					localVertices.push_back(1.0f);
-				}
-				else {
-					localVertices.push_back(1.0f);
-					localVertices.push_back(0.0f);
-				}
+				// Adding Texture Opacity
+				localVertices.push_back(0.0f);
 
 			}
 		}

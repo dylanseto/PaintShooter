@@ -17,6 +17,7 @@ public:
 	GLfloat getLength();
 	GLfloat getHeight();
 	GLfloat getDepth();
+
 private:
 	GLfloat length;
 	GLfloat height;

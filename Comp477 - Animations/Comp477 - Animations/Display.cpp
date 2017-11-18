@@ -55,7 +55,7 @@ void Display::initWindow() {
 	glfwWindowHint(GLFW_OPENGL_ANY_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	// Enable MSAA (Multi-sampling)
+	// Enable MSAA (Multi-sampling Anti-Aliasing)
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	glEnable(GL_MULTISAMPLE);
 
@@ -99,17 +99,21 @@ void Display::initGLBuffers() {
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);									
 	
-	// Set the vertex attribute pointers : POSITION
+	// Set the vertex attribute pointers : POSITION (x, y, z)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
 
-	// Set the vertex attribute pointers : COLOR
+	// Set the vertex attribute pointers : COLOR (r, g, b)
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
 
-	// Set the vertex attribute pointers : TEXTURE COORDINATES
+	// Set the vertex attribute pointers : TEXTURE COORDINATES (x, y)
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(2);
+
+	// Set the vertex attribute pointers : TEXTURE OPACITY
+	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(8 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(3);
 	
 	// Unbinds the VAO
 	glBindVertexArray(0); 
