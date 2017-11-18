@@ -29,7 +29,9 @@ class WorldMesh {
 		};
 
 
-		VertexManager getVertexManager() { return vertexManager; }
+		VertexManager getVertexManager() { 
+			return vertexManager; 
+		}
 
 	private:
 		vector<GLfloat> vertices;

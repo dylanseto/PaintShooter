@@ -16,18 +16,18 @@
     <Filter Include="Resource Files\Shaders">
       <UniqueIdentifier>{0239f758-7f47-422a-9834-274d9ba8a6b6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Scene Objects">
+      <UniqueIdentifier>{0a3381a4-9857-4677-a319-18b9a4c6b9cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scene Objects">
+      <UniqueIdentifier>{141c6963-a95b-4c37-8017-ea4fa112d33b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonLibrary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Grid.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="VertexManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WorldMesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Shaders\Shader.h">
@@ -39,18 +39,21 @@
     <ClInclude Include="Display.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>Header Files\Scene Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Rectangle.h">
+      <Filter>Header Files\Scene Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldMesh.h">
+      <Filter>Header Files\Scene Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Driver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Grid.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="VertexManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WorldMesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Display.cpp">
@@ -58,6 +61,15 @@
     </ClCompile>
     <ClCompile Include="Shader.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>Source Files\Scene Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Rectangle.cpp">
+      <Filter>Source Files\Scene Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldMesh.cpp">
+      <Filter>Source Files\Scene Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

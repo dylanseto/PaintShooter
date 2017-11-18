@@ -43,6 +43,9 @@ Grid::Grid(GLfloat length, int halfGridSize) {
 				localVertices.push_back(1.0f);
 				localVertices.push_back(0.0f);
 			}
+
+			// Adding Grid Texture Opacity
+			localVertices.push_back(1.0f);
 		}
 	}
 
