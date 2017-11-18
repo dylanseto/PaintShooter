@@ -38,6 +38,7 @@ WorldMesh::WorldMesh() : vertexManager(&vertices, &indices) {
 WorldMesh::~WorldMesh() { }
 
 
+
 // Object Scale Function 
 void WorldMesh::scaleObject(vector<GLfloat>* vertices, float scale) {
 
