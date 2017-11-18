@@ -43,6 +43,8 @@ GLfloat lastX = 400,
 lastY = 300;
 bool keys[1024];
 bool firstMouse = true;
+
+const  float fpsLimit = 1.0f / 60.0f;
 GLfloat deltaTime = 0.0f;	// Time between current frame and last frame
 GLfloat lastFrame = 0.0f;  	// Time of last frame
 
@@ -81,19 +83,28 @@ int main() {
 		glfwSetKeyCallback(animationWindow.window, key_callback);
 		glfwSetCursorPosCallback(animationWindow.window, mouse_callback);
 
-		// Camera movement settings
+		// Calculating DeltaTime
 		GLfloat currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
+
+		// Check Keyboard Input
 		do_movement(deltaTime);
 
 		/*
-		*	UPDATE OUR DYNAMIC OBJECT HERE BASED ON TIME
+		*	UPDATE OUR DYNAMIC OBJECT HERE BASED ON TIME (60 FPS FRAME LOCK)
 		*		- Pass in the deltaTime above to calculate new position
 		*		- Send new positions to be displayed
 		*/
 
-		// ========== Call Window to Render Image ========== 
+		while (deltaTime / fpsLimit >= 1.0) {
+			// - Update function
+			// scene.update(deltaTime);
+			deltaTime--;
+		}	
+
+
+		// Call Window to Render Image 
 		animationWindow.render();
 	}
 
