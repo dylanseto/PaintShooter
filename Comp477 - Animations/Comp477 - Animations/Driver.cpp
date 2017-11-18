@@ -38,7 +38,8 @@ const GLchar * FRAGMENT_SHADER_PATH = "./Shaders/fragment.shader";
 
 // Camera Object and movement
 
-Camera camera = Camera(glm::vec3(0.0f, 5.0f, 15.0f));
+//Camera camera = Camera(glm::vec3(0.0f, 5.0f, 15.0f));
+Camera camera = Camera(glm::vec3(0.0f, 2.0f, 15.0f));
 GLfloat lastX = 400,
 lastY = 300;
 bool keys[1024];
@@ -151,12 +152,12 @@ void do_movement(GLfloat deltaTime) {
 	// Press D: Move Right
 	if (keys[GLFW_KEY_D])
 		camera.ProcessKeyboard(RIGHT, deltaTime);
-	// Press Space: Ascend the Camera 
-	if (keys[GLFW_KEY_SPACE])
-		camera.ProcessKeyboard(UP, deltaTime);
-	// Press Left Control: Descent the Camera 
-	if (keys[GLFW_KEY_LEFT_CONTROL])
-		camera.ProcessKeyboard(DOWN, deltaTime);
+	//// Press Space: Ascend the Camera 
+	//if (keys[GLFW_KEY_SPACE])
+	//	camera.ProcessKeyboard(UP, deltaTime);
+	//// Press Left Control: Descent the Camera 
+	//if (keys[GLFW_KEY_LEFT_CONTROL])
+	//	camera.ProcessKeyboard(DOWN, deltaTime);
 
 	// Press Left Shift: Speed up Camera
 	if (keys[GLFW_KEY_LEFT_SHIFT])
