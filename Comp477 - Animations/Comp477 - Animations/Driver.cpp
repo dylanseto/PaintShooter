@@ -79,8 +79,7 @@ int main() {
 	// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
-	// =============== SEND STATIC DATA TO GPU =============== 
-	animationWindow.sendStaticDataToBuffer();
+	
 
 
 	// =============== Game Loop ================= //
@@ -108,7 +107,9 @@ int main() {
 		*/
 
 		while (updateDeltaTime >= 1.0) {
-			// scene.update(deltaTime);
+			// =============== SEND STATIC DATA TO GPU =============== 
+			animationWindow.sendStaticDataToBuffer();
+
 			updates++;
 			updateDeltaTime--;
 		}	
