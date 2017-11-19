@@ -3,6 +3,9 @@
 #include "CommonLibrary.h"
 
 #include "VertexManager.h"
+#include "Rectangle.h"
+#include "Grid.h"
+
 // #include "Grid.h"
 
 
@@ -33,6 +36,8 @@ class WorldMesh {
 			return vertexManager; 
 		}
 
+		void rotatePerUpdate(GLfloat deltaTime);
+
 	private:
 		vector<GLfloat> vertices;
 		vector<GLuint> indices;
@@ -41,5 +46,9 @@ class WorldMesh {
 		void translateObject(vector<GLfloat>* vertices, glm::vec3 destination);
 		void rotateObject(vector<GLfloat>* vertices, float angle);
 		void scaleObject(vector<GLfloat>* vertices, float scale);
+
+		// Test Object
+		Rectangle rec;
+		Grid plane;
 
 };

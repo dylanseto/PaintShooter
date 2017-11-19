@@ -107,7 +107,9 @@ int main() {
 		*/
 
 		while (updateDeltaTime >= 1.0) {
+
 			// =============== SEND STATIC DATA TO GPU =============== 
+			world.rotatePerUpdate(updateDeltaTime);
 			animationWindow.sendStaticDataToBuffer();
 
 			updates++;
