@@ -38,4 +38,8 @@ class WorldMesh {
 		vector<GLuint> indices;
 		VertexManager vertexManager;
 
+		void translateObject(vector<GLfloat>* vertices, glm::vec3 destination);
+		void rotateObject(vector<GLfloat>* vertices, float angle);
+		void scaleObject(vector<GLfloat>* vertices, float scale);
+
 };

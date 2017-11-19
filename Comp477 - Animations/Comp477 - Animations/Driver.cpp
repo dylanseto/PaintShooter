@@ -43,9 +43,18 @@ GLfloat lastX = 400,
 lastY = 300;
 bool keys[1024];
 bool firstMouse = true;
-GLfloat deltaTime = 0.0f;	// Time between current frame and last frame
-GLfloat lastFrame = 0.0f;  	// Time of last frame
 
+const  float fpsLimit = 1.0f / 60.0f;
+
+// Variables to calculate time between frames/update
+GLfloat currentTime     = 0.0f;
+GLfloat deltaTime       = 0.0f;	// Time between current frame and last frame
+GLfloat lastTime        = 0.0f;  	// Time of last frame
+GLfloat updateDeltaTime = 0.0f;
+GLfloat timer = lastTime;
+
+int frames = 0;
+int updates = 0;
 
 // ========== Main Method ========== //
 int main() {
@@ -73,6 +82,7 @@ int main() {
 	// =============== SEND STATIC DATA TO GPU =============== 
 	animationWindow.sendStaticDataToBuffer();
 
+
 	// =============== Game Loop ================= //
 	while (!animationWindow.isClosed()) {
 
@@ -81,20 +91,40 @@ int main() {
 		glfwSetKeyCallback(animationWindow.window, key_callback);
 		glfwSetCursorPosCallback(animationWindow.window, mouse_callback);
 
-		// Camera movement settings
-		GLfloat currentFrame = glfwGetTime();
-		deltaTime = currentFrame - lastFrame;
-		lastFrame = currentFrame;
+		// Calculating DeltaTime (Time Eslapsed since last update/frame)
+		currentTime = glfwGetTime();
+		deltaTime = currentTime - lastTime;
+		updateDeltaTime += (currentTime - lastTime) / fpsLimit;
+		lastTime = currentTime;
+
+
+		// Check Keyboard Input
 		do_movement(deltaTime);
 
 		/*
-		*	UPDATE OUR DYNAMIC OBJECT HERE BASED ON TIME
+		*	UPDATE OUR DYNAMIC OBJECT HERE BASED ON TIME (60 FPS FRAME LOCK)
 		*		- Pass in the deltaTime above to calculate new position
 		*		- Send new positions to be displayed
 		*/
 
-		// ========== Call Window to Render Image ========== 
+		while (updateDeltaTime >= 1.0) {
+			// scene.update(deltaTime);
+			updates++;
+			updateDeltaTime--;
+		}	
+
+
+		// Call Window to Render Image 
 		animationWindow.render();
+		frames++;
+
+		// Displays output Data every second (Frames per second, Updates per second)
+		if (glfwGetTime() - timer > 1.0) {
+			timer++;
+			std::cout << "FPS: " << frames << " Updates:" << updates << std::endl;
+			updates = 0, frames = 0;
+		}
+
 	}
 
 	return 0;

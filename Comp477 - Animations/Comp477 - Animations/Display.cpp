@@ -99,19 +99,19 @@ void Display::initGLBuffers() {
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);									
 	
-	// Set the vertex attribute pointers : POSITION (x, y, z)
+	// Set the vertex attribute pointers : POSITION (Px, Py, Pz)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
 
-	// Set the vertex attribute pointers : COLOR (r, g, b)
+	// Set the vertex attribute pointers : COLOR (R, G, B)
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
 
-	// Set the vertex attribute pointers : TEXTURE COORDINATES (x, y)
+	// Set the vertex attribute pointers : TEXTURE COORDINATES (Tx, Ty)
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(2);
 
-	// Set the vertex attribute pointers : TEXTURE OPACITY
+	// Set the vertex attribute pointers : TEXTURE OPACITY (a)
 	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(8 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(3);
 	
