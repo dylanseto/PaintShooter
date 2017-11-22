@@ -11,18 +11,25 @@ Display::Display(std::string name, int width, int height) {
 
 	// Initialize Window Components
 	initWindow();
-	initGLBuffers();
+	initStaticGLBuffers();
+	// initDynamicGLBuffers();
 	loadTextures("Textures/gridTexture.png");
 
 }
 
 // ========== Displpay Destructor ========== // 
 Display::~Display() {
-	// Frees up the buffers when done 
+	// Frees up the static buffers when done 
 	glDeleteVertexArrays(1, &staticVAO);
 	glDeleteBuffers(1, &staticVBO);
 	glDeleteBuffers(1, &staticEBO);
 
+	// Frees up the dynamic buffers when done 
+	glDeleteVertexArrays(1, &dynamicVAO);
+	glDeleteBuffers(1, &dynamicVBO);
+	glDeleteBuffers(1, &dynamicEBO);
+
+	// Terminate GLFW Display
 	glfwTerminate();
 }
 
@@ -84,8 +91,8 @@ void Display::initWindow() {
 }
 
 
-// ========== Creating our Vertex Buffer Obj, Vertex Array Obj ========== //
-void Display::initGLBuffers() {
+// ========== Creating our Static Vertex Buffer Obj, Vertex Array Obj ========== //
+void Display::initStaticGLBuffers() {
 
 	// Creating the VAO
 	glGenVertexArrays(1, &staticVAO);
@@ -114,9 +121,48 @@ void Display::initGLBuffers() {
 	// Set the vertex attribute pointers : TEXTURE OPACITY (a)
 	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(8 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(3);
+
+
+	// Creating the VAO
+	glGenVertexArrays(1, &dynamicVAO);
+	glBindVertexArray(dynamicVAO);
+
+	// Creating the VBO
+	glGenBuffers(1, &dynamicVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, dynamicVBO);
+
+	// Creating the EBO
+	glGenBuffers(1, &dynamicEBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, dynamicEBO);
+
+	// Set the vertex attribute pointers : POSITION (Px, Py, Pz)
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)0);
+	glEnableVertexAttribArray(0);
+
+	// Set the vertex attribute pointers : COLOR (R, G, B)
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(1);
+
+	// Set the vertex attribute pointers : TEXTURE COORDINATES (Tx, Ty)
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(2);
+
+	// Set the vertex attribute pointers : TEXTURE OPACITY (a)
+	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(8 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(3);
 	
 	// Unbinds the VAO
 	glBindVertexArray(0); 
+}
+
+
+// ========== Creating our Dynamic Vertex Buffer Obj, Vertex Array Obj ========== //
+void Display::initDynamicGLBuffers() {
+
+	
+
+	// Unbinds the VAO
+	glBindVertexArray(0);
 }
 
 

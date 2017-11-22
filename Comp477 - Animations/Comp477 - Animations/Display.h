@@ -51,7 +51,8 @@ class Display {
 
 		// Initializes the window 
 		void initWindow();
-		void initGLBuffers();
+		void initStaticGLBuffers();
+		void initDynamicGLBuffers();
 		void loadTextures(GLchar* fileLocation);
 
 		// Setting up the Camera
