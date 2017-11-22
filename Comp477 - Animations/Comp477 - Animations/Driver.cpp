@@ -79,7 +79,9 @@ int main() {
 	// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
-	
+	// =============== SEND STATIC DATA TO GPU =============== 
+	// world.rotatePerUpdate(updateDeltaTime);
+	animationWindow.sendStaticDataToBuffer();
 
 
 	// =============== Game Loop ================= //
@@ -87,8 +89,8 @@ int main() {
 
 		// Check and call events
 		glfwPollEvents();
-		glfwSetKeyCallback(animationWindow.window, key_callback);
-		glfwSetCursorPosCallback(animationWindow.window, mouse_callback);
+		glfwSetKeyCallback(animationWindow.getWindow(), key_callback);
+		glfwSetCursorPosCallback(animationWindow.getWindow(), mouse_callback);
 
 		// Calculating DeltaTime (Time Eslapsed since last update/frame)
 		currentTime = glfwGetTime();
@@ -108,9 +110,7 @@ int main() {
 
 		while (updateDeltaTime >= 1.0) {
 
-			// =============== SEND STATIC DATA TO GPU =============== 
-			world.rotatePerUpdate(updateDeltaTime);
-			animationWindow.sendStaticDataToBuffer();
+			
 
 			updates++;
 			updateDeltaTime--;

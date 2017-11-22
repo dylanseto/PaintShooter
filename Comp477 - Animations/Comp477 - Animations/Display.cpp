@@ -19,9 +19,9 @@ Display::Display(std::string name, int width, int height) {
 // ========== Displpay Destructor ========== // 
 Display::~Display() {
 	// Frees up the buffers when done 
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
-	glDeleteBuffers(1, &EBO);
+	glDeleteVertexArrays(1, &staticVAO);
+	glDeleteBuffers(1, &staticVBO);
+	glDeleteBuffers(1, &staticEBO);
 
 	glfwTerminate();
 }
@@ -88,16 +88,16 @@ void Display::initWindow() {
 void Display::initGLBuffers() {
 
 	// Creating the VAO
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO); 
+	glGenVertexArrays(1, &staticVAO);
+	glBindVertexArray(staticVAO);
 
 	// Creating the VBO
-	glGenBuffers(1, &VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glGenBuffers(1, &staticVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, staticVBO);
 
 	// Creating the EBO
-	glGenBuffers(1, &EBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);									
+	glGenBuffers(1, &staticEBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, staticEBO);
 	
 	// Set the vertex attribute pointers : POSITION (Px, Py, Pz)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)0);
@@ -146,7 +146,7 @@ void Display::render() {
 
 
 	// ==== Drawing out Objects =====
-	glBindVertexArray(VAO);
+	glBindVertexArray(staticVAO);
 	glDrawElements(GL_TRIANGLES, localIndices->size() * 2, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 
@@ -157,12 +157,13 @@ void Display::render() {
 
 // ========== Send Static Data to Buffers ========== 
 void Display::sendStaticDataToBuffer() {
-	glBindVertexArray(VAO);
+	glBindVertexArray(staticVAO);
 	glBufferData(GL_ARRAY_BUFFER, localVertices->size() * sizeof(GLfloat), &localVertices->front(), GL_STATIC_DRAW);	// Copy our vertices to the buffer
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, staticEBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, localIndices->size() * sizeof(GLuint), &localIndices->front(), GL_STATIC_DRAW);
-
 }
+
+
 
 
 // ========== Check whether window is closed ========== // 
@@ -182,6 +183,11 @@ void Display::setIndices(std::vector<GLuint>* indices) {
 	localIndices = indices;
 }
 
+
+// Return Pointer to the Window Object
+GLFWwindow* Display::getWindow() {
+	return window;
+}
 
 
 // Loading 2D Texture Function
