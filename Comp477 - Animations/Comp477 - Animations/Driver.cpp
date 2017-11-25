@@ -24,6 +24,7 @@ using namespace std;
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 void do_movement(GLfloat deltaTime);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 
 
 // ========================= Shader File Paths ========================= // 
@@ -38,11 +39,15 @@ const GLchar * FRAGMENT_SHADER_PATH = "./Shaders/fragment.shader";
 
 // Camera Object and movement
 
-Camera camera = Camera(glm::vec3(0.0f, 5.0f, 15.0f));
+//Camera camera = Camera(glm::vec3(0.0f, 5.0f, 15.0f));
+GLfloat cameraHeight = 3.0f;
+Camera camera = Camera(glm::vec3(0.0f, cameraHeight, 15.0f));
 GLfloat lastX = 400,
 lastY = 300;
 bool keys[1024];
 bool firstMouse = true;
+bool lockCamera = true;
+
 
 const  float fpsLimit = 1.0f / 60.0f;
 
@@ -52,6 +57,9 @@ GLfloat deltaTime       = 0.0f;	// Time between current frame and last frame
 GLfloat lastTime        = 0.0f;  	// Time of last frame
 GLfloat updateDeltaTime = 0.0f;
 GLfloat timer = lastTime;
+
+GLfloat leftMouseHoldTime = 0.0f;
+bool leftMouseHold = false;
 
 int frames = 0;
 int updates = 0;
@@ -89,8 +97,14 @@ int main() {
 
 		// Check and call events
 		glfwPollEvents();
+<<<<<<< HEAD
 		glfwSetKeyCallback(animationWindow.getWindow(), key_callback);
 		glfwSetCursorPosCallback(animationWindow.getWindow(), mouse_callback);
+=======
+		glfwSetKeyCallback(animationWindow.window, key_callback);
+		glfwSetCursorPosCallback(animationWindow.window, mouse_callback);
+		glfwSetMouseButtonCallback(animationWindow.window, mouse_button_callback);
+>>>>>>> d45fb06f998fa063c36524de7eff48056225bae1
 
 		// Calculating DeltaTime (Time Eslapsed since last update/frame)
 		currentTime = glfwGetTime();
@@ -128,6 +142,11 @@ int main() {
 			updates = 0, frames = 0;
 		}
 
+		if (leftMouseHold)
+		{
+			leftMouseHoldTime += deltaTime;
+		}
+
 	}
 
 	return 0;
@@ -141,12 +160,33 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	if ((key == GLFW_KEY_ESCAPE || key == GLFW_KEY_ENTER) && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
 
+	// Toggle between Locked and Free camera movement
+	else if (key == GLFW_KEY_X && action == GLFW_PRESS) {
+		lockCamera = !lockCamera;
+	}
+
 	// Smooth camera transitions
-	if (key >= 0 && key < 1024) {
+	if (key >= 0 && key < 1024 && key != 88) {
 		if (action == GLFW_PRESS)
 			keys[key] = true;
 		else if (action == GLFW_RELEASE)
 			keys[key] = false;
+	}
+}
+
+//Mouse Button Handler
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+	{
+		cout << "hi" << endl;
+		leftMouseHold = true;
+	}
+	else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
+	{
+		cout << "Left Mouse Button Was Held for " << leftMouseHoldTime << " seconds" << endl;
+		leftMouseHold = false;
+		leftMouseHoldTime = 0; // reset Time
 	}
 }
 
@@ -184,14 +224,21 @@ void do_movement(GLfloat deltaTime) {
 	// Press D: Move Right
 	if (keys[GLFW_KEY_D])
 		camera.ProcessKeyboard(RIGHT, deltaTime);
-	// Press Space: Ascend the Camera 
-	if (keys[GLFW_KEY_SPACE])
-		camera.ProcessKeyboard(UP, deltaTime);
-	// Press Left Control: Descent the Camera 
-	if (keys[GLFW_KEY_LEFT_CONTROL])
-		camera.ProcessKeyboard(DOWN, deltaTime);
 
-	// Press Left Shift: Speed up Camera
+	// Lock camera back to first person view
+	if (lockCamera)
+		camera.Position.y = cameraHeight;
+	// Enable free camera movement
+	else if (!lockCamera) {
+		// Press Space: Ascend the Camera 
+		if (keys[GLFW_KEY_SPACE])
+			camera.ProcessKeyboard(UP, deltaTime);
+		// Press Left Control: Descent the Camera 
+		if (keys[GLFW_KEY_LEFT_CONTROL])
+			camera.ProcessKeyboard(DOWN, deltaTime);
+	}
+
+	// Press Left Shift: Speed Up Camera
 	if (keys[GLFW_KEY_LEFT_SHIFT])
 		camera.setCameraSpeed(camera.getDefaultSpeed() * 2);
 	// Press C: Slow Down Camera

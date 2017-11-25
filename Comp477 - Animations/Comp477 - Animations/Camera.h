@@ -23,7 +23,8 @@ enum Camera_Movement {
 // Default camera values
 const GLfloat YAW = -90.0f;
 const GLfloat PITCH = 0.0f;
-const GLfloat SPEED = 20.0f;
+// SPEED was at 20.0f
+const GLfloat SPEED = 10.0f;
 const GLfloat SENSITIVTY = 0.10f;
 const GLfloat ZOOM = 45.0f;
 
@@ -82,9 +83,11 @@ public:
 	void ProcessKeyboard(Camera_Movement direction, GLfloat deltaTime) {
 		GLfloat velocity = this->MovementSpeed * deltaTime;
 		if (direction == FORWARD)
-			this->Position += this->Front * velocity;
+			// lock camera on Y-axis
+			this->Position += glm::vec3(this->Front.x, 0.0f, this->Front.z) * velocity;
 		if (direction == BACKWARD)
-			this->Position -= this->Front * velocity;
+			// lock camera on Y-axis
+			this->Position -= glm::vec3(this->Front.x, 0.0f, this->Front.z) * velocity;
 		if (direction == LEFT)
 			this->Position -= this->Right * velocity;
 		if (direction == RIGHT)
