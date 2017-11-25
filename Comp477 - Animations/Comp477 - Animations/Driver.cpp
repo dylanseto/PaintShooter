@@ -89,7 +89,7 @@ int main() {
 
 	// =============== SEND STATIC DATA TO GPU =============== 
 	// world.rotatePerUpdate(updateDeltaTime);
-	animationWindow.sendStaticDataToBuffer();
+	// animationWindow.sendStaticDataToBuffer();
 
 
 	// =============== Game Loop ================= //
@@ -120,7 +120,7 @@ int main() {
 
 		while (updateDeltaTime >= 1.0) {
 
-			
+			// world.rotatePerUpdate(updateDeltaTime);
 
 			updates++;
 			updateDeltaTime--;

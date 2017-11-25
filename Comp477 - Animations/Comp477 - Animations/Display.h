@@ -18,7 +18,7 @@ class Display {
 		void setVertices(std::vector<GLfloat>* vertices);
 		void setIndices(std::vector<GLuint>* indices);
 
-		void sendStaticDataToBuffer();
+		// void sendStaticDataToBuffer();
 
 	private:
 		
@@ -28,15 +28,11 @@ class Display {
 
 		GLFWwindow* window;
 
-		// STATIC: VAO, VBO, EBO
-		GLuint staticVAO;
-		GLuint staticVBO;
-		GLuint staticEBO;
-
 		// DYNAMIC: VAO, VBO, EBO
-		GLuint dynamicVAO;
-		GLuint dynamicVBO;
-		GLuint dynamicEBO;
+		GLuint VAO;
+		GLuint VBO;
+		GLuint EBO;
+
 		
 		// Shader
 		Shader* ourShader;
@@ -51,8 +47,7 @@ class Display {
 
 		// Initializes the window 
 		void initWindow();
-		void initStaticGLBuffers();
-		void initDynamicGLBuffers();
+		void initGLBuffers();
 		void loadTextures(GLchar* fileLocation);
 
 		// Setting up the Camera
