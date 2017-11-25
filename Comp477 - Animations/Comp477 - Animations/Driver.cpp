@@ -46,12 +46,8 @@ GLfloat lastX = 400,
 lastY = 300;
 bool keys[1024];
 bool firstMouse = true;
-<<<<<<< HEAD
 bool lockCamera = true;
-GLfloat deltaTime = 0.0f;	// Time between current frame and last frame
-GLfloat lastFrame = 0.0f;  	// Time of last frame
-=======
->>>>>>> 1fed2702bc285020ec8b60134fafe8d1085a2d20
+
 
 const  float fpsLimit = 1.0f / 60.0f;
 
