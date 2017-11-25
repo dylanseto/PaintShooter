@@ -123,36 +123,36 @@ void Display::initStaticGLBuffers() {
 	glEnableVertexAttribArray(3);
 
 
-	// Creating the VAO
-	glGenVertexArrays(1, &dynamicVAO);
-	glBindVertexArray(dynamicVAO);
+	//// Creating the VAO
+	//glGenVertexArrays(1, &dynamicVAO);
+	//glBindVertexArray(dynamicVAO);
 
-	// Creating the VBO
-	glGenBuffers(1, &dynamicVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, dynamicVBO);
+	//// Creating the VBO
+	//glGenBuffers(1, &dynamicVBO);
+	//glBindBuffer(GL_ARRAY_BUFFER, dynamicVBO);
 
-	// Creating the EBO
-	glGenBuffers(1, &dynamicEBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, dynamicEBO);
+	//// Creating the EBO
+	//glGenBuffers(1, &dynamicEBO);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, dynamicEBO);
 
-	// Set the vertex attribute pointers : POSITION (Px, Py, Pz)
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)0);
-	glEnableVertexAttribArray(0);
+	//// Set the vertex attribute pointers : POSITION (Px, Py, Pz)
+	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)0);
+	//glEnableVertexAttribArray(0);
 
-	// Set the vertex attribute pointers : COLOR (R, G, B)
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(1);
+	//// Set the vertex attribute pointers : COLOR (R, G, B)
+	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	//glEnableVertexAttribArray(1);
 
-	// Set the vertex attribute pointers : TEXTURE COORDINATES (Tx, Ty)
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(2);
+	//// Set the vertex attribute pointers : TEXTURE COORDINATES (Tx, Ty)
+	//glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+	//glEnableVertexAttribArray(2);
 
-	// Set the vertex attribute pointers : TEXTURE OPACITY (a)
-	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(8 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(3);
-	
-	// Unbinds the VAO
-	glBindVertexArray(0); 
+	//// Set the vertex attribute pointers : TEXTURE OPACITY (a)
+	//glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(8 * sizeof(GLfloat)));
+	//glEnableVertexAttribArray(3);
+	//
+	//// Unbinds the VAO
+	//glBindVertexArray(0); 
 }
 
 
