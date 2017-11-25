@@ -88,6 +88,7 @@ int main() {
 
 
 	// =============== SEND STATIC DATA TO GPU =============== 
+	// world.rotatePerUpdate(updateDeltaTime);
 	animationWindow.sendStaticDataToBuffer();
 
 
@@ -96,9 +97,10 @@ int main() {
 
 		// Check and call events
 		glfwPollEvents();
-		glfwSetKeyCallback(animationWindow.window, key_callback);
-		glfwSetCursorPosCallback(animationWindow.window, mouse_callback);
-		glfwSetMouseButtonCallback(animationWindow.window, mouse_button_callback);
+		glfwSetKeyCallback(animationWindow.getWindow(), key_callback);
+		glfwSetCursorPosCallback(animationWindow.getWindow(), mouse_callback);
+		// glfwSetMouseButtonCallback(animationWindow.getWindow(), mouse_button_callback);
+
 
 		// Calculating DeltaTime (Time Eslapsed since last update/frame)
 		currentTime = glfwGetTime();
@@ -117,7 +119,9 @@ int main() {
 		*/
 
 		while (updateDeltaTime >= 1.0) {
-			// scene.update(deltaTime);
+
+			
+
 			updates++;
 			updateDeltaTime--;
 		}	
@@ -134,8 +138,7 @@ int main() {
 			updates = 0, frames = 0;
 		}
 
-		if (leftMouseHold)
-		{
+		if (leftMouseHold) {
 			leftMouseHoldTime += deltaTime;
 		}
 
@@ -169,13 +172,11 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 //Mouse Button Handler
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
-	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
-	{
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
 		cout << "hi" << endl;
 		leftMouseHold = true;
 	}
-	else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
-	{
+	else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
 		cout << "Left Mouse Button Was Held for " << leftMouseHoldTime << " seconds" << endl;
 		leftMouseHold = false;
 		leftMouseHoldTime = 0; // reset Time

@@ -39,3 +39,10 @@ void VertexManager::updateMeshes(vector<GLfloat>* inputVertices, vector<GLuint>*
 	updateIndices(inputIndices);
 	updateVertices(inputVertices);
 }
+
+
+// Clear the mesh Data
+void VertexManager::clearMesh() {
+	objectVertices->clear();
+	objectIndices->clear();
+}

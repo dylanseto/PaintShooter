@@ -9,10 +9,7 @@ class Display {
 		Display(std::string windowName, int width, int height);
 		~Display();
 
-		GLFWwindow* window;
-		GLuint VAO;
-		GLuint VBO;
-		GLuint EBO;
+		GLFWwindow* getWindow();
 
 		bool isClosed();
 		void render();
@@ -29,8 +26,17 @@ class Display {
 		int windowWidth;
 		int windowHeight;
 
-		// VAO, VBO, EBO
-		
+		GLFWwindow* window;
+
+		// STATIC: VAO, VBO, EBO
+		GLuint staticVAO;
+		GLuint staticVBO;
+		GLuint staticEBO;
+
+		// DYNAMIC: VAO, VBO, EBO
+		GLuint dynamicVAO;
+		GLuint dynamicVBO;
+		GLuint dynamicEBO;
 		
 		// Shader
 		Shader* ourShader;
@@ -45,7 +51,8 @@ class Display {
 
 		// Initializes the window 
 		void initWindow();
-		void initGLBuffers();
+		void initStaticGLBuffers();
+		void initDynamicGLBuffers();
 		void loadTextures(GLchar* fileLocation);
 
 		// Setting up the Camera
