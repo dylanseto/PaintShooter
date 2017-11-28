@@ -99,7 +99,7 @@ int main() {
 		glfwPollEvents();
 		glfwSetKeyCallback(animationWindow.getWindow(), key_callback);
 		glfwSetCursorPosCallback(animationWindow.getWindow(), mouse_callback);
-		// glfwSetMouseButtonCallback(animationWindow.getWindow(), mouse_button_callback);
+	    glfwSetMouseButtonCallback(animationWindow.getWindow(), mouse_button_callback);
 
 
 		// Calculating DeltaTime (Time Eslapsed since last update/frame)
