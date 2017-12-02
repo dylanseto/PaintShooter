@@ -1,10 +1,11 @@
 #pragma once
 
 #include "CommonLibrary.h"
+using namespace std;
 
 struct Color
 {
-	unsigned char r, g, b, a;
+	float r, g, b, a;
 };
 
 struct Particle
@@ -14,6 +15,7 @@ struct Particle
 	float size, angle, mass;
 	float life;
 	float cameradistance;
+	string hashKey;
 
 	bool operator<(const Particle& that) const {
 		// Sort in reverse order : far particles drawn first.

@@ -1,21 +1,24 @@
 #include "Liquid.h"
+#include <functional>
+
 
 Liquid::Liquid()
 {
 
-	for (float r = 0; r <= 1.0f; r += 0.01)
+	for (float r = 0; r <= 1.0f; r += 0.02)
 	{
+		int num = 100;
 		float angle1 = 0.0f;
-		float angle = 2 * glm::pi<float>() / (100);
+		float angle = 2 * glm::pi<float>() / (num);
 
 		if (r != 0)
 		{
-			for (int i = 0; i <= 100; i++)
+			for (int i = 0; i <= num; i++)
 			{
 				float x = r * cos(angle1);
 				float y = r * sin(angle1);
 				float z = 0;
-				int spans = 100;
+				int spans = 50;
 				GLfloat spanDegree = (2 * glm::pi<GLfloat>()) / (GLfloat)spans;
 
 				for (int k = 0; k != spans; k++)
@@ -31,8 +34,12 @@ Liquid::Liquid()
 					particle.color.b = 0;
 					particle.color.a = 1;
 					particle.mass = 1.0f;
+					particle.hashKey = to_string(floor(particle.pos.x / PARTICLE_NEIGHBOUR_DISTANCE)*PARTICLE_NEIGHBOUR_DISTANCE) 
+						+ "," + to_string(floor(particle.pos.y / PARTICLE_NEIGHBOUR_DISTANCE)*PARTICLE_NEIGHBOUR_DISTANCE) 
+						+ "," + to_string(floor(particle.pos.z / PARTICLE_NEIGHBOUR_DISTANCE)*PARTICLE_NEIGHBOUR_DISTANCE);
 
 					particles.push_back(particle);
+					particleNeighbours.insert(std::make_pair(particle.hashKey, particle));
 				}
 				angle1 += angle;
 			}
@@ -45,7 +52,7 @@ Liquid::Liquid()
 			particle.pos.z = 0;
 			particle.life = -1;
 			particle.color.r = 1;
-			particle.color.g = 0;
+			particle.color.g = 0.5;
 			particle.color.b = 0;
 			particle.color.a = 1;
 			particle.mass = 1.0f;
@@ -66,14 +73,7 @@ Liquid::Liquid()
 		localVertices.push_back(particles[i].color.r);
 		localVertices.push_back(particles[i].color.g);
 		localVertices.push_back(particles[i].color.b);
-		//buffer for Color alpha?
 
-		// Adding Textures
-		localVertices.push_back(1.0f);
-		localVertices.push_back(1.0f);
-
-		// Adding Texture Opacity
-		localVertices.push_back(0.0f);
 	}
 }
 
@@ -84,8 +84,34 @@ Liquid::Liquid(glm::vec3 force)
 void Liquid::updateLiquid()
 {
 	// Update Particles, physics goes here, update camera distance.
+
+	//Update Hash Keys
+	//particleNeighbours.clear();
+	//for (int i = 0; i != particles.size(); i++)
+	//{
+	//	Particle *particle = &particles[i];
+
+	//	particle->hashKey = to_string(floor(particle->pos.x / PARTICLE_NEIGHBOUR_DISTANCE)*PARTICLE_NEIGHBOUR_DISTANCE)
+	//		+ "," + to_string(floor(particle->pos.y / PARTICLE_NEIGHBOUR_DISTANCE)*PARTICLE_NEIGHBOUR_DISTANCE)
+	//		+ "," + to_string(floor(particle->pos.z / PARTICLE_NEIGHBOUR_DISTANCE)*PARTICLE_NEIGHBOUR_DISTANCE);
+
+	//	particleNeighbours.insert(std::make_pair(particle->hashKey, *particle));
+	//}
 	// Sort Particles for render
-	// Update vertices, color(if necessary)  indices
+	// Update vertices, color(if necessary)
+
+	//localVertices.clear();
+	//for (int i = 0; i != particles.size(); i++)
+	//{
+	//	localVertices.push_back(particles[i].pos.x);
+	//	localVertices.push_back(particles[i].pos.y);
+	//	localVertices.push_back(particles[i].pos.z);
+
+	//	localVertices.push_back(particles[i].color.r);
+	//	localVertices.push_back(particles[i].color.g);
+	//	localVertices.push_back(particles[i].color.b);
+	//	//buffer for Color alpha?
+	//}
 }
 
 void Liquid::sortParticles()
@@ -96,9 +122,4 @@ void Liquid::sortParticles()
 // Getter: Get Local Vertices
 vector<GLfloat>* Liquid::getVertices() {
 	return &localVertices;
-}
-
-// Getter: Get Local Indices
-vector<GLuint>* Liquid::getIndices() {
-	return &localIndices;
 }

@@ -128,6 +128,8 @@ int main() {
 		*		- Pass in the deltaTime above to calculate new position
 		*		- Send new positions to be displayed
 		*/
+		liq.updateLiquid();
+		animationWindow.setParticleVertices(vertices);
 
 		while (updateDeltaTime >= 1.0) {
 

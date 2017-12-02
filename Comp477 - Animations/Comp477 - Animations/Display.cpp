@@ -94,7 +94,11 @@ void Display::initWindow() {
 	// Enable Z-Buffer
 	glEnable(GL_DEPTH_TEST);
 
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
 	glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
+	glEnable(GL_POINT_SMOOTH);
 }
 
 
@@ -201,12 +205,16 @@ void Display::render() {
 	glUniformMatrix4fv(pvmLoc, 1, GL_FALSE, glm::value_ptr(pvm));
 
 	// Sending Particle Data to the Buffers  
-	glBindVertexArray(VAO[1]);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
-	glBufferData(GL_ARRAY_BUFFER, particleVertices->size() * sizeof(GLfloat), &particleVertices->front(), GL_DYNAMIC_DRAW);	// Copy our vertices to the buffer
-	
-	// Drawing our Particles 
-	glDrawArrays(GL_POINTS, 0, this->particleVertices->size());
+
+	if (particleVertices->size() > 0)
+	{
+		glBindVertexArray(VAO[1]);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
+		glBufferData(GL_ARRAY_BUFFER, particleVertices->size() * sizeof(GLfloat), &particleVertices->front(), GL_DYNAMIC_DRAW);	// Copy our vertices to the buffer
+
+		// Drawing our Particles 
+		glDrawArrays(GL_POINTS, 0, this->particleVertices->size());
+	}
 
 
 	// Unbinding VAO

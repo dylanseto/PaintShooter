@@ -35,8 +35,6 @@ const GLuint WIDTH = 1280,
 const GLuint NUM_VERTEX_ATTRIB_OBJ = 9;
 const GLuint NUM_PARTICLE_VERTEX_ATTRIB_OBJ = 6;
 
-
-
 // ================================== Object Sizes ================================== 
 
 // Grid Unit Size (UNIT x UNIT Squares)
@@ -44,5 +42,8 @@ const GLfloat UNIT = 1.0f;
 
 // Base Grid Size
 const int GRID_SIZE = 50;
+
+// Particle Neighbour Distance
+const float PARTICLE_NEIGHBOUR_DISTANCE = UNIT * 0.5f;
 
 
