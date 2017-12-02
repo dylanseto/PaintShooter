@@ -100,7 +100,11 @@ void Liquid::updateLiquid()
 	// Update Particles, physics goes here, update camera distance.
 	for (int i = 0; i != particles.size(); i++)
 	{
-		calculateDensity(particles[i]);
+		//calculate density
+		particles[i]->density = calculateDensity(particles[i]);
+		particles[i]->pressure = calculatePressure(particles[i]);
+
+		//calculate pressure
 	}
 
 	//Update Hash Keys
@@ -109,7 +113,7 @@ void Liquid::updateLiquid()
 	{
 		Particle *particle = particles[i];
 
-		//if (!particle->moved) continue;
+		if (!particle->moved) continue;
 
 		multimap<string, Particle*>::iterator it;
 		for (it = particleNeighbours.lower_bound(particle->hashKey); it != particleNeighbours.end() && it->first != particle->hashKey; it++) {
@@ -153,32 +157,40 @@ vector<GLfloat>* Liquid::getVertices() {
 
 float Liquid::calculateDensity(Particle * p)
 {
-	cout << "su" << endl;
-	cout << "hash: " << p->hashKey << endl;
-	cout << "su" << endl;
 	typedef multimap<string, Particle*>::iterator MMAPIterator;
-	cout << "ru" << endl;
 	std::pair<MMAPIterator, MMAPIterator> result = particleNeighbours.equal_range(p->hashKey);
-	cout << "gu" << endl;
-	int count = std::distance(result.first, result.second);
-	int density = 0.0f;
+	float density = 0.0f;
 	for (MMAPIterator it = result.first; it != result.second; it++)
 	{
 		if (it->second->id == p->id) continue;
 
 		Particle *particle = particles[it->second->id];
 		//cout << "id" << it->second.id << endl;
-		float norm = sqrt(pow(particle->pos.x, 2) + pow(particle->pos.y, 2) + pow(particle->pos.z, 2));
+		glm::vec3 dif = p->pos - particle->pos;
+		float norm = sqrt(pow(dif.x, 2) + pow(dif.y, 2) + pow(dif.z, 2));
 
 		float weight = (315 / (64 * glm::pi<float>()*PARTICLE_NEIGHBOUR_DISTANCE))
 			*glm::pow(PARTICLE_NEIGHBOUR_DISTANCE*PARTICLE_NEIGHBOUR_DISTANCE - norm*norm, 3);
 
+		if (weight < 0)
+		{
+			continue;
+		}
+
 		density += it->second->mass*weight;
 
-		std::cout << "weight:" << weight << std::endl; //Something weird going on here.
-		std::cout << "x:" << particle->pos.x << std::endl;
-		std::cout << "y:" << particle->pos.y << std::endl;
-		std::cout << "z:" << particle->pos.z << std::endl;
+		//std::cout << "weight:" << weight << std::endl; //Something weird going on here.
+		//std::cout << "dif norm:" << norm << std::endl;
+		//std::cout << "x:" << particle->pos.x << std::endl;
+		//std::cout << "y:" << particle->pos.y << std::endl;
+		//std::cout << "z:" << particle->pos.z << std::endl;
 	}
-	return 0.0f;
+	//std::cout << "density" << density << std::endl;
+	return density;
+}
+
+float Liquid::calculatePressure(Particle *p)
+{
+	float pressure = nrt*p->density;
+	return pressure;
 }

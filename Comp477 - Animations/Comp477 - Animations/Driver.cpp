@@ -121,14 +121,19 @@ int main() {
 
 
 		// Check Keyboard Input
-		do_movement(deltaTime);
+		std::thread movementThread(do_movement, deltaTime);
+		//do_movement(deltaTime);
 
 		/*
 		*	UPDATE OUR DYNAMIC OBJECT HERE BASED ON TIME (60 FPS FRAME LOCK)
 		*		- Pass in the deltaTime above to calculate new position
 		*		- Send new positions to be displayed
 		*/
-		liq.updateLiquid();
+		std::thread liquidUpdateThread(&Liquid::updateLiquid, liq);
+
+		movementThread.join();
+		liquidUpdateThread.join();
+		//liq.updateLiquid();
 
 		animationWindow.setParticleVertices(vertices);
 
@@ -148,7 +153,7 @@ int main() {
 		// Displays output Data every second (Frames per second, Updates per second)
 		if (glfwGetTime() - timer > 1.0) {
 			timer++;
-			std::cout << "FPS: " << frames << " Updates:" << updates << std::endl;
+			//std::cout << "FPS: " << frames << " Updates:" << updates << std::endl;
 			updates = 0, frames = 0;
 		}
 

@@ -18,7 +18,7 @@ private:
 	glm::vec3 force;
 
 	float calculateDensity(Particle * p);
-	float calculatePressure(Particle &p);
+	float calculatePressure(Particle *p);
 
 public:
 	Liquid();

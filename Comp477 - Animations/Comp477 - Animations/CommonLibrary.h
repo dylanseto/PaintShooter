@@ -9,6 +9,7 @@
 #include <vector>
 #include <algorithm>
 #include <time.h>
+#include <thread>
 
 
 // GLEW 
@@ -37,6 +38,9 @@ const GLuint NUM_PARTICLE_VERTEX_ATTRIB_OBJ = 6;
 
 //Mass Of each particle
 const float PARTICLE_MASS = 0.02f;
+
+//Right side of ideal gas law, keep constant, to be adjustedd
+const float nrt = 10;
 
 // ================================== Object Sizes ================================== 
 
