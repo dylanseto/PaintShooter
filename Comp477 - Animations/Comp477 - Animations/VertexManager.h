@@ -17,6 +17,9 @@ class VertexManager {
 		// Class Functions: Helper to Update Vertices, Indices, and Normals (Takes care of call order)
 		void VertexManager::updateMeshes(vector<GLfloat>* inputVertices, vector<GLuint>* inputIndices);
 
+
+		void clearMesh();
+
 	private: 
 		vector<GLfloat>* objectVertices;
 		vector<GLuint>* objectIndices;

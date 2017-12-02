@@ -9,10 +9,7 @@ class Display {
 		Display(std::string windowName, int width, int height);
 		~Display();
 
-		GLFWwindow* window;
-		GLuint VAO;
-		GLuint VBO;
-		GLuint EBO;
+		GLFWwindow* getWindow();
 
 		bool isClosed();
 		void render();
@@ -21,7 +18,7 @@ class Display {
 		void setVertices(std::vector<GLfloat>* vertices);
 		void setIndices(std::vector<GLuint>* indices);
 
-		void sendStaticDataToBuffer();
+		// void sendStaticDataToBuffer();
 
 	private:
 		
@@ -29,8 +26,13 @@ class Display {
 		int windowWidth;
 		int windowHeight;
 
-		// VAO, VBO, EBO
-		
+		GLFWwindow* window;
+
+		// DYNAMIC: VAO, VBO, EBO
+		GLuint VAO;
+		GLuint VBO;
+		GLuint EBO;
+
 		
 		// Shader
 		Shader* ourShader;

@@ -1,7 +1,5 @@
 
 #include "WorldMesh.h"
-#include "Grid.h"
-#include "Rectangle.h"
 
 
 // ==================== Constructor ==================== //
@@ -16,8 +14,8 @@ WorldMesh::WorldMesh() : vertexManager(&vertices, &indices) {
 
 
 	// ======= Creating the Grid ======= //
-	Grid plane(UNIT, GRID_SIZE);
-	Rectangle rec(3,1,2);
+	plane = Grid(UNIT, GRID_SIZE);
+	rec = Rectangle(3, 2, 1);
 
 	// Rotate, Translate, Scale (Always Rotate First!)
 	rotateObject(rec.getVertices(), 45);
@@ -37,6 +35,15 @@ WorldMesh::WorldMesh() : vertexManager(&vertices, &indices) {
 // Destructor
 WorldMesh::~WorldMesh() { }
 
+
+// Test Function: Rotate object per second
+void WorldMesh::rotatePerUpdate(GLfloat deltaTime) {
+	rotateObject(rec.getVertices(), 1 * deltaTime);
+
+	vertexManager.clearMesh();
+	// vertexManager.updateMeshes(plane.getVertices(), plane.getIndices());
+	vertexManager.updateMeshes(rec.getVertices(), rec.getIndices());
+}
 
 
 // Object Scale Function 

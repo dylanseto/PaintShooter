@@ -12,6 +12,7 @@ Display::Display(std::string name, int width, int height) {
 	// Initialize Window Components
 	initWindow();
 	initGLBuffers();
+	// initDynamicGLBuffers();
 	loadTextures("Textures/gridTexture.png");
 
 }
@@ -23,6 +24,7 @@ Display::~Display() {
 	glDeleteBuffers(1, &VBO);
 	glDeleteBuffers(1, &EBO);
 
+	// Terminate GLFW Display
 	glfwTerminate();
 }
 
@@ -84,12 +86,12 @@ void Display::initWindow() {
 }
 
 
-// ========== Creating our Vertex Buffer Obj, Vertex Array Obj ========== //
+// ========== Creating our Static Vertex Buffer Obj, Vertex Array Obj ========== //
 void Display::initGLBuffers() {
 
 	// Creating the VAO
 	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO); 
+	glBindVertexArray(VAO);
 
 	// Creating the VBO
 	glGenBuffers(1, &VBO);
@@ -97,7 +99,7 @@ void Display::initGLBuffers() {
 
 	// Creating the EBO
 	glGenBuffers(1, &EBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);									
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	
 	// Set the vertex attribute pointers : POSITION (Px, Py, Pz)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)0);
@@ -114,9 +116,6 @@ void Display::initGLBuffers() {
 	// Set the vertex attribute pointers : TEXTURE OPACITY (a)
 	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(8 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(3);
-	
-	// Unbinds the VAO
-	glBindVertexArray(0); 
 }
 
 
@@ -144,9 +143,14 @@ void Display::render() {
 	GLint pvmLoc = glGetUniformLocation(ourShader->Program, "pvm");
 	glUniformMatrix4fv(pvmLoc, 1, GL_FALSE, glm::value_ptr(pvm));
 
-
-	// ==== Drawing out Objects =====
 	glBindVertexArray(VAO);
+
+	// Sending Data to the Buffers
+	glBufferData(GL_ARRAY_BUFFER, localVertices->size() * sizeof(GLfloat), &localVertices->front(), GL_DYNAMIC_DRAW);	// Copy our vertices to the buffer
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, localIndices->size() * sizeof(GLuint), &localIndices->front(), GL_DYNAMIC_DRAW);
+
+	// ==== Drawing our Objects =====
 	glDrawElements(GL_TRIANGLES, localIndices->size() * 2, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 
@@ -156,13 +160,14 @@ void Display::render() {
 
 
 // ========== Send Static Data to Buffers ========== 
-void Display::sendStaticDataToBuffer() {
-	glBindVertexArray(VAO);
-	glBufferData(GL_ARRAY_BUFFER, localVertices->size() * sizeof(GLfloat), &localVertices->front(), GL_STATIC_DRAW);	// Copy our vertices to the buffer
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, localIndices->size() * sizeof(GLuint), &localIndices->front(), GL_STATIC_DRAW);
+//void Display::sendStaticDataToBuffer() {
+//	glBindVertexArray(staticVAO);
+//	glBufferData(GL_ARRAY_BUFFER, localVertices->size() * sizeof(GLfloat), &localVertices->front(), GL_DYNAMIC_DRAW);	// Copy our vertices to the buffer
+//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, staticEBO);
+//	glBufferData(GL_ELEMENT_ARRAY_BUFFER, localIndices->size() * sizeof(GLuint), &localIndices->front(), GL_DYNAMIC_DRAW);
+//}
 
-}
+
 
 
 // ========== Check whether window is closed ========== // 
@@ -182,6 +187,11 @@ void Display::setIndices(std::vector<GLuint>* indices) {
 	localIndices = indices;
 }
 
+
+// Return Pointer to the Window Object
+GLFWwindow* Display::getWindow() {
+	return window;
+}
 
 
 // Loading 2D Texture Function
