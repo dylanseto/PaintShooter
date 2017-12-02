@@ -48,6 +48,12 @@
     <ClInclude Include="WorldMesh.h">
       <Filter>Header Files\Scene Objects</Filter>
     </ClInclude>
+    <ClInclude Include="Liquid.h">
+      <Filter>Header Files\Scene Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Header Files\Scene Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Driver.cpp">
@@ -71,6 +77,9 @@
     <ClCompile Include="WorldMesh.cpp">
       <Filter>Source Files\Scene Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Liquid.cpp">
+      <Filter>Source Files\Scene Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\fragment.shader">
@@ -83,6 +92,12 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="Shaders\vertex.shader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Shaders\particle_fragment.shader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Shaders\particle_vertex.shader">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

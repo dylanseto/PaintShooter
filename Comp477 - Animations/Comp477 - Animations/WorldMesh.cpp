@@ -2,6 +2,7 @@
 #include "WorldMesh.h"
 
 
+
 // ==================== Constructor ==================== //
 WorldMesh::WorldMesh() : vertexManager(&vertices, &indices) {
 

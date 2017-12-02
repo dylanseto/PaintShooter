@@ -16,6 +16,7 @@
 #include "WorldMesh.h"
 #include "Display.h"
 
+#include "Liquid.h"
 
 using namespace std;
 
@@ -29,8 +30,11 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 
 // ========================= Shader File Paths ========================= // 
 
-const GLchar * VERTEX_SHADER_PATH = "./Shaders/vertex.shader";
+const GLchar * VERTEX_SHADER_PATH   = "./Shaders/vertex.shader";
 const GLchar * FRAGMENT_SHADER_PATH = "./Shaders/fragment.shader";
+
+const GLchar * PARTICLE_VERTEX_SHADER_PATH   = "./Shaders/particle_vertex.shader";
+const GLchar * PARTICLE_FRAGMENT_SHADER_PATH = "./Shaders/particle_fragment.shader";
 
 
 
@@ -81,8 +85,15 @@ int main() {
 
 	// ========== Creating our shaders ========== //
 	Shader ourShader(VERTEX_SHADER_PATH, FRAGMENT_SHADER_PATH);
+	Shader particleShader(PARTICLE_VERTEX_SHADER_PATH, PARTICLE_FRAGMENT_SHADER_PATH);
 	animationWindow.setShader(&ourShader);
+	animationWindow.setParticleShader(&particleShader);
 
+
+	// ---------- CREATING OUR LIQUID ---------- //
+	Liquid liq;
+	vertices = liq.getVertices();
+	animationWindow.setParticleVertices(vertices);
 
 	// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 

@@ -5,8 +5,7 @@
 #include "VertexManager.h"
 #include "Rectangle.h"
 #include "Grid.h"
-
-// #include "Grid.h"
+#include "Liquid.h"
 
 
 using namespace std;
@@ -41,6 +40,7 @@ class WorldMesh {
 	private:
 		vector<GLfloat> vertices;
 		vector<GLuint> indices;
+
 		VertexManager vertexManager;
 
 		void translateObject(vector<GLfloat>* vertices, glm::vec3 destination);

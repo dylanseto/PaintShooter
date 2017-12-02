@@ -14,7 +14,9 @@ class Display {
 		bool isClosed();
 		void render();
 		void setShader(Shader* shader);
+		void setParticleShader(Shader* shader);
 		void setCamera(Camera* cam);
+		void setParticleVertices(std::vector<GLfloat>* vertices);
 		void setVertices(std::vector<GLfloat>* vertices);
 		void setIndices(std::vector<GLuint>* indices);
 
@@ -29,17 +31,20 @@ class Display {
 		GLFWwindow* window;
 
 		// DYNAMIC: VAO, VBO, EBO
-		GLuint VAO;
-		GLuint VBO;
+		GLuint VAO[2];
+		GLuint VBO[2];
 		GLuint EBO;
 
 		
 		// Shader
 		Shader* ourShader;
+		Shader* particleShader;
 
 		// Vertices and Indices
 		std::vector<GLfloat>* localVertices;
 		std::vector<GLuint>*  localIndices;
+
+		std::vector<GLfloat>* particleVertices;
 
 		// TextureID
 		GLuint gridTexture;

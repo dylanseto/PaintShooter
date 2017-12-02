@@ -20,8 +20,12 @@ Display::Display(std::string name, int width, int height) {
 // ========== Displpay Destructor ========== // 
 Display::~Display() {
 	// Frees up the buffers when done 
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
+	glDeleteVertexArrays(1, &VAO[0]);
+	glDeleteVertexArrays(1, &VAO[1]);
+
+	glDeleteBuffers(1, &VBO[0]);
+	glDeleteBuffers(1, &VBO[1]);
+
 	glDeleteBuffers(1, &EBO);
 
 	// Terminate GLFW Display
@@ -33,6 +37,12 @@ Display::~Display() {
 // ========== Set the Shader ========== // 
 void Display::setShader(Shader* shader) {
 	this->ourShader = shader;
+}
+
+
+// ========== Set the Particle Shader ========== // 
+void Display::setParticleShader(Shader* shader) {
+	this->particleShader = shader;
 }
 
 // ========== Set the Shader ========== // 
@@ -89,18 +99,18 @@ void Display::initWindow() {
 // ========== Creating our Static Vertex Buffer Obj, Vertex Array Obj ========== //
 void Display::initGLBuffers() {
 
-	// Creating the VAO
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-
-	// Creating the VBO
-	glGenBuffers(1, &VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
-	// Creating the EBO
+	// Creating VAO, VBO, EBO
+	glGenVertexArrays(2, VAO);
+	glGenBuffers(2, VBO);
 	glGenBuffers(1, &EBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	
+	// ------------- Setting up first VBO (Scene Objects) ------------- //
+
+	// Binding VAO, VBO, EBO
+	glBindVertexArray(VAO[0]);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+
 	// Set the vertex attribute pointers : POSITION (Px, Py, Pz)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
@@ -116,6 +126,29 @@ void Display::initGLBuffers() {
 	// Set the vertex attribute pointers : TEXTURE OPACITY (a)
 	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(8 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(3);
+
+	// Unbinding VBO and EBO
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+
+	// ------------- Setting up Second VBO (Particles) ------------- //
+
+	// Binding VAO, VBO
+	glBindVertexArray(VAO[1]);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
+
+	// Set the vertex attribute pointers : POSITION (Px, Py, Pz)
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, NUM_PARTICLE_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)0);
+	glEnableVertexAttribArray(0);
+
+	// Set the vertex attribute pointers : COLOR (R, G, B)
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, NUM_PARTICLE_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(1);
+
+
+	// Unbinding VAO
+	glBindVertexArray(0);
 }
 
 
@@ -143,15 +176,38 @@ void Display::render() {
 	GLint pvmLoc = glGetUniformLocation(ourShader->Program, "pvm");
 	glUniformMatrix4fv(pvmLoc, 1, GL_FALSE, glm::value_ptr(pvm));
 
-	glBindVertexArray(VAO);
 
+	
+	// ------------- Drawing Scene Objects ------------- //
+	
 	// Sending Data to the Buffers
+	glBindVertexArray(VAO[0]);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
 	glBufferData(GL_ARRAY_BUFFER, localVertices->size() * sizeof(GLfloat), &localVertices->front(), GL_DYNAMIC_DRAW);	// Copy our vertices to the buffer
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, localIndices->size() * sizeof(GLuint), &localIndices->front(), GL_DYNAMIC_DRAW);
-
-	// ==== Drawing our Objects =====
+	
+	// Drawing our Objects 
 	glDrawElements(GL_TRIANGLES, localIndices->size() * 2, GL_UNSIGNED_INT, 0);
+
+
+	// ------------- Drawing Particles ------------- //
+
+	// Use Particle Shader to Render Particles (Different Vertex/Fragment Shader)
+	particleShader->Use();
+	pvmLoc = glGetUniformLocation(particleShader->Program, "pvm");
+	glUniformMatrix4fv(pvmLoc, 1, GL_FALSE, glm::value_ptr(pvm));
+
+	// Sending Particle Data to the Buffers  
+	glBindVertexArray(VAO[1]);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
+	glBufferData(GL_ARRAY_BUFFER, particleVertices->size() * sizeof(GLfloat), &particleVertices->front(), GL_DYNAMIC_DRAW);	// Copy our vertices to the buffer
+	
+	// Drawing our Particles 
+	glDrawArrays(GL_POINTS, 0, this->particleVertices->size());
+
+
+	// Unbinding VAO
 	glBindVertexArray(0);
 
 	// Swap the buffers
@@ -173,6 +229,12 @@ void Display::render() {
 // ========== Check whether window is closed ========== // 
 bool Display::isClosed() {
 	return glfwWindowShouldClose(window);
+}
+
+
+// ========== Set the Local Vertices ========== // 
+void Display::setParticleVertices(std::vector<GLfloat>* vertices) {
+	particleVertices = vertices;
 }
 
 
