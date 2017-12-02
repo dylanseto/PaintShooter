@@ -15,6 +15,6 @@ uniform mat4 pvm;
 void main() {
 	ourColor = vertexColor;
 
-	gl_PointSize = 20.0f;
+	gl_PointSize = 50.0f;
 	gl_Position = pvm * vec4(position, 1.0f);
 }

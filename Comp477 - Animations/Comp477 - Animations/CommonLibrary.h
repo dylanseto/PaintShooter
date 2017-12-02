@@ -35,6 +35,9 @@ const GLuint WIDTH = 1280,
 const GLuint NUM_VERTEX_ATTRIB_OBJ = 9;
 const GLuint NUM_PARTICLE_VERTEX_ATTRIB_OBJ = 6;
 
+//Mass Of each particle
+const float PARTICLE_MASS = 0.02f;
+
 // ================================== Object Sizes ================================== 
 
 // Grid Unit Size (UNIT x UNIT Squares)

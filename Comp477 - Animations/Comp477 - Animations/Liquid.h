@@ -2,19 +2,23 @@
 
 #include "Particle.h"
 #include "CommonLibrary.h"
-#include <unordered_map>
+#include <map>
 using namespace std;
 using namespace glm;
 
 class Liquid
 {
 private:
-	
-	unordered_map<string, Particle> particleNeighbours;
-	vector<Particle> particles;
+
+	static int NUM_PARTICLES;
+	multimap<string, Particle*> particleNeighbours;
+	vector<Particle*> particles;
 	vector<GLfloat> localVertices;
 
 	glm::vec3 force;
+
+	float calculateDensity(Particle * p);
+	float calculatePressure(Particle &p);
 
 public:
 	Liquid();
