@@ -93,6 +93,8 @@ void Display::initWindow() {
 
 	// Enable Z-Buffer
 	glEnable(GL_DEPTH_TEST);
+
+	glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
 }
 
 
