@@ -40,7 +40,7 @@ const GLuint NUM_PARTICLE_VERTEX_ATTRIB_OBJ = 6;
 const float PARTICLE_MASS = 0.02f;
 
 //Right side of ideal gas law, keep constant, to be adjustedd
-const float nrt = 10;
+const float nrt = 5;
 
 // ================================== Object Sizes ================================== 
 
@@ -52,5 +52,4 @@ const int GRID_SIZE = 50;
 
 // Particle Neighbour Distance
 const float PARTICLE_NEIGHBOUR_DISTANCE = UNIT * 0.5f;
-
 

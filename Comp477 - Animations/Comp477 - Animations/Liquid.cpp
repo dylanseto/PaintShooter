@@ -4,6 +4,26 @@
 
 int Liquid::NUM_PARTICLES = 0;
 
+// Special floor function
+// floors to 0.5 steps
+float specialFloor(float x)
+{
+	float d = x - (int)x;
+	if (d > 0.5) d -= 0.5;
+	if (d < 0.3)
+	{
+		return (floor((x * 2) + 0.5) / 2);
+	}
+	else if (d == 0.5 || d == 0)
+	{
+		return x;
+	}
+	else
+	{
+		return (floor((x * 2) - 0.5) / 2);
+	}
+}
+
 Liquid::Liquid()
 {
 
@@ -37,9 +57,9 @@ Liquid::Liquid()
 					particle->color.b = 0;
 					particle->color.a = 1;
 					particle->mass = PARTICLE_MASS;
-					particle->hashKey = to_string(floor(particle->pos.x / PARTICLE_NEIGHBOUR_DISTANCE)*PARTICLE_NEIGHBOUR_DISTANCE) 
-						+ "," + to_string(floor(particle->pos.y / PARTICLE_NEIGHBOUR_DISTANCE)*PARTICLE_NEIGHBOUR_DISTANCE) 
-						+ "," + to_string(floor(particle->pos.z / PARTICLE_NEIGHBOUR_DISTANCE)*PARTICLE_NEIGHBOUR_DISTANCE);
+					particle->hashKey = to_string(specialFloor(particle->pos.x))
+						+ "," + to_string(specialFloor(particle->pos.y))
+						+ "," + to_string(specialFloor(particle->pos.z));
 
 					particles.push_back(particle);
 					particleNeighbours.insert(std::make_pair(particle->hashKey, particle));
@@ -61,9 +81,9 @@ Liquid::Liquid()
 			particle->color.b = 0;
 			particle->color.a = 1;
 			particle->mass = PARTICLE_MASS;
-			particle->hashKey = to_string(floor(particle->pos.x / PARTICLE_NEIGHBOUR_DISTANCE)*PARTICLE_NEIGHBOUR_DISTANCE)
-				+ "," + to_string(floor(particle->pos.y / PARTICLE_NEIGHBOUR_DISTANCE)*PARTICLE_NEIGHBOUR_DISTANCE)
-				+ "," + to_string(floor(particle->pos.z / PARTICLE_NEIGHBOUR_DISTANCE)*PARTICLE_NEIGHBOUR_DISTANCE);
+			particle->hashKey = to_string(specialFloor(particle->pos.x))
+				+ "," + to_string(specialFloor(particle->pos.y))
+				+ "," + to_string(specialFloor(particle->pos.z));
 
 			particles.push_back(particle);
 			particleNeighbours.insert(std::make_pair(particle->hashKey, particle));
@@ -98,6 +118,8 @@ Liquid::Liquid(glm::vec3 force)
 void Liquid::updateLiquid()
 {
 	// Update Particles, physics goes here, update camera distance.
+
+	//Calculate density + pressure
 	for (int i = 0; i != particles.size(); i++)
 	{
 		//calculate density
@@ -105,6 +127,24 @@ void Liquid::updateLiquid()
 		particles[i]->pressure = calculatePressure(particles[i]);
 
 		//calculate pressure
+	}
+
+	//Calculate Forces
+	for (int i = 0; i != particles.size(); i++)
+	{
+		// Pressure force
+		vec3 pressureForce = calculatePressureForce(particles[i]);
+		// Viscosity 
+		// Gravity
+		// Surface tension
+		// Buoyancy
+		// User external force, skip (for now)
+
+		// Sum forces
+		// Update acceleration
+		// Update velocity
+		// Check boundaries, update velocity
+		// Update positions
 	}
 
 	//Update Hash Keys
@@ -122,9 +162,9 @@ void Liquid::updateLiquid()
 			}
 		}
 
-		particle->hashKey = to_string(floor(particle->pos.x / PARTICLE_NEIGHBOUR_DISTANCE)*PARTICLE_NEIGHBOUR_DISTANCE)
-			+ "," + to_string(floor(particle->pos.y / PARTICLE_NEIGHBOUR_DISTANCE)*PARTICLE_NEIGHBOUR_DISTANCE)
-			+ "," + to_string(floor(particle->pos.z / PARTICLE_NEIGHBOUR_DISTANCE)*PARTICLE_NEIGHBOUR_DISTANCE);
+		particle->hashKey = to_string(specialFloor(particle->pos.x))
+			+ "," + to_string(specialFloor(particle->pos.y))
+			+ "," + to_string(specialFloor(particle->pos.z));
 
 		particleNeighbours.insert(std::make_pair(particle->hashKey, particle));
 	}
@@ -165,6 +205,13 @@ float Liquid::calculateDensity(Particle * p)
 		if (it->second->id == p->id) continue;
 
 		Particle *particle = particles[it->second->id];
+		float dist = distance(particle->pos, p->pos);
+
+		if (dist > PARTICLE_NEIGHBOUR_DISTANCE)
+		{
+			continue;
+		}
+
 		//cout << "id" << it->second.id << endl;
 		glm::vec3 dif = p->pos - particle->pos;
 		float norm = sqrt(pow(dif.x, 2) + pow(dif.y, 2) + pow(dif.z, 2));
@@ -172,15 +219,15 @@ float Liquid::calculateDensity(Particle * p)
 		float weight = (315 / (64 * glm::pi<float>()*PARTICLE_NEIGHBOUR_DISTANCE))
 			*glm::pow(PARTICLE_NEIGHBOUR_DISTANCE*PARTICLE_NEIGHBOUR_DISTANCE - norm*norm, 3);
 
-		if (weight < 0)
+		if (weight < 0) // Just double checking
 		{
 			continue;
 		}
 
 		density += it->second->mass*weight;
 
-		//std::cout << "weight:" << weight << std::endl; //Something weird going on here.
-		//std::cout << "dif norm:" << norm << std::endl;
+		//std::cout << "weight:" << weight << std::endl; 
+		//std::cout << "distance: " << dist << std::endl;
 		//std::cout << "x:" << particle->pos.x << std::endl;
 		//std::cout << "y:" << particle->pos.y << std::endl;
 		//std::cout << "z:" << particle->pos.z << std::endl;
@@ -193,4 +240,28 @@ float Liquid::calculatePressure(Particle *p)
 {
 	float pressure = nrt*p->density;
 	return pressure;
+}
+
+vec3 Liquid::calculatePressureForce(Particle* p)
+{
+	typedef multimap<string, Particle*>::iterator MMAPIterator;
+	std::pair<MMAPIterator, MMAPIterator> result = particleNeighbours.equal_range(p->hashKey);
+	float presssureGradient = 0.0f;
+	vec3 lowPressurePos;
+	float lowPressure = -1;
+	vec3 pressureForce = vec3(0, 0, 0);
+
+	//calculate pressure Gradient and at the same time, calculate lowPressure direction.
+	for (MMAPIterator it = result.first; it != result.second; it++)
+	{
+		Particle* particle = particles[it->second->id]; //shorthand
+		glm::vec3 dif = p->pos - particle->pos;
+
+		float norm = sqrt(pow(dif.x, 2) + pow(dif.y, 2) + pow(dif.z, 2));
+		vec3 weightGradient = -1*(45/glm::pi<float>()*pow(PARTICLE_NEIGHBOUR_DISTANCE, 6))*(dif/norm)*pow(PARTICLE_NEIGHBOUR_DISTANCE-norm,2);
+		vec3 forceComponent = ((p->pressure+particle->pressure)/2)*(particle->mass/particle->density)*weightGradient;
+
+		pressureForce += forceComponent;
+	}
+	return pressureForce;
 }

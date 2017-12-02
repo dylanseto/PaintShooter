@@ -19,7 +19,7 @@ Rectangle::Rectangle(GLfloat length, GLfloat height, GLfloat depth)
 				localVertices.push_back(y * height * UNIT);
 				localVertices.push_back(z * height * UNIT);
 
-				cout << "Index " << i << ":(" << x << "," << y << "," << z << ")" << endl;
+				//cout << "Index " << i << ":(" << x << "," << y << "," << z << ")" << endl;
 				i++;
 
 				// Adding Default Color 

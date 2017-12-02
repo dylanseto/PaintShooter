@@ -20,6 +20,12 @@ private:
 	float calculateDensity(Particle * p);
 	float calculatePressure(Particle *p);
 
+	vec3 calculatePressureForce(Particle* p);
+	vec3 calculateViscosityForce(Particle* p);
+	vec3 calculateGravityForce(Particle* p);
+	vec3 calculateSurfaceTensionForce(Particle* p);
+	vec3 calculateBuoyancyForce(Particle* p);
+
 public:
 	Liquid();
 	Liquid(glm::vec3 force);
