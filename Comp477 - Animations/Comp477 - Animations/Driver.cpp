@@ -62,6 +62,16 @@ GLfloat lastTime        = 0.0f;  	// Time of last frame
 GLfloat updateDeltaTime = 0.0f;
 GLfloat timer = lastTime;
 
+// Light Position
+glm::vec3 lightPos = glm::vec3(0.0f, 50.0f, 0.0f);
+
+// Light Color
+glm::vec3 lightColor;
+// Day Color - Faint White
+glm::vec3 dayColor = glm::vec3(0.8f, 0.8f, 0.8f);
+// Night Color - Blueish
+glm::vec3 nightColor = glm::vec3(0.490196f, 0.568627f, 0.670588f);
+
 GLfloat leftMouseHoldTime = 0.0f;
 bool leftMouseHold = false;
 
@@ -70,6 +80,7 @@ int updates = 0;
 
 // ========== Main Method ========== //
 int main() {
+	srand(time(NULL));
 
 	Display animationWindow("Comp 477 - Computer Animations", 1280, 800);
 	animationWindow.setCamera(&camera);
@@ -78,10 +89,16 @@ int main() {
 	WorldMesh world;
 	vector<GLfloat>*  vertices = world.getVertices();
 	vector<GLuint>*    indices = world.getIndices();
+	vector<glm::vec3>* normals = world.getNormals();
 
 	animationWindow.setVertices(vertices);
 	animationWindow.setIndices(indices);
+	animationWindow.setNormals(normals);
 
+	animationWindow.setLightPos(lightPos);
+
+	// Default Lighting
+	lightColor = dayColor;
 
 	// ========== Creating our shaders ========== //
 	Shader ourShader(VERTEX_SHADER_PATH, FRAGMENT_SHADER_PATH);
@@ -93,7 +110,10 @@ int main() {
 	// ---------- CREATING OUR LIQUID ---------- //
 	Liquid liq;
 	vertices = liq.getVertices();
+	normals = liq.getNormals();
+
 	animationWindow.setParticleVertices(vertices);
+	animationWindow.setParticleNormals(normals);
 
 	// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -137,9 +157,10 @@ int main() {
 			updateDeltaTime--;
 		}	
 
+		animationWindow.setLightColor(lightColor);
 
 		// Call Window to Render Image 
-		animationWindow.render();
+		animationWindow.render(lightColor);
 		frames++;
 
 		// Displays output Data every second (Frames per second, Updates per second)
@@ -169,6 +190,16 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	// Toggle between Locked and Free camera movement
 	else if (key == GLFW_KEY_X && action == GLFW_PRESS) {
 		lockCamera = !lockCamera;
+	}
+
+	// Toggle between Locked and Free camera movement
+	else if (key == GLFW_KEY_K && action == GLFW_PRESS) {
+		lightColor = dayColor;
+	}
+
+	// Toggle between Locked and Free camera movement
+	else if (key == GLFW_KEY_L && action == GLFW_PRESS) {
+		lightColor = nightColor;
 	}
 
 	// Smooth camera transitions

@@ -8,10 +8,14 @@ using namespace glm;
 class Liquid
 {
 private:
+	glm::vec3 vector1;
+	glm::vec3 vector2;
+	glm::vec3 vectorProduct;
 
 	vector<Particle> particles;
 	vector<GLfloat> localVertices;
 	vector<GLuint> localIndices;
+	vector<glm::vec3> localNormals;
 
 	glm::vec3 force;
 
@@ -24,4 +28,5 @@ public:
 
 	vector<GLfloat>* getVertices();
 	vector<GLuint>* getIndices();
+	vector<glm::vec3>* getNormals();
 };

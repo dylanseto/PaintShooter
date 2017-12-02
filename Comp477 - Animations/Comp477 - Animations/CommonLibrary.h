@@ -45,4 +45,38 @@ const GLfloat UNIT = 1.0f;
 // Base Grid Size
 const int GRID_SIZE = 50;
 
+// Brightness Constant: Change this value if the color are good and you want to 
+//                      adjust the brightness of the world alltogether
+const int COLOR_BRIGHTNESS = 10;
+
+// Cube Color RGB
+const int CUBE_COLOR_R = 255;
+const int CUBE_COLOR_G = 0;
+const int CUBE_COLOR_B = 255;
+
+// Grass Color RGB
+const int GRASS_COLOR_R = 116;
+const int GRASS_COLOR_G = 204;
+const int GRASS_COLOR_B = 73;
+
+// Function to find Float values given color values (0 - 255)
+inline float getFloatColor(int colorValue) {
+
+	colorValue += COLOR_BRIGHTNESS;
+
+	if (colorValue >= 0 && colorValue <= 255)
+		return ((float)colorValue / (float)255);
+
+	else if (colorValue > 255)
+		return 1.0f;
+
+	return 0.0f;
+};
+
+// Cube Color
+const glm::vec3 CUBE_COLOR(getFloatColor(CUBE_COLOR_R), getFloatColor(CUBE_COLOR_G), getFloatColor(CUBE_COLOR_B));
+
+// Grass Color
+const glm::vec3 GRASS_COLOR(getFloatColor(GRASS_COLOR_R), getFloatColor(GRASS_COLOR_G), getFloatColor(GRASS_COLOR_B));
+
 

@@ -19,9 +19,10 @@ Grid::Grid(GLfloat length, int halfGridSize) {
 			localVertices.push_back((GLfloat)(vertical * length));
 
 			// Adding Default Color 
-			localVertices.push_back(1.0f);
-			localVertices.push_back(1.0f);
-			localVertices.push_back(1.0f);
+			int randomColorOffset = rand() % 10 + 1;
+			localVertices.push_back(GRASS_COLOR.x + ((float)randomColorOffset / 100));
+			localVertices.push_back(GRASS_COLOR.y + ((float)randomColorOffset / 100));
+			localVertices.push_back(GRASS_COLOR.z + ((float)randomColorOffset / 100));
 
 			// Adding Texture Coordinates
 			if (horizontal % 2 == 0 && vertical % 2 == 0) {
@@ -45,7 +46,7 @@ Grid::Grid(GLfloat length, int halfGridSize) {
 			}
 
 			// Adding Grid Texture Opacity
-			localVertices.push_back(1.0f);
+			localVertices.push_back(0.0f);
 		}
 	}
 
@@ -64,6 +65,19 @@ Grid::Grid(GLfloat length, int halfGridSize) {
 			localIndices.push_back((GLuint)(i - 1 + gridSize + (gridSize * k)));
 		}
 	}
+
+	int offset = 9;
+	// Generating the Normals
+	for (int i = 0; i < localIndices.size(); i += 3) {
+		vector1 = glm::vec3(localVertices[localIndices[i + 1] * offset] - localVertices[localIndices[i] * offset],
+			localVertices[localIndices[i + 1] * offset + 1] - localVertices[localIndices[i] * offset + 1],
+			localVertices[localIndices[i + 1] * offset + 2] - localVertices[localIndices[i] * offset + 2]);
+		vector2 = glm::vec3(localVertices[localIndices[i + 2] * offset] - localVertices[localIndices[i] * offset],
+			localVertices[localIndices[i + 2] * offset + 1] - localVertices[localIndices[i] * offset + 1],
+			localVertices[localIndices[i + 2] * offset + 2] - localVertices[localIndices[i] * offset + 2]);
+		vectorProduct = cross(vector1, vector2);
+		localNormals.push_back(normalize(vectorProduct));
+	}
 }
 
 // Destructor
@@ -80,6 +94,10 @@ vector<GLuint>* Grid::getIndices() {
 	return &localIndices;
 }
 
+// Getter: Get Local Normals
+vector<glm::vec3>* Grid::getNormals() {
+	return &localNormals;
+}
 
 // Getter: Get Grid Size (Size x Size)
 int Grid::getGridSize() {

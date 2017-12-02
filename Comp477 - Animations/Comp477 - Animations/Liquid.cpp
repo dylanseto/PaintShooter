@@ -75,6 +75,15 @@ Liquid::Liquid()
 		// Adding Texture Opacity
 		localVertices.push_back(0.0f);
 	}
+
+	// Adding Normals
+	//int offset = 9;
+	for (int i = 0; i < particles.size() / 100; i += 3) {
+		vector1 = particles[i + 1].pos - particles[i].pos;
+		vector2 = particles[i + 2].pos - particles[i].pos;
+		vectorProduct = cross(vector1, vector2);
+		localNormals.push_back(normalize(vectorProduct));
+	}
 }
 
 Liquid::Liquid(glm::vec3 force)
@@ -101,4 +110,9 @@ vector<GLfloat>* Liquid::getVertices() {
 // Getter: Get Local Indices
 vector<GLuint>* Liquid::getIndices() {
 	return &localIndices;
+}
+
+// Getter: Get Local Normals
+vector<glm::vec3>* Liquid::getNormals() {
+	return &localNormals;
 }
