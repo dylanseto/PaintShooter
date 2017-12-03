@@ -4,6 +4,7 @@
 layout(location = 0) in vec3 position;
 layout(location = 1) in vec3 vertexColor;
 layout(location = 2) in float par_ID;
+layout(location = 3) in vec3 normal;
 
 #define MAX_PARTICLES 10000
 // Particle Neighbour Distance

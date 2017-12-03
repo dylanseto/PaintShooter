@@ -2,26 +2,22 @@
 
 #include "Particle.h"
 #include "CommonLibrary.h"
-#include <map>
 using namespace std;
 using namespace glm;
 
 class Liquid
 {
 private:
-	static int NUM_PARTICLES;
-	static multimap<int, Particle*> globalParticleMap;
-	multimap<string, Particle*> particleNeighbours;
-	vector<Particle*> particles;
+	glm::vec3 vector1;
+	glm::vec3 vector2;
+	glm::vec3 vectorProduct;
+
+	vector<Particle> particles;
 	vector<GLfloat> localVertices;
+	vector<GLuint> localIndices;
+	vector<glm::vec3> localNormals;
 
 	glm::vec3 force;
-
-	float calculateDensity(Particle * p);
-	float calculatePressure(Particle *p);
-
-	vec3 calculatePressureForce(Particle* p);
-	vec3 calculateViscosityForce(Particle* p);
 
 public:
 	Liquid();
@@ -31,4 +27,6 @@ public:
 	void sortParticles();
 
 	vector<GLfloat>* getVertices();
+	vector<GLuint>* getIndices();
+	vector<glm::vec3>* getNormals();
 };

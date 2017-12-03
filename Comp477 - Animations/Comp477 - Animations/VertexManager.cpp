@@ -8,9 +8,10 @@ VertexManager::VertexManager() {
 }
 
 // Constructor
-VertexManager::VertexManager(vector<GLfloat>* vertices, vector<GLuint>* indices) {
+VertexManager::VertexManager(vector<GLfloat>* vertices, vector<GLuint>* indices, vector<glm::vec3>* normals) {
 	this->objectVertices = vertices;
 	this->objectIndices  = indices;
+	this->objectNormals = normals;
 }
 
 // Destructor
@@ -33,16 +34,22 @@ void VertexManager::updateIndices(vector<GLuint>* inputIndices) {
 	}
 }
 
+// Updates the Normals
+void VertexManager::updateNormals(vector<glm::vec3>* inputNormals) {
 
-// Helper Function: Update Vertices and Indices
-void VertexManager::updateMeshes(vector<GLfloat>* inputVertices, vector<GLuint>* inputIndices) {
-	updateIndices(inputIndices);
-	updateVertices(inputVertices);
+	objectNormals->insert(objectNormals->end(), inputNormals->begin(), inputNormals->end());
 }
 
+// Helper Function: Update Vertices and Indices
+void VertexManager::updateMeshes(vector<GLfloat>* inputVertices, vector<GLuint>* inputIndices, vector<glm::vec3>* inputNormals) {
+	updateIndices(inputIndices);
+	updateVertices(inputVertices);
+	updateNormals(inputNormals);
+}
 
 // Clear the mesh Data
 void VertexManager::clearMesh() {
 	objectVertices->clear();
 	objectIndices->clear();
+	objectNormals->clear();
 }
