@@ -122,6 +122,7 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CommonLibrary.h" />
+    <ClInclude Include="DensityShader.h" />
     <ClInclude Include="Display.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="Liquid.h" />
@@ -132,6 +133,7 @@
     <ClInclude Include="WorldMesh.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DensityShader.cpp" />
     <ClCompile Include="Display.cpp" />
     <ClCompile Include="Driver.cpp" />
     <ClCompile Include="Grid.cpp" />

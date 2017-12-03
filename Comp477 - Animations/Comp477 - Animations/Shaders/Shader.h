@@ -16,20 +16,21 @@
 #include <GLFW/glfw3.h>
 
 class Shader {
-	public:
-		// The program ID
-		GLuint Program;
+public:
+	// The program ID
+	GLuint Program;
 
-		// Constructor and Destructor
-		Shader(const GLchar* vertexPath, const GLchar* fragmentPath);
-		Shader(const GLchar* computerPath);
-		~Shader();
+	// Constructor and Destructor
+	Shader() { }
+	Shader(const GLchar* vertexPath, const GLchar* fragmentPath);
+	//Shader(const GLchar* computePath);
+	~Shader();
 
-		// Use the program
-		void Use();
+	// Use the program
+	void Use();
 
-	private:
-		std::string readFile(std::string fileLocation);
+protected:
+	std::string readFile(std::string fileLocation);
 };
 
 #endif

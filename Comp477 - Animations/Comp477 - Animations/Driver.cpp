@@ -12,6 +12,7 @@
 
 #include "CommonLibrary.h"
 #include "Shaders/Shader.h"
+#include "DensityShader.h"
 #include "Camera.h"
 #include "WorldMesh.h"
 #include "Display.h"
@@ -89,7 +90,7 @@ int main() {
 	// ========== Creating our shaders ========== //
 	Shader ourShader(VERTEX_SHADER_PATH, FRAGMENT_SHADER_PATH);
 	Shader particleShader(PARTICLE_VERTEX_SHADER_PATH, PARTICLE_FRAGMENT_SHADER_PATH);
-	Shader particleDensityShader(PARTICLE_DENSITY_PRESSURE_SHADER_PATH);
+	DensityShader particleDensityShader(PARTICLE_DENSITY_PRESSURE_SHADER_PATH);
 	animationWindow.setShader(&ourShader);
 	animationWindow.setParticleShader(&particleShader);
 	animationWindow.seParticleDensityShader(&particleDensityShader);
