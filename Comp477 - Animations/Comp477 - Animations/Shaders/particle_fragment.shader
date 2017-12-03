@@ -9,6 +9,8 @@ flat in vec3 ourNormal;
 // Uniform Variables
 uniform vec3 lightPos;
 uniform vec3 lightColor;
+uniform vec3 viewPos;
+uniform vec3 emissive;
 
 // Fragment Shader Outputs
 out vec4 color;
@@ -17,6 +19,7 @@ void main() {
     vec3 norm = normalize(ourNormal);
 	vec3 lightDir = normalize(lightPos - ourFragPos);
 	vec3 nightLight = vec3(0.490196f, 0.568627f, 0.670588f);
+	vec3 viewDir = normalize(-ourFragPos);
 	vec3 light;
 	vec3 result;
 
@@ -28,21 +31,26 @@ void main() {
 
 	// === GLOW ===
 	if (lightColor == nightLight) {
-	    light = vec3(1.0f, 1.0f, 1.0f);
+	    light = vec3(0.8f, 0.8f, 0.8f);
 	}
 	else {
 	    light = lightColor;
 	}
+	
+	// === SPECULAR ===
+	vec3 reflectDir = reflect(-lightDir, norm);
+	float spec = pow(max(dot(viewDir, reflectDir), 0.0f), 32.0f);
+	vec3 specular = light * spec;
 	
 	// === AMBIENT ===
 	float ambientStrength = 1.0f;
     vec3 ambient = ambientStrength * light;
 	
 	// === DIFFUSE ===
-	float diff = max(dot(norm, lightDir), 0.1f);
+	float diff = max(dot(norm, lightDir), 0.0f);
 	vec3 diffuse = diff * light;
 	
-	result = (ambient + diffuse) * ourColor;
+	result = (ambient + diffuse + specular + emissive) * ourColor;
 	
 	//Color
 	color = vec4(result, 1.0f);

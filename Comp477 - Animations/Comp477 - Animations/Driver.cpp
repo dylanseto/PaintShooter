@@ -63,7 +63,7 @@ GLfloat updateDeltaTime = 0.0f;
 GLfloat timer = lastTime;
 
 // Light Position
-glm::vec3 lightPos = glm::vec3(0.0f, 50.0f, 0.0f);
+glm::vec3 lightPos = glm::vec3(0.0f, 30.0f, 0.0f);
 
 // Light Color
 glm::vec3 lightColor;

@@ -193,6 +193,32 @@ void Display::render(glm::vec3 lightColor) {
 	GLint lightColorLoc = glGetUniformLocation(ourShader->Program, "lightColor");
 	glUniform3f(lightColorLoc, localLightColor.x, localLightColor.y, localLightColor.z);
 
+	GLint shootPositionLoc = glGetUniformLocation(ourShader->Program, "shootPosition");
+	glUniform3f(shootPositionLoc, 10.0f, 0.0f, 10.0f);
+
+	GLint viewPosLoc = glGetUniformLocation(ourShader->Program, "viewPos");
+	glUniform3f(viewPosLoc, camera->Position.x, camera->Position.y, camera->Position.z);
+
+	static float glowAmount = 0.0f;
+	static bool glowIsIncreasing = true;
+
+	GLint emissiveLoc = glGetUniformLocation(ourShader->Program, "emissive");
+	glUniform3f(emissiveLoc, glowAmount, 0.0f, 0.0f);
+
+	if (glowIsIncreasing) {
+		glowAmount += 0.01f;
+	}
+	else {
+		glowAmount -= 0.01f;
+	}
+
+	if (glowAmount >= 0.3f) {
+		glowIsIncreasing = !glowIsIncreasing;
+	}
+	else if (glowAmount <= 0.0f) {
+		glowIsIncreasing = !glowIsIncreasing;
+	}
+
 	GLint pvmLoc = glGetUniformLocation(ourShader->Program, "pvm");
 	glUniformMatrix4fv(pvmLoc, 1, GL_FALSE, glm::value_ptr(pvm));
 
@@ -207,7 +233,7 @@ void Display::render(glm::vec3 lightColor) {
 	glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
 	glBufferData(GL_ARRAY_BUFFER, localNormals->size() * sizeof(glm::vec3), &localNormals->front(), GL_DYNAMIC_DRAW);
 	
-	// Drawing our Objects 
+	// Drawing our Objects
 	glDrawElements(GL_TRIANGLES, localIndices->size() * 2, GL_UNSIGNED_INT, 0);
 
 
@@ -221,6 +247,12 @@ void Display::render(glm::vec3 lightColor) {
 
 	GLint lightColorLoc1 = glGetUniformLocation(particleShader->Program, "lightColor");
 	glUniform3f(lightColorLoc1, localLightColor.x, localLightColor.y, localLightColor.z);
+
+	GLint emissiveLoc1 = glGetUniformLocation(particleShader->Program, "emissive");
+	glUniform3f(emissiveLoc1, glowAmount, 0.0f, 0.0f);
+
+	GLint viewPosLoc1 = glGetUniformLocation(particleShader->Program, "viewPos");
+	glUniform3f(viewPosLoc1, camera->Position.x, camera->Position.y, camera->Position.z);
 
 	pvmLoc = glGetUniformLocation(particleShader->Program, "pvm");
 	glUniformMatrix4fv(pvmLoc, 1, GL_FALSE, glm::value_ptr(pvm));

@@ -78,11 +78,14 @@ Liquid::Liquid()
 
 	// Adding Normals
 	//int offset = 9;
-	for (int i = 0; i < particles.size() / 100; i += 3) {
-		vector1 = particles[i + 1].pos - particles[i].pos;
-		vector2 = particles[i + 2].pos - particles[i].pos;
-		vectorProduct = cross(vector1, vector2);
-		localNormals.push_back(normalize(vectorProduct));
+	//for (int i = 0; i < particles.size() - 2; i += 3) {
+	//	vector1 = particles[i + 1].pos - particles[i].pos;
+	//	vector2 = particles[i + 2].pos - particles[i].pos;
+	//	vectorProduct = cross(vector1, vector2);
+	//	localNormals.push_back(normalize(vectorProduct));
+	//}
+	for (int i = 0; i < particles.size(); i++) {
+		localNormals.push_back(normalize(particles[i].pos));
 	}
 }
 

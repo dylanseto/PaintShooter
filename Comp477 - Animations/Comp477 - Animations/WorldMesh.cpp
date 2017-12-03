@@ -16,6 +16,8 @@ WorldMesh::WorldMesh() : vertexManager(&vertices, &indices, &normals) {
 
 	// ======= Creating the Grid ======= //
 	plane = Grid(UNIT, GRID_SIZE);
+	// Sending the terrain to the Vertex Manager
+	vertexManager.updateMeshes(plane.getVertices(), plane.getIndices(), plane.getNormals());
 
 	int min = 1;
 	int max = 5;
@@ -51,9 +53,9 @@ WorldMesh::WorldMesh() : vertexManager(&vertices, &indices, &normals) {
 
 		// plane.printGrid();
 
-		// Sending the terrain to the Vertex Manager
-		vertexManager.updateMeshes(plane.getVertices(), plane.getIndices(), plane.getNormals());
+		// Sending the Rectangle objects to the Vertex Manager
 		vertexManager.updateMeshes(rec.getVertices(), rec.getIndices(), rec.getNormals());
+		
 	}
 }
 
