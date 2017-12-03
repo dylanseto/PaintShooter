@@ -3,11 +3,37 @@
 // Vertex Shader Input
 layout(location = 0) in vec3 position;
 layout(location = 1) in vec3 vertexColor;
+layout(location = 2) in int par_ID;
+
+#define MAX_PARTICLES 20000
+
+struct Color
+{
+	float r, g, b, a;
+};
+
+struct Particle
+{
+	vec3 pos, speed, acceleration;
+	Color color;
+	int id;
+	float size, angle, mass;
+	float life;
+	float cameradistance;
+	float density;
+	float pressure;
+	//string hashKey = "";
+	bool moved = false;
+};
+
+uniform Particle particles[MAX_PARTICLES];
+uniform int num_particles;
 
 // Vertex Shader Output
 out int ID;
 out float outValue[2];
 out vec3 test;
+out Particle data[num_particles];
 
 float calculateDensity()
 {
@@ -59,7 +85,7 @@ float calculatePressure()
 
 // Main Method
 void main() {
-	ID = 2;
+	ID = par_ID;
 	outValue[0] = calculateDensity();
 	outValue[1] = calculatePressure();
 	test = vec3(1, 10, 3);

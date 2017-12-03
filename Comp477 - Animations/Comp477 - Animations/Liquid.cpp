@@ -58,12 +58,12 @@ Liquid::Liquid()
 					particle->color.b = 0;
 					particle->color.a = 1;
 					particle->mass = PARTICLE_MASS;
-					particle->hashKey = to_string(specialFloor(particle->pos.x))
+					/*particle->hashKey = to_string(specialFloor(particle->pos.x))
 						+ "," + to_string(specialFloor(particle->pos.y))
-						+ "," + to_string(specialFloor(particle->pos.z));
+						+ "," + to_string(specialFloor(particle->pos.z));*/
 
 					particles.push_back(particle);
-					particleNeighbours.insert(std::make_pair(particle->hashKey, particle));
+					//particleNeighbours.insert(std::make_pair(particle->hashKey, particle));
 					globalParticleMap.insert(std::make_pair(particle->id, particle));
 					NUM_PARTICLES++;
 				}
@@ -83,12 +83,12 @@ Liquid::Liquid()
 			particle->color.b = 0;
 			particle->color.a = 1;
 			particle->mass = PARTICLE_MASS;
-			particle->hashKey = to_string(specialFloor(particle->pos.x))
+			/*particle->hashKey = to_string(specialFloor(particle->pos.x))
 				+ "," + to_string(specialFloor(particle->pos.y))
-				+ "," + to_string(specialFloor(particle->pos.z));
+				+ "," + to_string(specialFloor(particle->pos.z));*/
 
 			particles.push_back(particle);
-			particleNeighbours.insert(std::make_pair(particle->hashKey, particle));
+			//particleNeighbours.insert(std::make_pair(particle->hashKey, particle));
 			globalParticleMap.insert(std::make_pair(particle->id, particle));
 			NUM_PARTICLES++;
 		}
@@ -110,6 +110,9 @@ Liquid::Liquid()
 		localVertices.push_back(particles[i]->color.r);
 		localVertices.push_back(particles[i]->color.g);
 		localVertices.push_back(particles[i]->color.b);
+
+		//this still goes to position
+		localVertices.push_back(particles[i]->id); // chnage to index later
 
 	}
 }
@@ -160,7 +163,7 @@ void Liquid::updateLiquid()
 		if (!particle->moved) continue;
 
 		multimap<string, Particle*>::iterator it;
-		for (it = particleNeighbours.lower_bound(particle->hashKey); it != particleNeighbours.end() && it->first != particle->hashKey; it++) {
+		/*for (it = particleNeighbours.lower_bound(particle->hashKey); it != particleNeighbours.end() && it->first != particle->hashKey; it++) {
 			if (it->second->id == particle->id) {
 				particleNeighbours.erase(it);
 			}
@@ -170,7 +173,7 @@ void Liquid::updateLiquid()
 			+ "," + to_string(specialFloor(particle->pos.y))
 			+ "," + to_string(specialFloor(particle->pos.z));
 
-		particleNeighbours.insert(std::make_pair(particle->hashKey, particle));
+		particleNeighbours.insert(std::make_pair(particle->hashKey, particle));*/
 	}
 	// Sort Particles for render
 	// Update vertices, color(if necessary)
@@ -201,38 +204,39 @@ vector<GLfloat>* Liquid::getVertices() {
 
 float Liquid::calculateDensity(Particle * p)
 {
-	typedef multimap<string, Particle*>::iterator MMAPIterator;
-	std::pair<MMAPIterator, MMAPIterator> result = particleNeighbours.equal_range(p->hashKey);
-	float density = 0.0f;
-	for (MMAPIterator it = result.first; it != result.second; it++)
-	{
-		if (it->second->id == p->id) continue;
+	//typedef multimap<string, Particle*>::iterator MMAPIterator;
+	//std::pair<MMAPIterator, MMAPIterator> result = particleNeighbours.equal_range(p->hashKey);
+	//float density = 0.0f;
+	//for (MMAPIterator it = result.first; it != result.second; it++)
+	//{
+	//	if (it->second->id == p->id) continue;
 
-		Particle *particle = particles[it->second->id];
-		float dist = distance(particle->pos, p->pos);
+	//	Particle *particle = particles[it->second->id];
+	//	float dist = distance(particle->pos, p->pos);
 
-		if (dist > PARTICLE_NEIGHBOUR_DISTANCE)
-		{
-			continue;
-		}
+	//	if (dist > PARTICLE_NEIGHBOUR_DISTANCE)
+	//	{
+	//		continue;
+	//	}
 
-		//cout << "id" << it->second.id << endl;
-		glm::vec3 dif = p->pos - particle->pos;
-		float norm = sqrt(pow(dif.x, 2) + pow(dif.y, 2) + pow(dif.z, 2));
+	//	//cout << "id" << it->second.id << endl;
+	//	glm::vec3 dif = p->pos - particle->pos;
+	//	float norm = sqrt(pow(dif.x, 2) + pow(dif.y, 2) + pow(dif.z, 2));
 
-		float weight = (315 / (64 * glm::pi<float>()*PARTICLE_NEIGHBOUR_DISTANCE))
-			*glm::pow(PARTICLE_NEIGHBOUR_DISTANCE*PARTICLE_NEIGHBOUR_DISTANCE - norm*norm, 3);
+	//	float weight = (315 / (64 * glm::pi<float>()*PARTICLE_NEIGHBOUR_DISTANCE))
+	//		*glm::pow(PARTICLE_NEIGHBOUR_DISTANCE*PARTICLE_NEIGHBOUR_DISTANCE - norm*norm, 3);
 
-		if (weight < 0) // Just double checking
-		{
-			continue;
-		}
+	//	if (weight < 0) // Just double checking
+	//	{
+	//		continue;
+	//	}
 
-		density += it->second->mass*weight;
+	//	density += it->second->mass*weight;
 
-		float len = glm::length(particle->pos);
-	}
-	return density;
+	//	float len = glm::length(particle->pos);
+	//}
+	//return density;
+	return 0;
 }
 
 float Liquid::calculatePressure(Particle *p)
@@ -243,46 +247,48 @@ float Liquid::calculatePressure(Particle *p)
 
 vec3 Liquid::calculatePressureForce(Particle* p)
 {
-	typedef multimap<string, Particle*>::iterator MMAPIterator;
-	std::pair<MMAPIterator, MMAPIterator> result = particleNeighbours.equal_range(p->hashKey);
-	float presssureGradient = 0.0f;
-	vec3 lowPressurePos;
-	float lowPressure = -1;
-	vec3 pressureForce = vec3(0, 0, 0);
+	//typedef multimap<string, Particle*>::iterator MMAPIterator;
+	//std::pair<MMAPIterator, MMAPIterator> result = particleNeighbours.equal_range(p->hashKey);
+	//float presssureGradient = 0.0f;
+	//vec3 lowPressurePos;
+	//float lowPressure = -1;
+	//vec3 pressureForce = vec3(0, 0, 0);
 
-	//calculate pressure Gradient and at the same time, calculate lowPressure direction.
-	for (MMAPIterator it = result.first; it != result.second; it++)
-	{
-		Particle* particle = particles[it->second->id]; //shorthand
-		glm::vec3 dif = p->pos - particle->pos;
+	////calculate pressure Gradient and at the same time, calculate lowPressure direction.
+	//for (MMAPIterator it = result.first; it != result.second; it++)
+	//{
+	//	Particle* particle = particles[it->second->id]; //shorthand
+	//	glm::vec3 dif = p->pos - particle->pos;
 
-		float norm = sqrt(pow(dif.x, 2) + pow(dif.y, 2) + pow(dif.z, 2));
-		vec3 weightGradient = -1*(45/glm::pi<float>()*pow(PARTICLE_NEIGHBOUR_DISTANCE, 6))*(dif/norm)*pow(PARTICLE_NEIGHBOUR_DISTANCE-norm,2);
-		vec3 forceComponent = ((p->pressure+particle->pressure)/2)*(particle->mass/particle->density)*weightGradient;
+	//	float norm = sqrt(pow(dif.x, 2) + pow(dif.y, 2) + pow(dif.z, 2));
+	//	vec3 weightGradient = -1*(45/glm::pi<float>()*pow(PARTICLE_NEIGHBOUR_DISTANCE, 6))*(dif/norm)*pow(PARTICLE_NEIGHBOUR_DISTANCE-norm,2);
+	//	vec3 forceComponent = ((p->pressure+particle->pressure)/2)*(particle->mass/particle->density)*weightGradient;
 
-		pressureForce += forceComponent;
-	}
-	return pressureForce;
+	//	pressureForce += forceComponent;
+	//}
+	//return pressureForce;
+	return vec3();
 }
 
 vec3 Liquid::calculateViscosityForce(Particle* p)
 {
-	vec3 viscosityForce = vec3(0,0,0);
+	//vec3 viscosityForce = vec3(0,0,0);
 
-	typedef multimap<string, Particle*>::iterator MMAPIterator;
-	std::pair<MMAPIterator, MMAPIterator> result = particleNeighbours.equal_range(p->hashKey);
-	for (MMAPIterator it = result.first; it != result.second; it++)
-	{
-		Particle* particle = particles[it->second->id]; //shorthand
-		glm::vec3 difPos = p->pos - particle->pos;
-		glm::vec3 difVel = particle->speed - p->speed;
+	//typedef multimap<string, Particle*>::iterator MMAPIterator;
+	//std::pair<MMAPIterator, MMAPIterator> result = particleNeighbours.equal_range(p->hashKey);
+	//for (MMAPIterator it = result.first; it != result.second; it++)
+	//{
+	//	Particle* particle = particles[it->second->id]; //shorthand
+	//	glm::vec3 difPos = p->pos - particle->pos;
+	//	glm::vec3 difVel = particle->speed - p->speed;
 
-		float norm = sqrt(pow(difPos.x, 2) + pow(difPos.y, 2) + pow(difPos.z, 2));
-		float laplacianWeight = 45 / (glm::pi<float>()*pow(PARTICLE_NEIGHBOUR_DISTANCE, 6))*(PARTICLE_NEIGHBOUR_DISTANCE - norm);
-		vec3 comp = difVel*(particle->mass / particle->density)*laplacianWeight;
-		viscosityForce += comp;
-	}
+	//	float norm = sqrt(pow(difPos.x, 2) + pow(difPos.y, 2) + pow(difPos.z, 2));
+	//	float laplacianWeight = 45 / (glm::pi<float>()*pow(PARTICLE_NEIGHBOUR_DISTANCE, 6))*(PARTICLE_NEIGHBOUR_DISTANCE - norm);
+	//	vec3 comp = difVel*(particle->mass / particle->density)*laplacianWeight;
+	//	viscosityForce += comp;
+	//}
 
-	viscosityForce *= VISCOSITY_KERNEL;
-	return viscosityForce;
+	//viscosityForce *= VISCOSITY_KERNEL;
+	//return viscosityForce;
+	return vec3();
 }

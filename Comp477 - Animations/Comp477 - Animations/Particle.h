@@ -8,10 +8,9 @@ struct Color
 	float r, g, b, a;
 };
 
-class Particle
+struct Particle
 {
-public:
-	glm::vec3 pos, speed, totalForce, acceleration;
+	glm::vec3 pos, speed, acceleration;
 	Color color;
 	int id;
 	float size, angle, mass;
@@ -19,7 +18,7 @@ public:
 	float cameradistance;
 	float density;
 	float pressure;
-	string hashKey = "";
+	//string hashKey = "";
 	bool moved = false;
 
 	bool operator<(const Particle& that) const {

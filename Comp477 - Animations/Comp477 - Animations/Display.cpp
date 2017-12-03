@@ -158,6 +158,10 @@ void Display::initGLBuffers() {
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, NUM_PARTICLE_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
 
+	// Set the vertex attribute pointers : PARTICLE ID
+	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, NUM_PARTICLE_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(4 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(2);
+
 	// TBO for density + pressure updates
 	GLuint tbo;
 	glGenBuffers(1, &tbo);

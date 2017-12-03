@@ -34,7 +34,7 @@ const GLuint WIDTH = 1280,
 
 // Number of Vertex Attribute Objects
 const GLuint NUM_VERTEX_ATTRIB_OBJ = 9;
-const GLuint NUM_PARTICLE_VERTEX_ATTRIB_OBJ = 6;
+const GLuint NUM_PARTICLE_VERTEX_ATTRIB_OBJ = 7;
 
 //Mass Of each particle
 const float PARTICLE_MASS = 0.02f;

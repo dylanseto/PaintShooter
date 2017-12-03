@@ -4,6 +4,7 @@
 // Vertex Shader Input
 layout(location = 0) in vec3 position;
 layout(location = 1) in vec3 vertexColor;
+layout(location = 2) in float par_ID;
 
 // Vertex Shader Output
 out vec3 ourColor;
