@@ -53,5 +53,5 @@ const GLfloat UNIT = 1.0f;
 const int GRID_SIZE = 50;
 
 // Particle Neighbour Distance
-const float PARTICLE_NEIGHBOUR_DISTANCE = UNIT * 0.5f;
+const float PARTICLE_NEIGHBOUR_DISTANCE = 0.5f;
 

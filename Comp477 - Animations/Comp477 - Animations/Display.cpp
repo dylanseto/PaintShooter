@@ -68,7 +68,7 @@ void Display::initWindow() {
 
 	// Initiates GLFW and defines the settings
 	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_ANY_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
@@ -159,14 +159,14 @@ void Display::initGLBuffers() {
 	glEnableVertexAttribArray(1);
 
 	// Set the vertex attribute pointers : PARTICLE ID
-	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, NUM_PARTICLE_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(4 * sizeof(GLfloat)));
+	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, NUM_PARTICLE_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(2);
 
 	// TBO for density + pressure updates
 	GLuint tbo;
 	glGenBuffers(1, &tbo);
 	glBindBuffer(GL_ARRAY_BUFFER, tbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLint) + 3 * sizeof(GLfloat) + sizeof(glm::vec3) , nullptr, GL_STATIC_READ);
+	glBufferData(GL_ARRAY_BUFFER, 10*(2 * sizeof(GLfloat)) , nullptr, GL_STATIC_READ);
 	glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, tbo);
 
 
@@ -242,16 +242,23 @@ void Display::render() {
 	glDrawArrays(GL_POINTS, 0, 100);
 	glEndTransformFeedback();
 	glFlush();
-	GLint ID;
-	GLfloat out[2];
+
+	// ------------------------------ test ---------------------------------
+	GLfloat ID;
+	GLfloat out;
 	glm::vec3 test;
-	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, 0, sizeof(int), &ID);
-	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, sizeof(GLint), 2*sizeof(GLfloat), &out);
-	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, sizeof(GLint)+2*sizeof(GLfloat), sizeof(glm::vec3), &test);
-	printf("ID: %i\n", ID);
-	printf("Float: %f\n", out[0]);
-	printf("Float2: %f\n", out[1]);
-	printf("vec3: %f\n", test.y);
+	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, 0, sizeof(GLfloat), &ID);
+	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, sizeof(GLfloat), sizeof(GLfloat), &out);
+	//glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, sizeof(GLint)+2*sizeof(GLfloat), sizeof(glm::vec3), &test);
+	printf("ID: %f\n", ID);
+	printf("Float: %f\n", out);
+
+	GLfloat ID2;
+	GLfloat out2;
+	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, 2*sizeof(GLfloat), sizeof(GLfloat), &ID2);
+	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, 3* sizeof(GLfloat), sizeof(GLfloat), &out2);
+	printf("ID2: %f\n", ID2); // not inputting right
+	printf("Float2: %f\n", out2);
 
 
 	// Unbinding VAO

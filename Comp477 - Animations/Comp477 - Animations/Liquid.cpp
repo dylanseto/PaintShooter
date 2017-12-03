@@ -103,16 +103,18 @@ Liquid::Liquid()
 	//Add initial
 	for (int i = 0; i != particles.size(); i++)
 	{
+		//POSITION
 		localVertices.push_back(particles[i]->pos.x);
 		localVertices.push_back(particles[i]->pos.y);
 		localVertices.push_back(particles[i]->pos.z);
 
+		//COLOR
 		localVertices.push_back(particles[i]->color.r);
 		localVertices.push_back(particles[i]->color.g);
 		localVertices.push_back(particles[i]->color.b);
 
-		//this still goes to position
-		localVertices.push_back(particles[i]->id); // chnage to index later
+		//POSITION
+		localVertices.push_back(particles[i]->id);
 
 	}
 }
