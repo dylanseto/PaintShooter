@@ -1,5 +1,6 @@
 
 #include "Display.h"
+#include "CommonLibrary.h"
 
 // ========== Create Windows with set parameters ========== // 
 Display::Display(std::string name, int width, int height) {
@@ -157,6 +158,13 @@ void Display::initGLBuffers() {
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, NUM_PARTICLE_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
 
+	// TBO for density + pressure updates
+	GLuint tbo;
+	glGenBuffers(1, &tbo);
+	glBindBuffer(GL_ARRAY_BUFFER, tbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLint) + 3 * sizeof(GLfloat) + sizeof(glm::vec3) , nullptr, GL_STATIC_READ);
+	glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, tbo);
+
 
 	// Unbinding VAO
 	glBindVertexArray(0);
@@ -221,6 +229,25 @@ void Display::render() {
 		// Drawing our Particles 
 		glDrawArrays(GL_POINTS, 0, this->particleVertices->size());
 	}
+
+
+	// returns values to CPU
+	this->particleDensityShader->Use();
+
+	glBeginTransformFeedback(GL_POINTS);
+	glDrawArrays(GL_POINTS, 0, 100);
+	glEndTransformFeedback();
+	glFlush();
+	GLint ID;
+	GLfloat out[2];
+	glm::vec3 test;
+	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, 0, sizeof(int), &ID);
+	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, sizeof(GLint), 2*sizeof(GLfloat), &out);
+	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, sizeof(GLint)+2*sizeof(GLfloat), sizeof(glm::vec3), &test);
+	printf("ID: %i\n", ID);
+	printf("Float: %f\n", out[0]);
+	printf("Float2: %f\n", out[1]);
+	printf("vec3: %f\n", test.y);
 
 
 	// Unbinding VAO

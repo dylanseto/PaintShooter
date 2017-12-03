@@ -35,8 +35,8 @@ const GLchar * FRAGMENT_SHADER_PATH = "./Shaders/fragment.shader";
 
 const GLchar * PARTICLE_VERTEX_SHADER_PATH   = "./Shaders/particle_vertex.shader";
 const GLchar * PARTICLE_FRAGMENT_SHADER_PATH = "./Shaders/particle_fragment.shader";
-
 const GLchar * PARTICLE_DENSITY_PRESSURE_SHADER_PATH = "./Shaders/particle_densityPressure.shader";
+const GLchar * PARTICLE_FORCES_SHADER_PATH = "./Shaders/particle_densityPressure.shader";
 
 
 

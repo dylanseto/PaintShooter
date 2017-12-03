@@ -35,6 +35,7 @@ Shader::Shader(const GLchar* vertexPath, const GLchar* fragmentPath) {
 	if (!success) {
 		glGetShaderInfoLog(fragment, 512, NULL, infoLog);
 		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+		system("pause");
 	};
 
 	// Shader Program
@@ -48,6 +49,8 @@ Shader::Shader(const GLchar* vertexPath, const GLchar* fragmentPath) {
 	if (!success) {
 		glGetProgramInfoLog(this->Program, 512, NULL, infoLog);
 		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+		std::cout << vertexPath << std::endl;
+		system("pause");
 	}
 
 	// Delete the shaders as they're linked into our program now and no longer necessery
@@ -57,43 +60,44 @@ Shader::Shader(const GLchar* vertexPath, const GLchar* fragmentPath) {
 
 Shader::Shader(const GLchar* computePath) {
 
-	// Creating the compute shader, and the program object containing the shader
+	std::string vertexCode = readFile(computePath);
+
+	const GLchar* vShaderCode = vertexCode.c_str();
+
+	GLuint vertex;
+	GLint success;
+	GLchar infoLog[512];
+
+	// Vertex Shader
+	vertex = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertex, 1, &vShaderCode, NULL);
+	glCompileShader(vertex);
+
+	// Print compile errors if any
+	glGetShaderiv(vertex, GL_COMPILE_STATUS, &success);
+	if (!success) {
+		glGetShaderInfoLog(vertex, 512, NULL, infoLog);
+		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+	};
+
+	// Shader Program
 	this->Program = glCreateProgram();
-	GLuint cs = glCreateShader(GL_COMPUTE_SHADER);
-
-	std::string computexCode = readFile(computePath);
-
-	// In order to write to a texture, we have to introduce it as image2D.
-	// local_size_x/y/z layout variables define the work group size.
-	// gl_GlobalInvocationID is a uvec3 variable giving the global ID of the thread,
-	// gl_LocalInvocationID is the local index within the work group, and
-	// gl_WorkGroupID is the work group's index
-	const char *cShaderCode = computexCode.c_str();
-
-	glShaderSource(cs, 1, &cShaderCode, NULL);
-	glCompileShader(cs);
-	int rvalue;
-	glGetShaderiv(cs, GL_COMPILE_STATUS, &rvalue);
-	if (!rvalue) {
-		fprintf(stderr, "Error in compiling the compute shader\n");
-		GLchar log[10240];
-		GLsizei length;
-		glGetShaderInfoLog(cs, 10239, &length, log);
-		fprintf(stderr, "Compiler log:\n%s\n", log);
-		exit(40);
-	}
-	glAttachShader(this->Program, cs);
-
+	glAttachShader(this->Program, vertex);
+	const GLchar* feedbackVaryings[] = {"ID", "outValue", "test" };
+	glTransformFeedbackVaryings(this->Program, 3, feedbackVaryings, GL_INTERLEAVED_ATTRIBS);
 	glLinkProgram(this->Program);
-	glGetProgramiv(this->Program, GL_LINK_STATUS, &rvalue);
-	if (!rvalue) {
-		fprintf(stderr, "Error in linking compute shader program\n");
-		GLchar log[10240];
-		GLsizei length;
-		glGetProgramInfoLog(this->Program, 10239, &length, log);
-		fprintf(stderr, "Linker log:\n%s\n", log);
-		exit(41);
+
+	// Print linking errors if any
+	glGetProgramiv(this->Program, GL_LINK_STATUS, &success);
+	if (!success) {
+		glGetProgramInfoLog(this->Program, 512, NULL, infoLog);
+		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+		std::cout << computePath << std::endl;
+		system("pause");
 	}
+
+	// Delete the shaders as they're linked into our program now and no longer necessery
+	glDeleteShader(vertex);
 }
 
 // Destructor
