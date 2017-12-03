@@ -119,13 +119,13 @@ void Display::initGLBuffers() {
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
 
-	// Set the vertex attribute pointers : TEXTURE COORDINATES (Tx, Ty)
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(2);
+	//// Set the vertex attribute pointers : TEXTURE COORDINATES (Tx, Ty)
+	//glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+	//glEnableVertexAttribArray(2);
 
-	// Set the vertex attribute pointers : TEXTURE OPACITY (a)
-	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(8 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(3);
+	//// Set the vertex attribute pointers : TEXTURE OPACITY (a)
+	//glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(8 * sizeof(GLfloat)));
+	//glEnableVertexAttribArray(3);
 
 	// ------------- Setting up Second VBO (Normals) ------------- //
 

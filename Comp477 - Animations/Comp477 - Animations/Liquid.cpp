@@ -69,11 +69,11 @@ Liquid::Liquid()
 		//buffer for Color alpha?
 
 		// Adding Textures
-		localVertices.push_back(1.0f);
-		localVertices.push_back(1.0f);
+		//localVertices.push_back(1.0f);
+		//localVertices.push_back(1.0f);
 
-		// Adding Texture Opacity
-		localVertices.push_back(0.0f);
+		//// Adding Texture Opacity
+		//localVertices.push_back(0.0f);
 	}
 
 	// Adding Normals

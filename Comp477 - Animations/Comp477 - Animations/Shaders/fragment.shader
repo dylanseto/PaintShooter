@@ -5,8 +5,8 @@
 in vec3 ourFragPos;
 flat in vec3 ourColor;
 flat in vec3 ourNormal;
-in vec2 outTexCoord;
-in float outTextureOpacity;
+//in vec2 outTexCoord;
+//in float outTextureOpacity;
 
 // Texture samplers
 uniform vec3 lightPos;
@@ -14,7 +14,7 @@ uniform vec3 lightColor;
 uniform vec3 shootPosition;
 uniform vec3 emissive;
 uniform vec3 viewPos;
-uniform sampler2D gridTexture;
+//uniform sampler2D gridTexture;
 
 // Fragment Shader Outputs
 out vec4 color;
@@ -62,5 +62,6 @@ void main() {
 	//else {
 	//	color = mix(vec4(ourColor, 1.0f), texture(gridTexture, outTexCoord), outTextureOpacity);
 	//}
-	color = mix(vec4(result, 1.0f), texture(gridTexture, outTexCoord), outTextureOpacity);
+	//color = mix(vec4(result, 1.0f), texture(gridTexture, outTexCoord), outTextureOpacity);
+	color = vec4(result, 1.0f);
 }

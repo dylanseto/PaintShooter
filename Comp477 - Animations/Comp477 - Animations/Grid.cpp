@@ -24,29 +24,29 @@ Grid::Grid(GLfloat length, int halfGridSize) {
 			localVertices.push_back(GRASS_COLOR.y + ((float)randomColorOffset / 100));
 			localVertices.push_back(GRASS_COLOR.z + ((float)randomColorOffset / 100));
 
-			// Adding Texture Coordinates
-			if (horizontal % 2 == 0 && vertical % 2 == 0) {
-				localVertices.push_back(0.0f);
-				localVertices.push_back(1.0f);
-			}
+			//// Adding Texture Coordinates
+			//if (horizontal % 2 == 0 && vertical % 2 == 0) {
+			//	localVertices.push_back(0.0f);
+			//	localVertices.push_back(1.0f);
+			//}
 
-			else if (horizontal % 2 == 0 && vertical % 2 != 0) {
-				localVertices.push_back(0.0f);
-				localVertices.push_back(0.0f);
-			}
+			//else if (horizontal % 2 == 0 && vertical % 2 != 0) {
+			//	localVertices.push_back(0.0f);
+			//	localVertices.push_back(0.0f);
+			//}
 
-			else if (horizontal % 2 != 0 && vertical % 2 == 0) {
-				localVertices.push_back(1.0f);
-				localVertices.push_back(1.0f);
-			}
+			//else if (horizontal % 2 != 0 && vertical % 2 == 0) {
+			//	localVertices.push_back(1.0f);
+			//	localVertices.push_back(1.0f);
+			//}
 
-			else {
-				localVertices.push_back(1.0f);
-				localVertices.push_back(0.0f);
-			}
+			//else {
+			//	localVertices.push_back(1.0f);
+			//	localVertices.push_back(0.0f);
+			//}
 
-			// Adding Grid Texture Opacity
-			localVertices.push_back(0.0f);
+			//// Adding Grid Texture Opacity
+			//localVertices.push_back(0.0f);
 		}
 	}
 
@@ -66,7 +66,7 @@ Grid::Grid(GLfloat length, int halfGridSize) {
 		}
 	}
 
-	int offset = 9;
+	int offset = 6;
 	// Generating the Normals
 	for (int i = 0; i < localIndices.size(); i += 3) {
 		vector1 = glm::vec3(localVertices[localIndices[i + 1] * offset] - localVertices[localIndices[i] * offset],

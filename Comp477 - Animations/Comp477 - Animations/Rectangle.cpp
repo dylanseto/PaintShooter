@@ -26,12 +26,12 @@ Rectangle::Rectangle(GLfloat length, GLfloat height, GLfloat depth)
 				localVertices.push_back(CUBE_COLOR.y + ((float)randomColorOffset / 100));
 				localVertices.push_back(CUBE_COLOR.z + ((float)randomColorOffset / 100));
 
-				// Adding Textures
-				localVertices.push_back(1.0f);
-				localVertices.push_back(1.0f);
+				//// Adding Textures
+				//localVertices.push_back(1.0f);
+				//localVertices.push_back(1.0f);
 
-				// Adding Texture Opacity
-				localVertices.push_back(0.0f);
+				//// Adding Texture Opacity
+				//localVertices.push_back(0.0f);
 			}
 		}
 	}
@@ -95,7 +95,7 @@ Rectangle::Rectangle(GLfloat length, GLfloat height, GLfloat depth)
 	localIndices.push_back(4);
 
 	// Adding Normals
-	int offset = 6;
+	int offset = 3;
 	for (int i = 0; i < localIndices.size(); i += 3) {
 		vector1 = glm::vec3(localVertices[localIndices[i + 1] * offset] - localVertices[localIndices[i] * offset],
 			localVertices[localIndices[i + 1] * offset + 1] - localVertices[localIndices[i] * offset + 1],
