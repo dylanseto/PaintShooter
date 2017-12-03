@@ -4,7 +4,7 @@
 
 
 // ==================== Constructor ==================== //
-WorldMesh::WorldMesh() : vertexManager(&vertices, &indices) {
+WorldMesh::WorldMesh() : vertexManager(&vertices, &indices, &normals) {
 
 	/*
 		=========================================================================== 
@@ -16,20 +16,47 @@ WorldMesh::WorldMesh() : vertexManager(&vertices, &indices) {
 
 	// ======= Creating the Grid ======= //
 	plane = Grid(UNIT, GRID_SIZE);
-	rec = Rectangle(3, 2, 1);
-
-	// Rotate, Translate, Scale (Always Rotate First!)
-	rotateObject(rec.getVertices(), 45);
-	translateObject(rec.getVertices(), glm::vec3(5.0f, 0.0f, 0.0f));
-	scaleObject(rec.getVertices(), 2);
-
-	// plane.printGrid();
-
 	// Sending the terrain to the Vertex Manager
-	vertexManager.updateMeshes(plane.getVertices(), plane.getIndices());
-	vertexManager.updateMeshes(rec.getVertices(), rec.getIndices());
+	vertexManager.updateMeshes(plane.getVertices(), plane.getIndices(), plane.getNormals());
 
+	int min = 1;
+	int max = 5;
 
+	int gridMin = -plane.getGridSize() / (2 / UNIT);
+	int gridMax = plane.getGridSize() / (2 / UNIT);
+
+	int numOfWalls = GRID_SIZE / 3;
+
+	// ======= Creating Rectangular Walls ======= //
+	for (int i = 0; i < numOfWalls; i++) {
+		int randomX = rand() % max + min;
+		int randomY = rand() % max + min;
+		int randomZ = rand() % max + min;
+
+		//rec = Rectangle(3, 2, 1);
+		rec = Rectangle(randomX, randomY, randomZ);
+
+		float randomTransX = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX + 1)) * (gridMax / 2.2 - gridMin / 2.2) + gridMin / 2.2;
+		float randomTransZ = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX + 1)) * (gridMax / 2.2 - gridMin / 2.2) + gridMin / 2.2;
+
+		// Rotate, Translate, Scale (Always Rotate First!)
+		int randomDegree = rand() % 45 + 1;
+		//rotateObject(rec.getVertices(), 45);
+		rotateObject(rec.getVertices(), randomDegree);
+
+		//translateObject(rec.getVertices(), glm::vec3(5.0f, 0.0f, 0.0f));
+		translateObject(rec.getVertices(), glm::vec3(randomTransX, 0.0f, randomTransZ));
+
+		float randomScale = (float)(rand() % 2 + 1) + 0.1 * (float)(rand() % 3 + 1);
+		//scaleObject(rec.getVertices(), 2);
+		scaleObject(rec.getVertices(), randomScale);
+
+		// plane.printGrid();
+
+		// Sending the Rectangle objects to the Vertex Manager
+		vertexManager.updateMeshes(rec.getVertices(), rec.getIndices(), rec.getNormals());
+		
+	}
 }
 
 	
@@ -43,7 +70,7 @@ void WorldMesh::rotatePerUpdate(GLfloat deltaTime) {
 
 	vertexManager.clearMesh();
 	// vertexManager.updateMeshes(plane.getVertices(), plane.getIndices());
-	vertexManager.updateMeshes(rec.getVertices(), rec.getIndices());
+	vertexManager.updateMeshes(rec.getVertices(), rec.getIndices(), rec.getNormals());
 }
 
 

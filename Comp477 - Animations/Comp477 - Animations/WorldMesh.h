@@ -30,6 +30,10 @@ class WorldMesh {
 			return &indices;
 		};
 
+		// Getter: Return Normals
+		vector<glm::vec3>* getNormals() {
+			return &normals;
+		}
 
 		VertexManager getVertexManager() { 
 			return vertexManager; 
@@ -40,6 +44,7 @@ class WorldMesh {
 	private:
 		vector<GLfloat> vertices;
 		vector<GLuint> indices;
+		vector<glm::vec3> normals;
 
 		VertexManager vertexManager;
 

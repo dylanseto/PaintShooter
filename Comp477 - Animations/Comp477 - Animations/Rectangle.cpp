@@ -14,34 +14,31 @@ Rectangle::Rectangle(GLfloat length, GLfloat height, GLfloat depth)
 		{
 			for (int z = 0; z <= 1; z++)
 			{
-				//position
+				// Adding Position
 				localVertices.push_back(x * length * UNIT);
 				localVertices.push_back(y * height * UNIT);
 				localVertices.push_back(z * height * UNIT);
 
-				cout << "Index " << i << ":(" << x << "," << y << "," << z << ")" << endl;
-				i++;
-
 				// Adding Default Color 
-				localVertices.push_back(1.0f);
-				localVertices.push_back(0.0f);
-				localVertices.push_back(1.0f);
+				int randomColorOffset = rand() % 10 + 1;
 
+				localVertices.push_back(CUBE_COLOR.x + ((float)randomColorOffset / 100));
+				localVertices.push_back(CUBE_COLOR.y + ((float)randomColorOffset / 100));
+				localVertices.push_back(CUBE_COLOR.z + ((float)randomColorOffset / 100));
 
-				// Adding Textures
-				localVertices.push_back(1.0f);
-				localVertices.push_back(1.0f);
+				//// Adding Textures
+				//localVertices.push_back(1.0f);
+				//localVertices.push_back(1.0f);
 
-				// Adding Texture Opacity
-				localVertices.push_back(0.0f);
-
+				//// Adding Texture Opacity
+				//localVertices.push_back(0.0f);
 			}
 		}
 	}
 
-	//Indices
+	// Adding Indices
 
-	//Right side
+	// Right side
 	localIndices.push_back(0);
 	localIndices.push_back(1);
 	localIndices.push_back(2);
@@ -50,7 +47,7 @@ Rectangle::Rectangle(GLfloat length, GLfloat height, GLfloat depth)
 	localIndices.push_back(1);
 	localIndices.push_back(2);
 
-	//Left Side
+	// Left Side
 	localIndices.push_back(4);
 	localIndices.push_back(5);
 	localIndices.push_back(6);
@@ -60,7 +57,7 @@ Rectangle::Rectangle(GLfloat length, GLfloat height, GLfloat depth)
 	localIndices.push_back(6);
 
 
-	//Top
+	// Top
 	localIndices.push_back(0);
 	localIndices.push_back(1);
 	localIndices.push_back(5);
@@ -69,7 +66,7 @@ Rectangle::Rectangle(GLfloat length, GLfloat height, GLfloat depth)
 	localIndices.push_back(4);
 	localIndices.push_back(5);
 
-	//Bottom
+	// Bottom
 	localIndices.push_back(3);
 	localIndices.push_back(6);
 	localIndices.push_back(2);
@@ -88,7 +85,7 @@ Rectangle::Rectangle(GLfloat length, GLfloat height, GLfloat depth)
 	localIndices.push_back(3);
 	localIndices.push_back(5);
 
-	//Back
+	// Back
 	localIndices.push_back(0);
 	localIndices.push_back(2);
 	localIndices.push_back(4);
@@ -97,6 +94,18 @@ Rectangle::Rectangle(GLfloat length, GLfloat height, GLfloat depth)
 	localIndices.push_back(2);
 	localIndices.push_back(4);
 
+	// Adding Normals
+	int offset = 3;
+	for (int i = 0; i < localIndices.size(); i += 3) {
+		vector1 = glm::vec3(localVertices[localIndices[i + 1] * offset] - localVertices[localIndices[i] * offset],
+			localVertices[localIndices[i + 1] * offset + 1] - localVertices[localIndices[i] * offset + 1],
+			localVertices[localIndices[i + 1] * offset + 2] - localVertices[localIndices[i] * offset + 2]);
+		vector2 = glm::vec3(localVertices[localIndices[i + 2] * offset] - localVertices[localIndices[i] * offset],
+			localVertices[localIndices[i + 2] * offset + 1] - localVertices[localIndices[i] * offset + 1],
+			localVertices[localIndices[i + 2] * offset + 2] - localVertices[localIndices[i] * offset + 2]);
+		vectorProduct = cross(vector1, vector2);
+		localNormals.push_back(normalize(vectorProduct));
+	}
 }
 
 // Getter: Get Local Vertices
@@ -107,4 +116,8 @@ vector<GLfloat>* Rectangle::getVertices() {
 // Getter: Get Local Indices
 vector<GLuint>* Rectangle::getIndices() {
 	return &localIndices;
+}
+
+vector<glm::vec3>* Rectangle::getNormals() {
+	return &localNormals;
 }
