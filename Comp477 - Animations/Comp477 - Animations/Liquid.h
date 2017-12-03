@@ -8,12 +8,10 @@ using namespace glm;
 class Liquid
 {
 private:
-	static float NUM_PARTICLES;
-	glm::vec3 vector1;
-	glm::vec3 vector2;
-	glm::vec3 vectorProduct;
+	static vector<Particle*> allParticles;
+	static int NUM_PARTICLES;
 
-	vector<Particle> particles;
+	vector<Particle*> particles;
 	vector<GLfloat> localVertices;
 	vector<GLuint> localIndices;
 	vector<glm::vec3> localNormals;
@@ -28,6 +26,10 @@ public:
 	void sortParticles();
 
 	vector<GLfloat>* getVertices();
-	vector<GLuint>* getIndices();
 	vector<glm::vec3>* getNormals();
+
+	static vector<vec3> getPositions();
+	static vector<vec3> getMasses();
+	static int getNumParticles();
+	static void setPressureDesity(int id, float density, float pressure);
 };

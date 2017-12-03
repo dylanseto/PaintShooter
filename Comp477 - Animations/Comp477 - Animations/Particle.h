@@ -8,8 +8,9 @@ struct Color
 	float r, g, b, a;
 };
 
-struct Particle
+class Particle
 {
+public:
 	glm::vec3 pos, speed, acceleration;
 	Color color;
 	int id;
@@ -20,6 +21,11 @@ struct Particle
 	float pressure;
 	//string hashKey = "";
 	bool moved = false;
+	glm::vec3 index;
+
+	Particle()
+	{
+	}
 
 	bool operator<(const Particle& that) const {
 		// Sort in reverse order : far particles drawn first.

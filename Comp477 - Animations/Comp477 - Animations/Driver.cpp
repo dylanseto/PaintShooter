@@ -146,6 +146,7 @@ int main() {
 
 		// Check Keyboard Input
 		do_movement(deltaTime);
+		liq.updateLiquid();
 
 		/*
 		*	UPDATE OUR DYNAMIC OBJECT HERE BASED ON TIME (60 FPS FRAME LOCK)

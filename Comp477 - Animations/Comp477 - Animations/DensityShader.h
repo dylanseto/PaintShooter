@@ -10,7 +10,6 @@
 class DensityShader : public Shader {
 public:
 	DensityShader(const GLchar* computePath);
-
 };
 
 #endif

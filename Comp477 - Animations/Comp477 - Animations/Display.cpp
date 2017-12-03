@@ -1,5 +1,6 @@
 
 #include "Display.h"
+#include "Liquid.h"
 
 // ========== Create Windows with set parameters ========== // 
 Display::Display(std::string name, int width, int height) {
@@ -45,7 +46,7 @@ void Display::setParticleShader(Shader* shader) {
 	this->particleShader = shader;
 }
 
-void Display::seParticleDensityShader(Shader * shader)
+void Display::seParticleDensityShader(DensityShader * shader)
 {
 	particleDensityShader = shader;
 }
@@ -168,8 +169,16 @@ void Display::initGLBuffers() {
 	GLuint tbo;
 	glGenBuffers(1, &tbo);
 	glBindBuffer(GL_ARRAY_BUFFER, tbo);
-	glBufferData(GL_ARRAY_BUFFER, 10 * (3 * sizeof(GLfloat)), nullptr, GL_STATIC_READ);
+	glBufferData(GL_ARRAY_BUFFER, 10000 * (3 * sizeof(GLfloat)), nullptr, GL_STATIC_READ);
 	glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, tbo);
+
+	/*******************/
+	glGenFramebuffers(1, &textureBuffer);
+	glBindBuffer(GL_TEXTURE_BUFFER, textureBuffer);
+
+	glGenBuffers(1, &particleBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, particleBuffer);
+	glBufferData(GL_ARRAY_BUFFER, 10000 * (3 * sizeof(GLfloat)), nullptr, GL_STATIC_READ);
 
 	// Unbinding VAO
 	glBindVertexArray(0);
@@ -264,6 +273,26 @@ void Display::render(glm::vec3 lightColor) {
 	GLint viewPosLoc1 = glGetUniformLocation(particleShader->Program, "viewPos");
 	glUniform3f(viewPosLoc1, camera->Position.x, camera->Position.y, camera->Position.z);
 
+	GLint numParticlesLoc = glGetUniformLocation(particleDensityShader->Program, "num_particles");
+	glUniform1i(numParticlesLoc, Liquid::getNumParticles()); 
+
+	glBindBuffer(GL_ARRAY_BUFFER, this->particleBuffer);
+	glBufferData(GL_ARRAY_BUFFER, Liquid::getNumParticles() * sizeof(glm::vec3), &Liquid::getPositions().front(), GL_DYNAMIC_DRAW);
+	GLint location = glGetUniformLocation(particleDensityShader->Program, "particles");
+	glUniform1i(location, 0);
+	glActiveTexture(GL_TEXTURE0 + 0);
+	glBindBuffer(GL_TEXTURE_BUFFER, textureBuffer);
+	glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, particleBuffer);
+
+	/*GLint ParticlesLoc = glGetUniformLocation(particleDensityShader->Program, "particles");
+	glUniform3fv(ParticlesLoc, Liquid::getNumParticles(), reinterpret_cast<GLfloat *>(Liquid::getPositions().data()));*/
+
+	/*GLint ParticlesLoc = glGetUniformLocation(particleDensityShader->Program, "particles");
+	glUniform1iv(glGetUniformLocation(ParticlesLoc, "v"), 10, v);*/
+	//GLint viewPosLoc1 = glGetUniformLocation(particleDensityShader->Program, "particles");
+	//glUniform3fv(viewPosLoc1, 10, glm::vec3().);
+
+
 	pvmLoc = glGetUniformLocation(particleShader->Program, "pvm");
 	glUniformMatrix4fv(pvmLoc, 1, GL_FALSE, glm::value_ptr(pvm));
 
@@ -281,28 +310,32 @@ void Display::render(glm::vec3 lightColor) {
 	this->particleDensityShader->Use();
 
 	glBeginTransformFeedback(GL_POINTS);
-	glDrawArrays(GL_POINTS, 0, 100);
+	glDrawArrays(GL_POINTS, 0, 3*Liquid::getNumParticles());
 	glEndTransformFeedback();
 	glFlush();
 
 	// ------------------------------ test ---------------------------------
-	GLfloat ID;
-	GLfloat density;
-	GLfloat pressure;
-	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, 0, sizeof(GLfloat), &ID);
-	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, sizeof(GLfloat), sizeof(GLfloat), &density);
-	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, 2 * sizeof(GLfloat), sizeof(GLfloat), &pressure);
-	//glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, sizeof(GLint)+2*sizeof(GLfloat), sizeof(glm::vec3), &test);
-	printf("ID: %f\n", ID);
-	printf("Density: %f\n", density);
-	printf("Pressure: %f\n", pressure);
 
-	GLfloat ID2;
+	for (int i = 0; i != Liquid::getNumParticles(); i++)
+	{
+		GLfloat ID;
+		GLfloat density;
+		GLfloat pressure;
+		glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, 3*i * sizeof(GLfloat), sizeof(GLfloat), &ID);
+		glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, (3 * i + 1)* sizeof(GLfloat), sizeof(GLfloat), &density);
+		glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, (3 * i + 2) * sizeof(GLfloat), sizeof(GLfloat), &pressure);
+		Liquid::setPressureDesity(ID, density, pressure);
+		/*printf("ID: %f\n", ID);
+		printf("Density: %f\n", density);
+		printf("Pressure: %f\n", pressure);*/
+	}
+
+	/*GLfloat ID2;
 	GLfloat out2;
 	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, 3 * sizeof(GLfloat), sizeof(GLfloat), &ID2);
-	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, 4 * sizeof(GLfloat), sizeof(GLfloat), &out2);
-	printf("ID2: %f\n", ID2); // not inputting right
-	printf("Density2: %f\n", out2);
+	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, 4 * sizeof(GLfloat), sizeof(GLfloat), &out2);*/
+	//printf("ID2: %f\n", ID2); // not inputting right
+	//printf("Density2: %f\n", out2);
 
 	// Unbinding VAO
 	glBindVertexArray(0);
