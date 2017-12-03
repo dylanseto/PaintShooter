@@ -15,6 +15,7 @@ class Display {
 		void render();
 		void setShader(Shader* shader);
 		void setParticleShader(Shader* shader);
+		void seParticleDensityShader(Shader* shader);
 		void setCamera(Camera* cam);
 		void setParticleVertices(std::vector<GLfloat>* vertices);
 		void setVertices(std::vector<GLfloat>* vertices);
@@ -39,6 +40,7 @@ class Display {
 		// Shader
 		Shader* ourShader;
 		Shader* particleShader;
+		Shader* particleDensityShader;
 
 		// Vertices and Indices
 		std::vector<GLfloat>* localVertices;

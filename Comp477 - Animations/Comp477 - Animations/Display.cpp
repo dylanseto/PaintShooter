@@ -45,6 +45,11 @@ void Display::setParticleShader(Shader* shader) {
 	this->particleShader = shader;
 }
 
+// ========== Set the Particle Density Shader ========== // 
+void Display::seParticleDensityShader(Shader* shader) {
+	this->particleDensityShader = shader;
+}
+
 // ========== Set the Shader ========== // 
 void Display::setCamera(Camera* cam) {
 	this->camera = cam;
@@ -62,7 +67,7 @@ void Display::initWindow() {
 
 	// Initiates GLFW and defines the settings
 	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_ANY_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
@@ -161,6 +166,7 @@ void Display::initGLBuffers() {
 // ========== Update Window on Draw ========== // 
 void Display::render() {
 
+	glEnable(GL_POINT_SMOOTH);
 	// Rendering Commands
 	glClearColor((float)114 / (float)255, (float)220 / (float)255, (float)255 / (float)255, 1.0f);
 	// glClearColor(0.0f, 0.0f, 0.0f, 1.0f);

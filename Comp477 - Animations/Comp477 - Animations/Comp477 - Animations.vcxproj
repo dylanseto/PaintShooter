@@ -143,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\fragment.shader" />
+    <None Include="Shaders\particle_densityPressure.shader" />
     <None Include="Shaders\particle_fragment.shader" />
     <None Include="Shaders\particle_vertex.shader" />
     <None Include="Shaders\skybox_fragment.shader" />

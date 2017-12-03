@@ -91,11 +91,11 @@ Liquid::Liquid()
 		}
 	}
 
-	cout << "num part; " << particles.size() << endl;
+	//cout << "num part; " << particles.size() << endl;
 
 
 	//sort particles
-	sortParticles();
+	//sortParticles();
 
 	//Add initial
 	for (int i = 0; i != particles.size(); i++)
@@ -135,12 +135,13 @@ void Liquid::updateLiquid()
 		// Pressure force
 		vec3 pressureForce = calculatePressureForce(particles[i]);
 		// Viscosity 
+		vec3 viscosityForce = calculateViscosityForce(particles[i]);
 		// Gravity
-		// Surface tension
-		// Buoyancy
+		vec3 gravityForce = vec3(0, -9.81, 0)*particles[i]->mass;
 		// User external force, skip (for now)
 
 		// Sum forces
+		vec3 totalForce = pressureForce;
 		// Update acceleration
 		// Update velocity
 		// Check boundaries, update velocity
@@ -226,11 +227,14 @@ float Liquid::calculateDensity(Particle * p)
 
 		density += it->second->mass*weight;
 
+		float len = glm::length(particle->pos);
+
 		//std::cout << "weight:" << weight << std::endl; 
 		//std::cout << "distance: " << dist << std::endl;
 		//std::cout << "x:" << particle->pos.x << std::endl;
 		//std::cout << "y:" << particle->pos.y << std::endl;
 		//std::cout << "z:" << particle->pos.z << std::endl;
+		//std::cout << "len:" << len << std::endl;
 	}
 	//std::cout << "density" << density << std::endl;
 	return density;
@@ -264,4 +268,26 @@ vec3 Liquid::calculatePressureForce(Particle* p)
 		pressureForce += forceComponent;
 	}
 	return pressureForce;
+}
+
+vec3 Liquid::calculateViscosityForce(Particle* p)
+{
+	vec3 viscosityForce = vec3(0,0,0);
+
+	typedef multimap<string, Particle*>::iterator MMAPIterator;
+	std::pair<MMAPIterator, MMAPIterator> result = particleNeighbours.equal_range(p->hashKey);
+	for (MMAPIterator it = result.first; it != result.second; it++)
+	{
+		Particle* particle = particles[it->second->id]; //shorthand
+		glm::vec3 difPos = p->pos - particle->pos;
+		glm::vec3 difVel = particle->speed - p->speed;
+
+		float norm = sqrt(pow(difPos.x, 2) + pow(difPos.y, 2) + pow(difPos.z, 2));
+		float laplacianWeight = 45 / (glm::pi<float>()*pow(PARTICLE_NEIGHBOUR_DISTANCE, 6))*(PARTICLE_NEIGHBOUR_DISTANCE - norm);
+		vec3 comp = difVel*(particle->mass / particle->density)*laplacianWeight;
+		viscosityForce += comp;
+	}
+
+	viscosityForce *= VISCOSITY_KERNEL;
+	return viscosityForce;
 }

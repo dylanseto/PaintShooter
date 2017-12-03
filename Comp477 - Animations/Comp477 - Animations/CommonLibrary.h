@@ -42,6 +42,8 @@ const float PARTICLE_MASS = 0.02f;
 //Right side of ideal gas law, keep constant, to be adjustedd
 const float nrt = 5;
 
+const float VISCOSITY_KERNEL = 0.02f;
+
 // ================================== Object Sizes ================================== 
 
 // Grid Unit Size (UNIT x UNIT Squares)

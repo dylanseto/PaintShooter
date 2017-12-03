@@ -55,6 +55,47 @@ Shader::Shader(const GLchar* vertexPath, const GLchar* fragmentPath) {
 	glDeleteShader(fragment);
 }
 
+Shader::Shader(const GLchar* computePath) {
+
+	// Creating the compute shader, and the program object containing the shader
+	this->Program = glCreateProgram();
+	GLuint cs = glCreateShader(GL_COMPUTE_SHADER);
+
+	std::string computexCode = readFile(computePath);
+
+	// In order to write to a texture, we have to introduce it as image2D.
+	// local_size_x/y/z layout variables define the work group size.
+	// gl_GlobalInvocationID is a uvec3 variable giving the global ID of the thread,
+	// gl_LocalInvocationID is the local index within the work group, and
+	// gl_WorkGroupID is the work group's index
+	const char *cShaderCode = computexCode.c_str();
+
+	glShaderSource(cs, 1, &cShaderCode, NULL);
+	glCompileShader(cs);
+	int rvalue;
+	glGetShaderiv(cs, GL_COMPILE_STATUS, &rvalue);
+	if (!rvalue) {
+		fprintf(stderr, "Error in compiling the compute shader\n");
+		GLchar log[10240];
+		GLsizei length;
+		glGetShaderInfoLog(cs, 10239, &length, log);
+		fprintf(stderr, "Compiler log:\n%s\n", log);
+		exit(40);
+	}
+	glAttachShader(this->Program, cs);
+
+	glLinkProgram(this->Program);
+	glGetProgramiv(this->Program, GL_LINK_STATUS, &rvalue);
+	if (!rvalue) {
+		fprintf(stderr, "Error in linking compute shader program\n");
+		GLchar log[10240];
+		GLsizei length;
+		glGetProgramInfoLog(this->Program, 10239, &length, log);
+		fprintf(stderr, "Linker log:\n%s\n", log);
+		exit(41);
+	}
+}
+
 // Destructor
 Shader::~Shader() {
 	glDeleteProgram(this->Program);

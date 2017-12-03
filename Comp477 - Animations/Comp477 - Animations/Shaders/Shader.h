@@ -22,6 +22,7 @@ class Shader {
 
 		// Constructor and Destructor
 		Shader(const GLchar* vertexPath, const GLchar* fragmentPath);
+		Shader(const GLchar* computerPath);
 		~Shader();
 
 		// Use the program

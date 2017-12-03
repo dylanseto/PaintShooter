@@ -36,6 +36,8 @@ const GLchar * FRAGMENT_SHADER_PATH = "./Shaders/fragment.shader";
 const GLchar * PARTICLE_VERTEX_SHADER_PATH   = "./Shaders/particle_vertex.shader";
 const GLchar * PARTICLE_FRAGMENT_SHADER_PATH = "./Shaders/particle_fragment.shader";
 
+const GLchar * PARTICLE_DENSITY_PRESSURE_SHADER_PATH = "./Shaders/particle_densityPressure.shader";
+
 
 
 // ========== Constants and Values ========== //
@@ -82,12 +84,15 @@ int main() {
 	animationWindow.setVertices(vertices);
 	animationWindow.setIndices(indices);
 
+	printf("OpenGL version is (%s)\n", glGetString(GL_VERSION));
 
 	// ========== Creating our shaders ========== //
 	Shader ourShader(VERTEX_SHADER_PATH, FRAGMENT_SHADER_PATH);
 	Shader particleShader(PARTICLE_VERTEX_SHADER_PATH, PARTICLE_FRAGMENT_SHADER_PATH);
+	Shader particleDensityShader(PARTICLE_DENSITY_PRESSURE_SHADER_PATH);
 	animationWindow.setShader(&ourShader);
 	animationWindow.setParticleShader(&particleShader);
+	animationWindow.seParticleDensityShader(&particleDensityShader);
 
 
 	// ---------- CREATING OUR LIQUID ---------- //
@@ -121,21 +126,19 @@ int main() {
 
 
 		// Check Keyboard Input
-		std::thread movementThread(do_movement, deltaTime);
-		//do_movement(deltaTime);
+		do_movement(deltaTime);
 
 		/*
 		*	UPDATE OUR DYNAMIC OBJECT HERE BASED ON TIME (60 FPS FRAME LOCK)
 		*		- Pass in the deltaTime above to calculate new position
 		*		- Send new positions to be displayed
 		*/
-		std::thread liquidUpdateThread(&Liquid::updateLiquid, liq);
+		//std::thread liquidUpdateThread(&Liquid::updateLiquid, liq);
 
-		movementThread.join();
-		liquidUpdateThread.join();
+		//liquidUpdateThread.join();
 		//liq.updateLiquid();
 
-		animationWindow.setParticleVertices(vertices);
+		//animationWindow.setParticleVertices(vertices);
 
 		while (updateDeltaTime >= 1.0) {
 
