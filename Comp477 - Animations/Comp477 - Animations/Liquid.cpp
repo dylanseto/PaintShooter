@@ -3,7 +3,7 @@
 Liquid::Liquid()
 {
 
-	for (float r = 0; r <= 1.0f; r += 0.05)
+	for (float r = 0; r <= 1.0f; r += 0.01)
 	{
 		float angle1 = 0.0f;
 		float angle = 2 * glm::pi<float>() / (100);
