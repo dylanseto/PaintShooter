@@ -72,6 +72,9 @@ glm::vec3 dayColor = glm::vec3(0.8f, 0.8f, 0.8f);
 // Night Color - Blueish
 glm::vec3 nightColor = glm::vec3(0.490196f, 0.568627f, 0.670588f);
 
+// Paint Color - Red
+glm::vec3 paintColor = glm::vec3(1.0f, 0.0f, 0.0f);
+
 GLfloat leftMouseHoldTime = 0.0f;
 bool leftMouseHold = false;
 
@@ -158,9 +161,10 @@ int main() {
 		}	
 
 		animationWindow.setLightColor(lightColor);
+		animationWindow.setPaintColor(paintColor);
 
 		// Call Window to Render Image 
-		animationWindow.render(lightColor);
+		animationWindow.render();
 		frames++;
 
 		// Displays output Data every second (Frames per second, Updates per second)
@@ -200,6 +204,18 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	// Toggle between Locked and Free camera movement
 	else if (key == GLFW_KEY_L && action == GLFW_PRESS) {
 		lightColor = nightColor;
+	}
+
+	else if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
+		paintColor = RED_COLOR;
+	}
+
+	else if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
+		paintColor = GREEN_COLOR;
+	}
+
+	else if (key == GLFW_KEY_3 && action == GLFW_PRESS) {
+		paintColor = BLUE_COLOR;
 	}
 
 	// Smooth camera transitions

@@ -59,6 +59,21 @@ const int GRASS_COLOR_R = 116;
 const int GRASS_COLOR_G = 204;
 const int GRASS_COLOR_B = 73;
 
+// Red Color RGB
+const int RED_COLOR_R = 255;
+const int RED_COLOR_G = 0;
+const int RED_COLOR_B = 0;
+
+// Green Color RGB
+const int GREEN_COLOR_R = 0;
+const int GREEN_COLOR_G = 220;
+const int GREEN_COLOR_B = 0;
+
+// Blue Color RGB
+const int BLUE_COLOR_R = 0;
+const int BLUE_COLOR_G = 180;
+const int BLUE_COLOR_B = 255;
+
 // Function to find Float values given color values (0 - 255)
 inline float getFloatColor(int colorValue) {
 
@@ -78,5 +93,17 @@ const glm::vec3 CUBE_COLOR(getFloatColor(CUBE_COLOR_R), getFloatColor(CUBE_COLOR
 
 // Grass Color
 const glm::vec3 GRASS_COLOR(getFloatColor(GRASS_COLOR_R), getFloatColor(GRASS_COLOR_G), getFloatColor(GRASS_COLOR_B));
+
+
+// ======= Blaster Colors ======= //
+
+// Red Color
+const glm::vec3 RED_COLOR(getFloatColor(RED_COLOR_R), getFloatColor(RED_COLOR_G), getFloatColor(RED_COLOR_B));
+
+// Green Color
+const glm::vec3 GREEN_COLOR(getFloatColor(GREEN_COLOR_R), getFloatColor(GREEN_COLOR_G), getFloatColor(GREEN_COLOR_B));
+
+// Blue Color
+const glm::vec3 BLUE_COLOR(getFloatColor(BLUE_COLOR_R), getFloatColor(BLUE_COLOR_G), getFloatColor(BLUE_COLOR_B));
 
 

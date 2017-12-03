@@ -11,6 +11,7 @@ flat in vec3 ourNormal;
 // Texture samplers
 uniform vec3 lightPos;
 uniform vec3 lightColor;
+uniform vec3 paintColor;
 uniform vec3 shootPosition;
 uniform vec3 emissive;
 uniform vec3 viewPos;
@@ -42,26 +43,18 @@ void main() {
 	float diff = max(dot(norm, lightDir), 0.0f);
 	vec3 diffuse = diff * lightColor;
 	
-	result = (ambient + diffuse + specular) * ourColor;
+	result = (ambient + diffuse) * ourColor;
 	
-	vec3 tempColor = vec3(1.0f, 0.0f, 0.0f);
 	vec3 distanceToShot = shootPosition - ourFragPos;
 	float mag = length(distanceToShot);
+	
 	// Make int as a uniform for blob size
-	if (mag < 4) {
+	if (mag < 1) {
 	    if (result.x <= 0.5f) {
 		    result.x = 0.5f;
 		}
-		result += specular;
-	    result *= emissive + tempColor;
+	    result *= emissive + paintColor;
 	}
 	
-	//if (outTextureOpacity < 1.0f) {
-	//	color = vec4(result, 1.0f);
-	//}
-	//else {
-	//	color = mix(vec4(ourColor, 1.0f), texture(gridTexture, outTexCoord), outTextureOpacity);
-	//}
-	//color = mix(vec4(result, 1.0f), texture(gridTexture, outTexCoord), outTextureOpacity);
 	color = vec4(result, 1.0f);
 }

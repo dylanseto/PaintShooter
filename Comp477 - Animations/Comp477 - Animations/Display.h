@@ -12,7 +12,7 @@ class Display {
 		GLFWwindow* getWindow();
 
 		bool isClosed();
-		void render(glm::vec3 lightColor);
+		void render();
 		void setShader(Shader* shader);
 		void setParticleShader(Shader* shader);
 		void setCamera(Camera* cam);
@@ -23,6 +23,7 @@ class Display {
 		void setNormals(std::vector<glm::vec3>* normals);
 		void setLightPos(glm::vec3 lightPos);
 		void setLightColor(glm::vec3);
+		void setPaintColor(glm::vec3);
 
 		// void sendStaticDataToBuffer();
 
@@ -53,6 +54,9 @@ class Display {
 
 		// Light Color
 		glm::vec3 localLightColor;
+
+		// Paint Color
+		glm::vec3 localPaintColor;
 
 		std::vector<GLfloat>* particleVertices;
 		std::vector<glm::vec3>* particleNormals;

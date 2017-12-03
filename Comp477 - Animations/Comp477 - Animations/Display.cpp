@@ -169,10 +169,10 @@ void Display::initGLBuffers() {
 
 
 // ========== Update Window on Draw ========== // 
-void Display::render(glm::vec3 lightColor) {
+void Display::render() {
 
 	// Rendering Commands
-	glClearColor((float)114 / (float)255 * (lightColor.x + 0.2f), (float)220 / (float)255 * (lightColor.y + 0.2f), (float)255 / (float)255 * (lightColor.z + 0.2f), 1.0f);
+	glClearColor((float)114 / (float)255 * (localLightColor.x + 0.2f), (float)220 / (float)255 * (localLightColor.y + 0.2f), (float)255 / (float)255 * (localLightColor.z + 0.2f), 1.0f);
 	// glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	ourShader->Use();
@@ -194,6 +194,9 @@ void Display::render(glm::vec3 lightColor) {
 
 	GLint lightColorLoc = glGetUniformLocation(ourShader->Program, "lightColor");
 	glUniform3f(lightColorLoc, localLightColor.x, localLightColor.y, localLightColor.z);
+
+	GLint paintColorLoc = glGetUniformLocation(ourShader->Program, "paintColor");
+	glUniform3f(paintColorLoc, localPaintColor.x, localPaintColor.y, localPaintColor.z);
 
 	GLint shootPositionLoc = glGetUniformLocation(ourShader->Program, "shootPosition");
 	glUniform3f(shootPositionLoc, 10.0f, 0.0f, 10.0f);
@@ -249,6 +252,9 @@ void Display::render(glm::vec3 lightColor) {
 
 	GLint lightColorLoc1 = glGetUniformLocation(particleShader->Program, "lightColor");
 	glUniform3f(lightColorLoc1, localLightColor.x, localLightColor.y, localLightColor.z);
+
+	GLint paintColorLoc1 = glGetUniformLocation(particleShader->Program, "paintColor");
+	glUniform3f(paintColorLoc1, localPaintColor.x, localPaintColor.y, localPaintColor.z);
 
 	GLint emissiveLoc1 = glGetUniformLocation(particleShader->Program, "emissive");
 	glUniform3f(emissiveLoc1, glowAmount, 0.0f, 0.0f);
@@ -330,6 +336,11 @@ void Display::setLightPos(glm::vec3 lightPos) {
 // ========== Set the Local Light Color ========== // 
 void Display::setLightColor(glm::vec3 lightColor) {
 	localLightColor = lightColor;
+}
+
+// ========== Set the Local Light Color ========== // 
+void Display::setPaintColor(glm::vec3 paintColor) {
+	localPaintColor = paintColor;
 }
 
 // Return Pointer to the Window Object
