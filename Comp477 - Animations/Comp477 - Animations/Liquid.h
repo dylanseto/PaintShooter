@@ -15,7 +15,7 @@ private:
 	vector<Particle> particles;
 	vector<GLfloat> localVertices;
 	vector<GLuint> localIndices;
-	vector<glm::vec3> localNormals;
+	vector<GLfloat> localNormals;
 
 	glm::vec3 force;
 
@@ -28,5 +28,5 @@ public:
 
 	vector<GLfloat>* getVertices();
 	vector<GLuint>* getIndices();
-	vector<glm::vec3>* getNormals();
+	vector<GLfloat>* getNormals();
 };

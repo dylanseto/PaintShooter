@@ -31,7 +31,7 @@ class WorldMesh {
 		};
 
 		// Getter: Return Normals
-		vector<glm::vec3>* getNormals() {
+		vector<GLfloat>* getNormals() {
 			return &normals;
 		}
 
@@ -44,7 +44,7 @@ class WorldMesh {
 	private:
 		vector<GLfloat> vertices;
 		vector<GLuint> indices;
-		vector<glm::vec3> normals;
+		vector<GLfloat> normals;
 
 		VertexManager vertexManager;
 

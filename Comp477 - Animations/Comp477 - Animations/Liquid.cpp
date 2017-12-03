@@ -85,7 +85,9 @@ Liquid::Liquid()
 	//	localNormals.push_back(normalize(vectorProduct));
 	//}
 	for (int i = 0; i < particles.size(); i++) {
-		localNormals.push_back(normalize(particles[i].pos));
+		localNormals.push_back(normalize(particles[i].pos.x));
+		localNormals.push_back(normalize(particles[i].pos.y));
+		localNormals.push_back(normalize(particles[i].pos.z));
 	}
 }
 
@@ -116,6 +118,6 @@ vector<GLuint>* Liquid::getIndices() {
 }
 
 // Getter: Get Local Normals
-vector<glm::vec3>* Liquid::getNormals() {
+vector<GLfloat>* Liquid::getNormals() {
 	return &localNormals;
 }

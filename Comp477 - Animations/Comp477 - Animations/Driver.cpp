@@ -26,6 +26,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 void do_movement(GLfloat deltaTime);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
+void shoot(Display& animationWindow);
 
 
 // ========================= Shader File Paths ========================= // 
@@ -92,11 +93,13 @@ int main() {
 	WorldMesh world;
 	vector<GLfloat>*  vertices = world.getVertices();
 	vector<GLuint>*    indices = world.getIndices();
-	vector<glm::vec3>* normals = world.getNormals();
+	vector<GLfloat>* normals = world.getNormals();
 
 	animationWindow.setVertices(vertices);
 	animationWindow.setIndices(indices);
 	animationWindow.setNormals(normals);
+
+	animationWindow.setColVertices(vertices);
 
 	animationWindow.setLightPos(lightPos);
 
@@ -177,7 +180,10 @@ int main() {
 		if (leftMouseHold) {
 			leftMouseHoldTime += deltaTime;
 		}
-
+		else if (leftMouseHoldTime != 0) {
+			leftMouseHoldTime = 0.0f;
+			shoot(animationWindow);
+		}
 	}
 
 	return 0;
@@ -237,7 +243,6 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 	else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
 		cout << "Left Mouse Button Was Held for " << leftMouseHoldTime << " seconds" << endl;
 		leftMouseHold = false;
-		leftMouseHoldTime = 0; // reset Time
 	}
 }
 
@@ -298,5 +303,16 @@ void do_movement(GLfloat deltaTime) {
 	// Default Speed
 	else
 		camera.setCameraSpeed(camera.getDefaultSpeed());
+}
+
+void shoot(Display& animationWindow) {
+	static int i = 0;
+	animationWindow.actualShotPositions[i] = camera.Position;
+	animationWindow.actualColors[i] = paintColor;
+	i++;
+
+	if (i == 10) {
+		i = 0;
+	}
 }
 

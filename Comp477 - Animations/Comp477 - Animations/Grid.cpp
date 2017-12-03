@@ -75,8 +75,10 @@ Grid::Grid(GLfloat length, int halfGridSize) {
 		vector2 = glm::vec3(localVertices[localIndices[i + 2] * offset] - localVertices[localIndices[i] * offset],
 			localVertices[localIndices[i + 2] * offset + 1] - localVertices[localIndices[i] * offset + 1],
 			localVertices[localIndices[i + 2] * offset + 2] - localVertices[localIndices[i] * offset + 2]);
-		vectorProduct = cross(vector1, vector2);
-		localNormals.push_back(normalize(vectorProduct));
+		vectorProduct = normalize(cross(vector1, vector2));
+		localNormals.push_back(vectorProduct.x);
+		localNormals.push_back(vectorProduct.y);
+		localNormals.push_back(vectorProduct.z);
 	}
 }
 
@@ -95,7 +97,7 @@ vector<GLuint>* Grid::getIndices() {
 }
 
 // Getter: Get Local Normals
-vector<glm::vec3>* Grid::getNormals() {
+vector<GLfloat>* Grid::getNormals() {
 	return &localNormals;
 }
 

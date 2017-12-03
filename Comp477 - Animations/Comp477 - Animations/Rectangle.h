@@ -13,7 +13,7 @@ public:
 
 	vector<GLfloat>* getVertices();
 	vector<GLuint>* getIndices();
-	vector<glm::vec3>* getNormals();
+	vector<GLfloat>* getNormals();
 
 	GLfloat getLength();
 	GLfloat getHeight();
@@ -30,5 +30,5 @@ private:
 
 	vector<GLfloat> localVertices;
 	vector<GLuint> localIndices;
-	vector<glm::vec3> localNormals;
+	vector<GLfloat> localNormals;
 };

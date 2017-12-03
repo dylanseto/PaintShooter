@@ -34,7 +34,7 @@ const GLuint WIDTH = 1280,
 // Number of Vertex Attribute Objects
 const GLuint NUM_VERTEX_ATTRIB_OBJ = 6;
 const GLuint NUM_PARTICLE_VERTEX_ATTRIB_OBJ = 6;
-
+const GLuint NUM_SHOTS = 10;
 
 
 // ================================== Object Sizes ================================== 
@@ -66,12 +66,12 @@ const int RED_COLOR_B = 0;
 
 // Green Color RGB
 const int GREEN_COLOR_R = 0;
-const int GREEN_COLOR_G = 220;
+const int GREEN_COLOR_G = 255;
 const int GREEN_COLOR_B = 0;
 
 // Blue Color RGB
 const int BLUE_COLOR_R = 0;
-const int BLUE_COLOR_G = 180;
+const int BLUE_COLOR_G = 0;
 const int BLUE_COLOR_B = 255;
 
 // Function to find Float values given color values (0 - 255)

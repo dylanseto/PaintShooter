@@ -51,7 +51,7 @@ void main() {
 	float diff = max(dot(norm, lightDir), 0.0f);
 	vec3 diffuse = diff * light;
 	
-	result = (ambient + diffuse + specular + emissive) * paintColor;
+	result = (ambient + diffuse + emissive) * paintColor;
 	
 	//Color
 	color = vec4(result, 1.0f);

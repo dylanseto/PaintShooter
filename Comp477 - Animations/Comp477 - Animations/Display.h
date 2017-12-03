@@ -17,14 +17,17 @@ class Display {
 		void setParticleShader(Shader* shader);
 		void setCamera(Camera* cam);
 		void setParticleVertices(std::vector<GLfloat>* vertices);
-		void setParticleNormals(std::vector<glm::vec3>* normals);
+		void setParticleNormals(std::vector<GLfloat>* normals);
 		void setVertices(std::vector<GLfloat>* vertices);
 		void setIndices(std::vector<GLuint>* indices);
-		void setNormals(std::vector<glm::vec3>* normals);
+		void setNormals(std::vector<GLfloat>* normals);
+		void setColVertices(std::vector<GLfloat>* colVertices);
 		void setLightPos(glm::vec3 lightPos);
 		void setLightColor(glm::vec3);
 		void setPaintColor(glm::vec3);
 
+		std::vector<glm::vec3> actualShotPositions;
+		std::vector<glm::vec3> actualColors;
 		// void sendStaticDataToBuffer();
 
 	private:
@@ -37,7 +40,7 @@ class Display {
 
 		// DYNAMIC: VAO, VBO, EBO
 		GLuint VAO[2];
-		GLuint VBO[4];
+		GLuint VBO[5];
 		GLuint EBO;
 		
 		// Shader
@@ -47,7 +50,9 @@ class Display {
 		// Vertices and Indices
 		std::vector<GLfloat>* localVertices;
 		std::vector<GLuint>*  localIndices;
-		std::vector<glm::vec3>*  localNormals;
+		std::vector<GLfloat>*  localNormals;
+
+		std::vector<GLfloat>* localColVertices;
 
 		// Light Position
 		glm::vec3 localLightPos;
@@ -59,7 +64,7 @@ class Display {
 		glm::vec3 localPaintColor;
 
 		std::vector<GLfloat>* particleVertices;
-		std::vector<glm::vec3>* particleNormals;
+		std::vector<GLfloat>* particleNormals;
 
 		// TextureID
 		GLuint gridTexture;
