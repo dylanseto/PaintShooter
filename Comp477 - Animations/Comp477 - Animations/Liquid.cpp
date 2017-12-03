@@ -23,6 +23,7 @@ Liquid::Liquid()
 				{
 					//glm::rot
 					Particle particle;
+					particle.id = 2;
 					particle.pos.x = x;//x*glm::cos(spanDegree*k) - y*glm::sin(spanDegree*k);
 					particle.pos.y = y*glm::cos(spanDegree*k) - z*glm::sin(spanDegree*k);
 					particle.pos.z = y*glm::sin(spanDegree*k) + z*glm::cos(spanDegree*k);
@@ -41,6 +42,7 @@ Liquid::Liquid()
 		else
 		{
 			Particle particle;
+			particle.id = 0;
 			particle.pos.x = 0;
 			particle.pos.y = 0;
 			particle.pos.z = 0;

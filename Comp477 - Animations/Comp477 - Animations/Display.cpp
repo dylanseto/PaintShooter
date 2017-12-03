@@ -153,7 +153,7 @@ void Display::initGLBuffers() {
 	glEnableVertexAttribArray(1);
 
 	// Set the vertex attribute pointers : PARTICLE INDEX
-	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, NUM_PARTICLE_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(4 * sizeof(GLfloat)));
+	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, NUM_PARTICLE_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(2);
 
 	// ------------- Setting up Fourth VBO (Particle Normals) ------------- //
@@ -161,8 +161,8 @@ void Display::initGLBuffers() {
 	glBindBuffer(GL_ARRAY_BUFFER, VBO[3]);
 
 	// Set the vertex attribute pointers : NORMALS
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+	glEnableVertexAttribArray(3);
 
 	// --------------- Setup TBO for density + pressure updates -------------- //
 	GLuint tbo;
