@@ -1,5 +1,7 @@
 #include "Liquid.h"
 
+float Liquid::NUM_PARTICLES = 0;
+
 Liquid::Liquid()
 {
 
@@ -23,7 +25,7 @@ Liquid::Liquid()
 				{
 					//glm::rot
 					Particle particle;
-					particle.id = 2;
+					particle.id = NUM_PARTICLES;
 					particle.pos.x = x;//x*glm::cos(spanDegree*k) - y*glm::sin(spanDegree*k);
 					particle.pos.y = y*glm::cos(spanDegree*k) - z*glm::sin(spanDegree*k);
 					particle.pos.z = y*glm::sin(spanDegree*k) + z*glm::cos(spanDegree*k);
@@ -35,6 +37,7 @@ Liquid::Liquid()
 					particle.mass = 1.0f;
 
 					particles.push_back(particle);
+					NUM_PARTICLES++;
 				}
 				angle1 += angle;
 			}
@@ -42,7 +45,7 @@ Liquid::Liquid()
 		else
 		{
 			Particle particle;
-			particle.id = 0;
+			particle.id = NUM_PARTICLES;
 			particle.pos.x = 0;
 			particle.pos.y = 0;
 			particle.pos.z = 0;
@@ -52,6 +55,9 @@ Liquid::Liquid()
 			particle.color.b = 0;
 			particle.color.a = 1;
 			particle.mass = 1.0f;
+			particles.push_back(particle);
+
+			NUM_PARTICLES++;
 		}
 	}
 

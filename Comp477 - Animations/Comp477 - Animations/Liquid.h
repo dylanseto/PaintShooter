@@ -8,6 +8,7 @@ using namespace glm;
 class Liquid
 {
 private:
+	static float NUM_PARTICLES;
 	glm::vec3 vector1;
 	glm::vec3 vector2;
 	glm::vec3 vectorProduct;
