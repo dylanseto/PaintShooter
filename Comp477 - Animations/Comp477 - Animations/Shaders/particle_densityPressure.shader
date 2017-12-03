@@ -6,9 +6,8 @@ layout(location = 1) in vec3 vertexColor;
 layout(location = 2) in float par_ID;
 layout(location = 3) in vec3 normal;
 
-// Particle Neighbour Distance
+// Particle Constants
 #define PARTICLE_NEIGHBOUR_DISTANCE 0.5f
-#define MAX_PARTICLES 1200
 #define MASS 0.02f
 #define NRT 5
 
