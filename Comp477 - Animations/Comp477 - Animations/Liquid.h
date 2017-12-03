@@ -9,8 +9,8 @@ using namespace glm;
 class Liquid
 {
 private:
-
 	static int NUM_PARTICLES;
+	static multimap<int, Particle*> globalParticleMap;
 	multimap<string, Particle*> particleNeighbours;
 	vector<Particle*> particles;
 	vector<GLfloat> localVertices;

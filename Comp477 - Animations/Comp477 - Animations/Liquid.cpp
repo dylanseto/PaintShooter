@@ -3,6 +3,7 @@
 
 
 int Liquid::NUM_PARTICLES = 0;
+multimap<int, Particle*> Liquid::globalParticleMap;
 
 // Special floor function
 // floors to 0.5 steps
@@ -63,6 +64,7 @@ Liquid::Liquid()
 
 					particles.push_back(particle);
 					particleNeighbours.insert(std::make_pair(particle->hashKey, particle));
+					globalParticleMap.insert(std::make_pair(particle->id, particle));
 					NUM_PARTICLES++;
 				}
 				angle1 += angle;
@@ -87,6 +89,7 @@ Liquid::Liquid()
 
 			particles.push_back(particle);
 			particleNeighbours.insert(std::make_pair(particle->hashKey, particle));
+			globalParticleMap.insert(std::make_pair(particle->id, particle));
 			NUM_PARTICLES++;
 		}
 	}
@@ -228,15 +231,7 @@ float Liquid::calculateDensity(Particle * p)
 		density += it->second->mass*weight;
 
 		float len = glm::length(particle->pos);
-
-		//std::cout << "weight:" << weight << std::endl; 
-		//std::cout << "distance: " << dist << std::endl;
-		//std::cout << "x:" << particle->pos.x << std::endl;
-		//std::cout << "y:" << particle->pos.y << std::endl;
-		//std::cout << "z:" << particle->pos.z << std::endl;
-		//std::cout << "len:" << len << std::endl;
 	}
-	//std::cout << "density" << density << std::endl;
 	return density;
 }
 
