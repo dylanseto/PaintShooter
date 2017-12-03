@@ -83,8 +83,8 @@ Shader::Shader(const GLchar* computePath) {
 	// Shader Program
 	this->Program = glCreateProgram();
 	glAttachShader(this->Program, vertex);
-	const GLchar* feedbackVaryings[] = {"ID", "density"};
-	glTransformFeedbackVaryings(this->Program, 2, feedbackVaryings, GL_INTERLEAVED_ATTRIBS);
+	const GLchar* feedbackVaryings[] = {"ID", "density", "pressure"};
+	glTransformFeedbackVaryings(this->Program, 3, feedbackVaryings, GL_INTERLEAVED_ATTRIBS);
 	glLinkProgram(this->Program);
 
 	// Print linking errors if any

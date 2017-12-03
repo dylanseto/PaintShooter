@@ -166,7 +166,7 @@ void Display::initGLBuffers() {
 	GLuint tbo;
 	glGenBuffers(1, &tbo);
 	glBindBuffer(GL_ARRAY_BUFFER, tbo);
-	glBufferData(GL_ARRAY_BUFFER, 10*(2 * sizeof(GLfloat)) , nullptr, GL_STATIC_READ);
+	glBufferData(GL_ARRAY_BUFFER, 10*(3 * sizeof(GLfloat)) , nullptr, GL_STATIC_READ);
 	glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, tbo);
 
 
@@ -245,20 +245,22 @@ void Display::render() {
 
 	// ------------------------------ test ---------------------------------
 	GLfloat ID;
-	GLfloat out;
-	glm::vec3 test;
+	GLfloat density;
+	GLfloat pressure;
 	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, 0, sizeof(GLfloat), &ID);
-	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, sizeof(GLfloat), sizeof(GLfloat), &out);
+	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, sizeof(GLfloat), sizeof(GLfloat), &density);
+	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, 2*sizeof(GLfloat), sizeof(GLfloat), &pressure);
 	//glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, sizeof(GLint)+2*sizeof(GLfloat), sizeof(glm::vec3), &test);
 	printf("ID: %f\n", ID);
-	printf("Float: %f\n", out);
+	printf("Density: %f\n", density);
+	printf("Pressure: %f\n", pressure);
 
 	GLfloat ID2;
 	GLfloat out2;
-	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, 2*sizeof(GLfloat), sizeof(GLfloat), &ID2);
-	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, 3* sizeof(GLfloat), sizeof(GLfloat), &out2);
+	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, 3*sizeof(GLfloat), sizeof(GLfloat), &ID2);
+	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, 4* sizeof(GLfloat), sizeof(GLfloat), &out2);
 	printf("ID2: %f\n", ID2); // not inputting right
-	printf("Float2: %f\n", out2);
+	printf("Density2: %f\n", out2);
 
 
 	// Unbinding VAO

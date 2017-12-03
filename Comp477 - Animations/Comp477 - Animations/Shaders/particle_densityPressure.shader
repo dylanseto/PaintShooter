@@ -15,6 +15,7 @@ uniform int num_particles;
 // Vertex Shader Output
 out float ID;
 out float density;
+out float pressure;
 
 float calculateDensity()
 {
@@ -61,13 +62,14 @@ float calculateDensity()
 
 float calculatePressure()
 {
-	return 20;
+	return 20.0f;
 }
 
 // Main Method
 void main() {
 	ID = par_ID;
 	density = calculateDensity();
+	pressure = calculatePressure();
 	//outValue[1] = calculatePressure();
 	//test = vec3(1, 10, 3);
 
