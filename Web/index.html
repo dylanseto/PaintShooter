@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Business Casual - Start Bootstrap Theme</title>
+    <title>COMP 477 - Paint Ball Shooter Simulator</title>
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -30,7 +30,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-faded py-lg-4">
       <div class="container">
-        <a class="navbar-brand text-uppercase text-expanded font-weight-bold d-lg-none" href="#">Start Bootstrap</a>
+        <a class="navbar-brand text-uppercase text-expanded font-weight-bold d-lg-none" href="#">Fall 2017, Concordia University</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -140,7 +140,7 @@
           <li><a href="#objective5">Vary force of blaster shot based on mouse hold time</a></li>
           <li><a href="#objective6">Add basic lighting</a></li>
           <li><a href="#objective7">Enable movement in a sandbox</a></li>
-          <li><a href="#objective8">Blend paint color</a></li>
+          <li><a href="#objective8">Vary paint color</a></li>
           <li><a href="#objective9">Implement Skybox</a></li>
           <li><a href="#objective10">Implement a Framerate counter (Keep update consistent for smooth update animations)</a></li>
         </ol>
@@ -154,8 +154,8 @@
         <hr class="divider">
         <p>This objective aims to vary the visuals of the simulator to make it more interesting, as well as to give ourselves an additional challenge in rendering fluid particles.  
 		The simulator will render in two modes: Day and Night. 
-		In the Day mode, the fluid will have goo-like properties and its original color. 
-		In contrast, the Night mode will render the fluid with bloom effect. 
+		In the Day mode, the fluid will have goo-like properties and its original color with a faint glow effect. 
+		In contrast, the Night mode will render the fluid with more intensity in its color. 
 		These render modes are mainly characterized by a change in lighting with a button press. Pressing 'K' will render the scene in Day mode, while 'L' will render it in Night mode.
 		</p>
       </div>
@@ -166,7 +166,7 @@
           <strong>Fluid Simulation</strong>
         </h2>
         <hr class="divider">
-        <p>Description Of Objective</p>
+        <p>Fluid simulation is the main objective of our simulation. It's our goal to reproduce the properties and behaviours of a paint ball shot from a shooter. For this, we need to simulate a viscuous fluid using fluid particles' methods such as Smoothed-Particle Hydrodynamics (SPH). To achieve this, particles need to be created and be manipulated as a liquid object. Then, with SPH formulas, we should be able to render liquid behaviours.</p>
       </div>
       
        <div id="objective3" class="bg-faded p-4 my-4">
@@ -175,7 +175,7 @@
           <strong>Projectile Motion Simulation</strong>
         </h2>
         <hr class="divider">
-        <p>Description Of Objective</p>
+        <p>This objective aims to make our simulation closer to real paint ball shooters with the physics of a goo-like fluid for projectile motions. When a paint ball is shot, it's more appealing and correct for it to travel in a curved trajectory rather than shooting straight out of the shooter. As such, the paint shot should follow an arc trajectory or have a bullet drop effect. This will be achieved by the varied force, along with applied physics to the fluid particles.</p>
       </div>
       
        <div id="objective4" class="bg-faded p-4 my-4">
@@ -184,7 +184,7 @@
           <strong>Collision Detection</strong>
         </h2>
         <hr class="divider">
-        <p>Description Of Objective</p>
+        <p>For our simulation to work, collision detection must be implemented. This objective is necessary as the paint ball will splatter onto the walls and the terrain. On collision, the paint should also apply its color onto the collided scene objects. Because we are using fluid particles, any particle that collides with a scene object would also behave the same way as a paint ball should.</p>
       </div>
       
        <div id="objective5" class="bg-faded p-4 my-4">
@@ -193,7 +193,7 @@
           <strong>Varied Shot Force</strong>
         </h2>
         <hr class="divider">
-        <p>Description Of Objective</p>
+        <p>The force to shoot the paint ball should vary in order to simulate different projectile trajectories. This will depend on a force applied on the shooter's trigger, which will be calculated based on the mouse hold time. As such, holding the left mouse button for a long time should give more initial velocity to the paint ball than when it's held for a short amount of time.</p>
       </div>
       
        <div id="objective6" class="bg-faded p-4 my-4">
@@ -213,16 +213,16 @@
           <strong>Enable Movement</strong>
         </h2>
         <hr class="divider">
-        <p>Description Of Objective</p>
+        <p>Allowing movement in the sandbox would give more freedom to the user. With this objective, one can shoot anywhere inside the viewport of the window while moving around. Achieving this objective adds more variety and freedom to where the user can go and shoot.</p>
       </div>
       
        <div id="objective8" class="bg-faded p-4 my-4">
         <hr class="divider">
         <h2 class="text-center text-lg text-uppercase my-0">
-          <strong>Blend Paint Color</strong>
+          <strong>Vary Paint Color</strong>
         </h2>
         <hr class="divider">
-        <p>Description Of Objective</p>
+        <p>To make things a bit more interesting, we have an objective to vary the paint colors that the user can shoot in the world. This way, the simulation becomes less dull. The different paint colors should also overlap one another depending on which was shot first. Once the paint lands on an object, it would an area of it as the color shot.</p>
       </div>
       
        <div id="objective9" class="bg-faded p-4 my-4">
@@ -231,7 +231,7 @@
           <strong>Skybox</strong>
         </h2>
         <hr class="divider">
-        <p>Description Of Objective</p>
+        <p>Adding a skybox as an objective is to make the scene more aesthetically pleasant to look at rather than running the simulation in a uniform background color. Because we have Day & Night rendering modes, we need two skyboxes and functionality to toggle between them as lighting would. This would make use of skybox shaders and texture rendering in order to apply them to the window.</p>
       </div>
       
        <div id="objective10" class="bg-faded p-4 my-4">
@@ -240,7 +240,7 @@
           <strong>Implement Frame Rate Counter</strong>
         </h2>
         <hr class="divider">
-        <p>Description Of Objective</p>
+        <p>The objective of the frame rate counter is to keep running our simulation at an appropriate frame rate. In addition, it is to keep track of the efficiency of how we create objects and simulate the fluid particles.</p>
       </div>
       
       <div class="bg-faded p-4 my-4">
@@ -253,6 +253,10 @@
         <ul>
           <li><a href="http://www.opengl-tutorial.org/intermediate-tutorials/billboards-particles/particles-instancing/">Opengl Tutorial: Particles / Instancing</a></li>
           <li><a href="https://learnopengl.com/#!Lighting/Basic-Lighting">Learn OpenGL: Basic Lighting</a></li>
+          <li><a href="https://open.gl/feedback">Open.gl: Transform Feedback in OpenGL</a></li>
+          <li><a href="https://nccastaff.bournemouth.ac.uk/jmacey/MastersProjects/MSc16/13/thesis.pdf">Masters Projects Thesis: OpenGL GPU Features and SPH Fluid</a></li>
+          <li><a href=https://nccastaff.bournemouth.ac.uk/jmacey/MastersProjects/MSc16/15/thesis.pdf>Masters Project Thesis: Fluid Simulation Using Smoothed Particle Hydrodynamics (SPH)</a></li>
+          <li><a href="https://www.opengl.org/discussion_boards/showthread.php/198661-Is-there-a-better-way-to-send-data-to-a-shader">OpenGL Forums: Ways to Send Data to a Shader</a></li>
           <li><a href="https://startbootstrap.com/template-overviews/business-casual/">Bootstrap Website Template</a></li>
         </ul>
       </div>
