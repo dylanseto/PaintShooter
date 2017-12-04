@@ -106,6 +106,9 @@ Liquid::Liquid()
 		localVertices.push_back(particles[i]->speed.x);
 		localVertices.push_back(particles[i]->speed.y);
 		localVertices.push_back(particles[i]->speed.z);
+
+		localVertices.push_back(particles[i]->pressure);
+		localVertices.push_back(particles[i]->density);
 		//cout << i << endl;
 
 		//cout << "y values: " << particles[i]->pos.y << endl;
@@ -119,14 +122,6 @@ Liquid::Liquid()
 		//localVertices.push_back(0.0f);
 	}
 
-	// Adding Normals
-	//int offset = 9;
-	//for (int i = 0; i < particles.size() - 2; i += 3) {
-	//	vector1 = particles[i + 1].pos - particles[i].pos;
-	//	vector2 = particles[i + 2].pos - particles[i].pos;
-	//	vectorProduct = cross(vector1, vector2);
-	//	localNormals.push_back(normalize(vectorProduct));
-	//}
 	for (int i = 0; i < particles.size(); i++) {
 		localNormals.push_back(normalize(particles[i]->pos));
 	}
@@ -138,17 +133,28 @@ Liquid::Liquid(glm::vec3 force)
 
 void Liquid::updateLiquid()
 {
-	//for (int i = 0; i != allParticles.size(); i++)
+	//for (float i = 0; i != particles.size(); i++)
 	//{
-	//	vector<vec3> neighbours;
-	//	for (int k = 0; k != this->particles.size(); k++)
-	//	{
-	//		if (allParticles[i]->index == allParticles[k]->index)
-	//		{
-	//			neighbours.push_back(allParticles[i]->pos);
-	//		}
-	//	}
-	//	cout << neighbours.size() << endl;
+	//	localVertices.push_back(particles[i]->pos.x);
+	//	localVertices.push_back(particles[i]->pos.y);
+	//	localVertices.push_back(particles[i]->pos.z);
+
+	//	localVertices.push_back(particles[i]->color.r);
+	//	localVertices.push_back(particles[i]->color.g);
+	//	localVertices.push_back(particles[i]->color.b);
+
+	//	localVertices.push_back(i); // ID
+
+	//	localVertices.push_back(particles[i]->speed.x);
+	//	localVertices.push_back(particles[i]->speed.y);
+	//	localVertices.push_back(particles[i]->speed.z);
+
+	//	localVertices.push_back(particles[i]->pressure);
+	//	localVertices.push_back(particles[i]->density);
+	//}
+
+	//for (int i = 0; i < particles.size(); i++) {
+	//	localNormals.push_back(normalize(particles[i]->pos));
 	//}
 }
 

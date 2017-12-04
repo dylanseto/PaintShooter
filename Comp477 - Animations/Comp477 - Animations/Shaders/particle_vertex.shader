@@ -6,7 +6,9 @@ layout(location = 0) in vec3 position;
 layout(location = 1) in vec3 vertexColor;
 layout(location = 2) in float par_ID;
 layout(location = 3) in vec3 speed;
-layout(location = 4) in vec3 normal;
+//layout(location = 4) in float pressure;
+//layout(location = 5) in float density;
+layout(location = 6) in vec3 normal;
 
 // Vertex Shader Output
 flat out vec3 ourColor;
