@@ -412,11 +412,12 @@ void Display::render(float deltaTime) {
 	GLint deltaTimeLoc = glGetUniformLocation(particleForceShader->Program, "deltaTime");
 	glUniform1f(deltaTimeLoc, deltaTime);
 
+	//
 	glBindBuffer(GL_ARRAY_BUFFER, this->particleForcesBuffer);
 	glBufferData(GL_ARRAY_BUFFER, 4*Liquid::getNumParticles() * sizeof(glm::vec3), &Liquid::getForcesData().front(), GL_DYNAMIC_DRAW);
 	GLint partForcesLocation = glGetUniformLocation(particleForceShader->Program, "particles");
-	glUniform1i(partForcesLocation, 0);
-	glActiveTexture(GL_TEXTURE0 + 1);
+	glUniform1i(partForcesLocation, 1);
+	glActiveTexture(GL_TEXTURE1);
 	glBindBuffer(GL_TEXTURE_BUFFER, forcesTextureBuffer);
 	glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, forcesTextureBuffer);
 
@@ -443,9 +444,10 @@ void Display::render(float deltaTime) {
 		glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, size, sizeof(vec3), &newSpeed);
 		size += sizeof(vec3);
 
-		printf("ID: %f\n", ID);
+		cout << "Pos: (" << newPos.x << "," << newPos.y << "," << newPos.z << ")" << endl;
+		/*printf("ID: %f\n", ID);
 		printf("newPos: %f\n", newPos.y);
-		printf("newSpeed: %f\n", newSpeed.y);
+		printf("newSpeed: %f\n", newSpeed.y);*/
 	}
 	/*GLfloat ID;
 	vec3 newPos;

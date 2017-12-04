@@ -108,10 +108,12 @@ vec3 viscosity()
 
 // Main Method
 void main() {
-	ID = ndensity;
+	ID = par_ID;
 	vec3 totalForces = gravityForce() + pressureForce() + viscosity();
 	vec3 acc = totalForces / MASS;
 
-	newPos = position + speed*deltaTime;
+	highp int i = int(par_ID);
+	vec4 ppos = texelFetch(particles, 4 * i+1);
+	newPos = vec3(ppos.x, ppos.y, ppos.z);//position + speed*deltaTime;
 	newSpeed = speed + acc*deltaTime;
 }

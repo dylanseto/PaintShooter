@@ -56,7 +56,7 @@ float calculatePressure(float density)
 
 // Main Method
 void main() {
-	ID = 0;
+	ID = par_ID;
 	density = calculateDensity();
 	pressure = calculatePressure(density);
 }
