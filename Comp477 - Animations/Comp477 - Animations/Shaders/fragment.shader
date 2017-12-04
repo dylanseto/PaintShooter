@@ -3,10 +3,8 @@
 
 // Fragment Shader Input
 in vec3 ourFragPos;
-flat in vec3 ourColor;
-flat in vec3 ourNormal;
-in vec3 colFragPos;
-in vec3 colColor;
+in vec3 ourColor;
+in vec3 ourNormal;
 
 // Texture samplers
 uniform vec3 lightPos;
