@@ -236,6 +236,7 @@ int main() {
 		//liquidManager.update(deltaTime);
 
 		// Call Window to Render Image 
+		liquidManager.update(deltaTime);
 		animationWindow.render(deltaTime);
 		skybox.draw(animationWindow.getCamera(), animationWindow.getViewMatrix(), animationWindow.getProjectionMatrix());
 		animationWindow.swapBuffer();
