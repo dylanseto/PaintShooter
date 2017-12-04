@@ -17,6 +17,10 @@ class LiquidManager {
 		vector<GLfloat>* getNormals();
 		bool isEmpty();
 
+		int getNumberOfParticles();
+		vector<vec3>* getPositionData();
+		vector<vec4>* getForceData();
+
 	private:
 
 		float liquidLifeTime;
@@ -25,5 +29,9 @@ class LiquidManager {
 		// Local Vertices (Pos: x,y,z; Color: r,g,b; ParticleID; Velocity: x,y,z; Pressure; Density)
 		vector<GLfloat> localVertices;
 		vector<GLfloat> localNormals;
+
+		int numberOfParticles;
+		vector<vec3> positionData;
+		vector<vec4> forceData;
 
 };

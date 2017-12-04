@@ -158,16 +158,16 @@ void Display::initGLBuffers() {
 	glBindVertexArray(VAO[1]);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO[2]);
 
-	// Set the vertex attribute pointers : POSITION (Px, Py, Pz)
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, NUM_PARTICLE_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)0);
+	// Set the vertex attribute pointers : PARTICLE INDEX
+	glVertexAttribPointer(0, 1, GL_FLOAT, GL_FALSE, NUM_PARTICLE_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
 
-	// Set the vertex attribute pointers : COLOR (R, G, B)
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, NUM_PARTICLE_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	// Set the vertex attribute pointers : POSITION (Px, Py, Pz)
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, NUM_PARTICLE_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(1 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
 
-	// Set the vertex attribute pointers : PARTICLE INDEX
-	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, NUM_PARTICLE_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+	// Set the vertex attribute pointers : COLOR (R, G, B)
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, NUM_PARTICLE_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(4 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(2);
 
 	// Set the vertex attribute pointers : VELOCTY (x, y, z)
@@ -366,10 +366,10 @@ void Display::render(float deltaTime) {
 		this->particleDensityShader->Use();
 
 		GLint numParticlesLoc = glGetUniformLocation(particleDensityShader->Program, "num_particles");
-		glUniform1i(numParticlesLoc, Liquid::getNumParticles());
+		glUniform1i(numParticlesLoc, numberOfParticles);
 
 		glBindBuffer(GL_ARRAY_BUFFER, this->particlePosBuffer);
-		glBufferData(GL_ARRAY_BUFFER, Liquid::getNumParticles() * sizeof(glm::vec3), &Liquid::getPositions().front(), GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, numberOfParticles * sizeof(glm::vec3), &particlePositions->front(), GL_DYNAMIC_DRAW);
 		GLint location = glGetUniformLocation(particleDensityShader->Program, "particles");
 		glUniform1i(location, 0);
 		glActiveTexture(GL_TEXTURE0 + 0);
@@ -377,12 +377,12 @@ void Display::render(float deltaTime) {
 		glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, particlePosBuffer);
 
 		glBeginTransformFeedback(GL_POINTS);
-		glDrawArrays(GL_POINTS, 0, 3 * Liquid::getNumParticles());
+		glDrawArrays(GL_POINTS, 0, 3 * numberOfParticles);
 		glEndTransformFeedback();
 		glFlush();
 
 		glBindBuffer(GL_ARRAY_BUFFER, pressureTBO);
-		for (int i = 0; i != Liquid::getNumParticles(); i++)
+		for (int i = 0; i != numberOfParticles; i++)
 		{
 			GLfloat ID;
 			GLfloat density;
@@ -390,9 +390,14 @@ void Display::render(float deltaTime) {
 			glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, 3 * i * sizeof(GLfloat), sizeof(GLfloat), &ID);
 			glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, (3 * i + 1) * sizeof(GLfloat), sizeof(GLfloat), &density);
 			glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, (3 * i + 2) * sizeof(GLfloat), sizeof(GLfloat), &pressure);
-			Liquid::setPressureDesity(ID, density, pressure);
+
+			// =========== Setting Pressure Density =========== //
+			// Liquid::setPressureDesity(ID, density, pressure);
+
+			setPressureDensity(ID, density, pressure);
 			particleVertices->at(12 * ID + 10) = pressure;
 			particleVertices->at(12 * ID + 11) = density;
+
 			/*printf("ID: %f\n", ID);
 			printf("Density: %f\n", density);
 			printf("Pressure: %f\n", pressure);*/
@@ -416,7 +421,7 @@ void Display::render(float deltaTime) {
 
 		//
 		glBindBuffer(GL_ARRAY_BUFFER, this->particleForcesBuffer);
-		glBufferData(GL_ARRAY_BUFFER, 4 * Liquid::getNumParticles() * sizeof(glm::vec4), &Liquid::getForcesData().front(), GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, 4 * numberOfParticles * sizeof(glm::vec4), &particleForceData->front(), GL_DYNAMIC_DRAW);
 		GLint partForcesLocation = glGetUniformLocation(particleForceShader->Program, "particles");
 		glUniform1i(partForcesLocation, 1);
 		glActiveTexture(GL_TEXTURE1);
@@ -424,13 +429,13 @@ void Display::render(float deltaTime) {
 		glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, particleForcesBuffer);
 
 		glBeginTransformFeedback(GL_POINTS);
-		glDrawArrays(GL_POINTS, 0, 3 * Liquid::getNumParticles());
+		glDrawArrays(GL_POINTS, 0, 3 * numberOfParticles);
 		glEndTransformFeedback();
 		glFlush();
 
 		glBindBuffer(GL_ARRAY_BUFFER, forcesTBO);
 		size_t size = 0;
-		for (int i = 0; i != Liquid::getNumParticles(); i++)
+		for (int i = 0; i != numberOfParticles; i++)
 		{
 			GLfloat ID;
 			vec3 newPos;
@@ -443,10 +448,12 @@ void Display::render(float deltaTime) {
 			glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, size, sizeof(vec3), &newSpeed);
 			size += sizeof(vec3);
 
-			Liquid::setPositionVelocity(ID, newPos, newSpeed);
-			particleVertices->at(12 * ID + 0) = newPos.x;
-			particleVertices->at(12 * ID + 1) = newPos.y;
-			particleVertices->at(12 * ID + 2) = newPos.z;
+
+			// ============= SETTING NEW POSITION/VELOCITY ============= //
+			// Liquid::setPositionVelocity(ID, newPos, newSpeed);
+			particleVertices->at(12 * ID + 1) = newPos.x;
+			particleVertices->at(12 * ID + 2) = newPos.y;
+			particleVertices->at(12 * ID + 3) = newPos.z;
 			particleVertices->at(12 * ID + 7) = newSpeed.x;
 			particleVertices->at(12 * ID + 8) = newSpeed.y;
 			particleVertices->at(12 * ID + 9) = newSpeed.z;
@@ -554,6 +561,25 @@ void Display::setPaintColor(glm::vec3 paintColor) {
 GLFWwindow* Display::getWindow() {
 	return window;
 }
+
+void Display::setNumberOfParticles(int numOfParticles) {
+	numberOfParticles = numOfParticles;
+}
+
+void Display::setParticlePositions(std::vector<glm::vec3>* particlePos) {
+	particlePositions = particlePos;
+}
+
+void Display::setParticleForceData(std::vector<glm::vec4>* forceData) {
+	particleForceData = forceData;
+}
+
+void Display::setPressureDensity(int id, GLfloat pressure, GLfloat density) {
+
+	particleForceData->at(id + 1) = glm::vec4(pressure, 0, 0, id);
+	particleForceData->at(id + 2) = glm::vec4(density, 0, 0, id);
+}
+
 
 
 // Loading 2D Texture Function

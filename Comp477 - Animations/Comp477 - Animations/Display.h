@@ -29,6 +29,12 @@ class Display {
 		void setLightColor(glm::vec3);
 		void setPaintColor(glm::vec3);
 
+		void setNumberOfParticles(int);
+		void setParticlePositions(std::vector<glm::vec3>*);
+		void setParticleForceData(std::vector<glm::vec4>*);
+
+		void setPressureDensity(int, GLfloat, GLfloat);
+
 		std::vector<glm::vec3> actualShotPositions;
 		std::vector<glm::vec3> actualColors;
 
@@ -72,8 +78,14 @@ class Display {
 		// Paint Color
 		glm::vec3 localPaintColor;
 
+		// PARTICLES
 		std::vector<GLfloat>* particleVertices;
 		std::vector<GLfloat>* particleNormals;
+		int numberOfParticles;
+		std::vector<glm::vec3>* particlePositions;
+		std::vector<glm::vec4>* particleForceData;
+
+
 
 		// TextureID
 		GLuint gridTexture;
