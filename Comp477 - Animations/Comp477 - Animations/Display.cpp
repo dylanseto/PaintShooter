@@ -14,7 +14,8 @@ Display::Display(std::string name, int width, int height) {
 	initGLBuffers();
 	// initDynamicGLBuffers();
 	loadTextures("Textures/gridTexture.png");
-
+	actualShotPositions = std::vector<glm::vec3>(NUM_SHOTS);
+	actualColors = std::vector<glm::vec3>(NUM_SHOTS);
 }
 
 // ========== Displpay Destructor ========== // 
@@ -142,12 +143,8 @@ void Display::initGLBuffers() {
 	glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
 
 	// Set the vertex attribute pointers : NORMALS
-	glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-	glEnableVertexAttribArray(4);
-
-	// Unbinding VBO and EBO
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0);
+	glEnableVertexAttribArray(2);
 
 	// ------------- Setting up Third VBO (Particles) ------------- //
 
@@ -172,7 +169,7 @@ void Display::initGLBuffers() {
 	glBindBuffer(GL_ARRAY_BUFFER, VBO[3]);
 
 	// Set the vertex attribute pointers : NORMALS
-	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0);
 	glEnableVertexAttribArray(3);
 
 	// --------------- Setup TBO for density + pressure updates -------------- //
@@ -188,10 +185,10 @@ void Display::initGLBuffers() {
 
 
 // ========== Update Window on Draw ========== // 
-void Display::render(glm::vec3 lightColor) {
+void Display::render() {
 
 	// Rendering Commands
-	glClearColor((float)114 / (float)255 * (lightColor.x + 0.2f), (float)220 / (float)255 * (lightColor.y + 0.2f), (float)255 / (float)255 * (lightColor.z + 0.2f), 1.0f);
+	glClearColor((float)114 / (float)255, (float)220 / (float)255, (float)255 / (float)255, 1.0f);
 	// glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	ourShader->Use();
@@ -214,8 +211,30 @@ void Display::render(glm::vec3 lightColor) {
 	GLint lightColorLoc = glGetUniformLocation(ourShader->Program, "lightColor");
 	glUniform3f(lightColorLoc, localLightColor.x, localLightColor.y, localLightColor.z);
 
-	GLint shootPositionLoc = glGetUniformLocation(ourShader->Program, "shootPosition");
-	glUniform3f(shootPositionLoc, 10.0f, 0.0f, 10.0f);
+	GLint collisionColors[NUM_SHOTS];
+
+	// Get Uniform Colors for Collision
+	for (int i = 0; i < NUM_SHOTS; i++) {
+		std::string name = "paintColors[" + std::to_string(i) + "]";
+		collisionColors[i] = glGetUniformLocation(ourShader->Program, name.c_str());
+		glUniform3f(collisionColors[i], actualColors[i].x, actualColors[i].y, actualColors[i].z);
+	}
+
+	//GLint paintColorLoc = glGetUniformLocation(ourShader->Program, "paintColor");
+	//glUniform3f(paintColorLoc, localPaintColor.x, localPaintColor.y, localPaintColor.z);
+
+	glm::vec3 collisionPosition = glm::vec3(10.0f, 0.0f, 10.0f);
+	//static bool increasingPosition = true;
+
+	// Max of 10 shots
+	GLint collisionPositions[NUM_SHOTS];
+
+	// Get Uniform Locations for Collision
+	for (int i = 0; i < NUM_SHOTS; i++) {
+		std::string name = "shotPositions[" + std::to_string(i) + "]";
+		collisionPositions[i] = glGetUniformLocation(ourShader->Program, name.c_str());
+		glUniform3f(collisionPositions[i], actualShotPositions[i].x, 0.0f, actualShotPositions[i].z);
+	}
 
 	GLint viewPosLoc = glGetUniformLocation(ourShader->Program, "viewPos");
 	glUniform3f(viewPosLoc, camera->Position.x, camera->Position.y, camera->Position.z);
@@ -252,8 +271,8 @@ void Display::render(glm::vec3 lightColor) {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, localIndices->size() * sizeof(GLuint), &localIndices->front(), GL_DYNAMIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
-	glBufferData(GL_ARRAY_BUFFER, localNormals->size() * sizeof(glm::vec3), &localNormals->front(), GL_DYNAMIC_DRAW);
-	
+	glBufferData(GL_ARRAY_BUFFER, localNormals->size() * sizeof(GLfloat), &localNormals->front(), GL_DYNAMIC_DRAW);
+
 	// Drawing our Objects
 	glDrawElements(GL_TRIANGLES, localIndices->size() * 2, GL_UNSIGNED_INT, 0);
 
@@ -269,6 +288,9 @@ void Display::render(glm::vec3 lightColor) {
 	GLint lightColorLoc1 = glGetUniformLocation(particleShader->Program, "lightColor");
 	glUniform3f(lightColorLoc1, localLightColor.x, localLightColor.y, localLightColor.z);
 
+	GLint paintColorLoc1 = glGetUniformLocation(particleShader->Program, "paintColor");
+	glUniform3f(paintColorLoc1, localPaintColor.x, localPaintColor.y, localPaintColor.z);
+
 	GLint emissiveLoc1 = glGetUniformLocation(particleShader->Program, "emissive");
 	glUniform3f(emissiveLoc1, glowAmount, 0.0f, 0.0f);
 
@@ -283,7 +305,7 @@ void Display::render(glm::vec3 lightColor) {
 	glBindBuffer(GL_ARRAY_BUFFER, VBO[2]);
 	glBufferData(GL_ARRAY_BUFFER, particleVertices->size() * sizeof(GLfloat), &particleVertices->front(), GL_DYNAMIC_DRAW);	// Copy our vertices to the buffer
 	glBindBuffer(GL_ARRAY_BUFFER, VBO[3]);
-	glBufferData(GL_ARRAY_BUFFER, particleNormals->size() * sizeof(glm::vec3), &particleNormals->front(), GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, particleNormals->size() * sizeof(GLfloat), &particleNormals->front(), GL_DYNAMIC_DRAW);
 
 	// Drawing our Particles 
 	glDrawArrays(GL_POINTS, 0, this->particleVertices->size());
@@ -351,7 +373,7 @@ void Display::setParticleVertices(std::vector<GLfloat>* vertices) {
 
 
 // ========== Set the Particles' Local Normals ========== // 
-void Display::setParticleNormals(std::vector<glm::vec3>* normals) {
+void Display::setParticleNormals(std::vector<GLfloat>* normals) {
 	particleNormals = normals;
 }
 
@@ -368,9 +390,10 @@ void Display::setIndices(std::vector<GLuint>* indices) {
 }
 
 // ========== Set the Local Normals ========== // 
-void Display::setNormals(std::vector<glm::vec3>* normals) {
+void Display::setNormals(std::vector<GLfloat>* normals) {
 	localNormals = normals;
 }
+
 
 // ========== Set the Local Light Position ========== // 
 void Display::setLightPos(glm::vec3 lightPos) {
@@ -380,6 +403,11 @@ void Display::setLightPos(glm::vec3 lightPos) {
 // ========== Set the Local Light Color ========== // 
 void Display::setLightColor(glm::vec3 lightColor) {
 	localLightColor = lightColor;
+}
+
+// ========== Set the Local Light Color ========== // 
+void Display::setPaintColor(glm::vec3 paintColor) {
+	localPaintColor = paintColor;
 }
 
 // Return Pointer to the Window Object

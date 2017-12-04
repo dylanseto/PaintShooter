@@ -12,18 +12,22 @@ class Display {
 		GLFWwindow* getWindow();
 
 		bool isClosed();
-		void render(glm::vec3 lightColor);
+		void render();
 		void setShader(Shader* shader);
 		void setParticleShader(Shader* shader);
 		void seParticleDensityShader(Shader* shader);
 		void setCamera(Camera* cam);
 		void setParticleVertices(std::vector<GLfloat>* vertices);
-		void setParticleNormals(std::vector<glm::vec3>* normals);
+		void setParticleNormals(std::vector<GLfloat>* normals);
 		void setVertices(std::vector<GLfloat>* vertices);
 		void setIndices(std::vector<GLuint>* indices);
-		void setNormals(std::vector<glm::vec3>* normals);
+		void setNormals(std::vector<GLfloat>* normals);
 		void setLightPos(glm::vec3 lightPos);
 		void setLightColor(glm::vec3);
+		void setPaintColor(glm::vec3);
+
+		std::vector<glm::vec3> actualShotPositions;
+		std::vector<glm::vec3> actualColors;
 
 		Camera* getCamera();
 		glm::mat4* getViewMatrix();
@@ -53,7 +57,7 @@ class Display {
 		// Vertices and Indices
 		std::vector<GLfloat>* localVertices;
 		std::vector<GLuint>*  localIndices;
-		std::vector<glm::vec3>*  localNormals;
+		std::vector<GLfloat>*  localNormals;
 
 		// Light Position
 		glm::vec3 localLightPos;
@@ -61,8 +65,11 @@ class Display {
 		// Light Color
 		glm::vec3 localLightColor;
 
+		// Paint Color
+		glm::vec3 localPaintColor;
+
 		std::vector<GLfloat>* particleVertices;
-		std::vector<glm::vec3>* particleNormals;
+		std::vector<GLfloat>* particleNormals;
 
 		// TextureID
 		GLuint gridTexture;

@@ -28,6 +28,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 void do_movement(GLfloat deltaTime);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
+void shoot(Display& animationWindow);
+glm::vec3 calculateForce(float mouseHoldTime);
 
 
 // ========================= Shader File Paths ========================= // 
@@ -83,6 +85,9 @@ glm::vec3 dayColor = glm::vec3(0.8f, 0.8f, 0.8f);
 // Night Color - Blueish
 glm::vec3 nightColor = glm::vec3(0.490196f, 0.568627f, 0.670588f);
 
+// Paint Color - Red
+glm::vec3 paintColor = glm::vec3(1.0f, 0.0f, 0.0f);
+
 GLfloat leftMouseHoldTime = 0.0f;
 bool leftMouseHold = false;
 
@@ -100,7 +105,7 @@ int main() {
 	WorldMesh world;
 	vector<GLfloat>*  vertices = world.getVertices();
 	vector<GLuint>*    indices = world.getIndices();
-	vector<glm::vec3>* normals = world.getNormals();
+	vector<GLfloat>* normals = world.getNormals();
 
 	animationWindow.setVertices(vertices);
 	animationWindow.setIndices(indices);
@@ -207,9 +212,10 @@ int main() {
 		}	
 
 		animationWindow.setLightColor(lightColor);
+		animationWindow.setPaintColor(paintColor);
 
 		// Call Window to Render Image 
-		animationWindow.render(lightColor);
+		animationWindow.render();
 		skybox.draw(animationWindow.getCamera(), animationWindow.getViewMatrix(), animationWindow.getProjectionMatrix());
 		animationWindow.swapBuffer();
 
@@ -225,7 +231,12 @@ int main() {
 		if (leftMouseHold) {
 			leftMouseHoldTime += deltaTime;
 		}
-
+		else if (leftMouseHoldTime != 0) {
+			vec3 force = calculateForce(leftMouseHoldTime);
+			std::cout << force.x << " " << force.y << " " << force.z << endl;
+			leftMouseHoldTime = 0.0f;
+			shoot(animationWindow);
+		}
 	}
 
 	return 0;
@@ -260,6 +271,18 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		}
 	}
 
+	else if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
+		paintColor = RED_COLOR;
+	}
+
+	else if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
+		paintColor = GREEN_COLOR;
+	}
+
+	else if (key == GLFW_KEY_3 && action == GLFW_PRESS) {
+		paintColor = BLUE_COLOR;
+	}
+
 	// Smooth camera transitions
 	if (key >= 0 && key < 1024 && key != 88) {
 		if (action == GLFW_PRESS)
@@ -279,7 +302,6 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 	else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
 		cout << "Left Mouse Button Was Held for " << leftMouseHoldTime << " seconds" << endl;
 		leftMouseHold = false;
-		leftMouseHoldTime = 0; // reset Time
 	}
 }
 
@@ -340,5 +362,29 @@ void do_movement(GLfloat deltaTime) {
 	// Default Speed
 	else
 		camera.setCameraSpeed(camera.getDefaultSpeed());
+}
+
+void shoot(Display& animationWindow) {
+	static int i = 0;
+	animationWindow.actualShotPositions[i] = camera.Position;
+	animationWindow.actualColors[i] = paintColor;
+	i++;
+
+	if (i == NUM_SHOTS) {
+		i = 0;
+	}
+}
+
+glm::vec3 calculateForce(float mouseHoldTime) {
+	glm::vec3 force;
+
+	// Put a cap on mouseHoldTime to not shoot into infinity
+	if (mouseHoldTime >= 5.0f) {
+		mouseHoldTime = 5.0f;
+	}
+
+	force = mouseHoldTime * camera.Front;
+
+	return force;
 }
 

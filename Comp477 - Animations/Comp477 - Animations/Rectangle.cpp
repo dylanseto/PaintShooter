@@ -25,13 +25,6 @@ Rectangle::Rectangle(GLfloat length, GLfloat height, GLfloat depth)
 				localVertices.push_back(CUBE_COLOR.x + ((float)randomColorOffset / 100));
 				localVertices.push_back(CUBE_COLOR.y + ((float)randomColorOffset / 100));
 				localVertices.push_back(CUBE_COLOR.z + ((float)randomColorOffset / 100));
-
-				//// Adding Textures
-				//localVertices.push_back(1.0f);
-				//localVertices.push_back(1.0f);
-
-				//// Adding Texture Opacity
-				//localVertices.push_back(0.0f);
 			}
 		}
 	}
@@ -95,7 +88,7 @@ Rectangle::Rectangle(GLfloat length, GLfloat height, GLfloat depth)
 	localIndices.push_back(4);
 
 	// Adding Normals
-	int offset = 3;
+	int offset = 6;
 	for (int i = 0; i < localIndices.size(); i += 3) {
 		vector1 = glm::vec3(localVertices[localIndices[i + 1] * offset] - localVertices[localIndices[i] * offset],
 			localVertices[localIndices[i + 1] * offset + 1] - localVertices[localIndices[i] * offset + 1],
@@ -103,8 +96,10 @@ Rectangle::Rectangle(GLfloat length, GLfloat height, GLfloat depth)
 		vector2 = glm::vec3(localVertices[localIndices[i + 2] * offset] - localVertices[localIndices[i] * offset],
 			localVertices[localIndices[i + 2] * offset + 1] - localVertices[localIndices[i] * offset + 1],
 			localVertices[localIndices[i + 2] * offset + 2] - localVertices[localIndices[i] * offset + 2]);
-		vectorProduct = cross(vector1, vector2);
-		localNormals.push_back(normalize(vectorProduct));
+		vectorProduct = normalize(cross(vector1, vector2));
+		localNormals.push_back(vectorProduct.x);
+		localNormals.push_back(vectorProduct.y);
+		localNormals.push_back(vectorProduct.z);
 	}
 }
 
@@ -118,6 +113,6 @@ vector<GLuint>* Rectangle::getIndices() {
 	return &localIndices;
 }
 
-vector<glm::vec3>* Rectangle::getNormals() {
+vector<GLfloat>* Rectangle::getNormals() {
 	return &localNormals;
 }

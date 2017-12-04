@@ -9,6 +9,7 @@ flat in vec3 ourNormal;
 // Uniform Variables
 uniform vec3 lightPos;
 uniform vec3 lightColor;
+uniform vec3 paintColor;
 uniform vec3 viewPos;
 uniform vec3 emissive;
 
@@ -50,7 +51,7 @@ void main() {
 	float diff = max(dot(norm, lightDir), 0.0f);
 	vec3 diffuse = diff * light;
 	
-	result = (ambient + diffuse + specular + emissive) * ourColor;
+	result = (ambient + diffuse + emissive) * paintColor;
 	
 	//Color
 	color = vec4(result, 1.0f);

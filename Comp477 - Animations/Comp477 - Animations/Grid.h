@@ -15,7 +15,7 @@ class Grid {
 
 		vector<GLfloat>* getVertices();
 		vector<GLuint>* getIndices();
-		vector<glm::vec3>* getNormals();
+		vector<GLfloat>* getNormals();
 
 		int getGridSize();
 		glm::vec3 getVertex(int coordX, int coordY);
@@ -32,7 +32,7 @@ class Grid {
 
 		vector<GLfloat> localVertices;
 		vector<GLuint> localIndices;
-		vector<glm::vec3> localNormals;
+		vector<GLfloat> localNormals;
 
 		int gridSize;
 
