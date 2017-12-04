@@ -129,6 +129,7 @@
     <ClInclude Include="Particle.h" />
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="Shaders\Shader.h" />
+    <ClInclude Include="Skybox.h" />
     <ClInclude Include="VertexManager.h" />
     <ClInclude Include="WorldMesh.h" />
   </ItemGroup>
@@ -140,6 +141,7 @@
     <ClCompile Include="Liquid.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Rectangle.cpp" />
+    <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="VertexManager.cpp" />
     <ClCompile Include="WorldMesh.cpp" />
   </ItemGroup>
