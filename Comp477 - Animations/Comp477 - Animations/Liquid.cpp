@@ -191,6 +191,7 @@ vector<vec3> Liquid::getForcesData()
 		data.push_back(allParticles[i]->pos);
 		data.push_back(vec3(allParticles[i]->pressure, 0, 0));
 		data.push_back(vec3(allParticles[i]->density, 0, 0));
+		data.push_back(allParticles[i]->speed);
 	}
 	return data;
 }

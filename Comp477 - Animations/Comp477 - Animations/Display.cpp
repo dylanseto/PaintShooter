@@ -380,7 +380,7 @@ void Display::render(glm::vec3 lightColor) {
 	glUniform1i(numParticlesLoc2, Liquid::getNumParticles());
 
 	glBindBuffer(GL_ARRAY_BUFFER, this->particleForcesBuffer);
-	glBufferData(GL_ARRAY_BUFFER, 3*Liquid::getNumParticles() * sizeof(glm::vec3), &Liquid::getForcesData().front(), GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 4*Liquid::getNumParticles() * sizeof(glm::vec3), &Liquid::getForcesData().front(), GL_DYNAMIC_DRAW);
 	GLint partForcesLocation = glGetUniformLocation(particleForceShader->Program, "particles");
 	glUniform1i(partForcesLocation, 0);
 	glActiveTexture(GL_TEXTURE0 + 0);
@@ -398,16 +398,16 @@ void Display::render(glm::vec3 lightColor) {
 	glBindBuffer(GL_ARRAY_BUFFER, forcesTBO);
 	GLfloat ID;
 	vec3 newPos;
-	vec3 pressure;
+	vec3 newSpeed;
 	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, 0, sizeof(GLfloat), &ID);
 	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, sizeof(GLfloat), sizeof(vec3), &newPos);
-	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, sizeof(GLfloat)+ sizeof(vec3), sizeof(vec3), &pressure);
+	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, sizeof(GLfloat) + sizeof(vec3), sizeof(vec3), &newSpeed);
 	/*glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, (3 * i + 1) * sizeof(GLfloat), sizeof(GLfloat), &density);
 	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, (3 * i + 2) * sizeof(GLfloat), sizeof(GLfloat), &pressure);*/
 	
-	/*printf("IDD: %f\n", ID);
-	printf("newPos: %f\n", newPos.y);
-	printf("newPos: %f\n", pressure.y);*/
+	//printf("IDD: %f\n", ID);
+	//rintf("newPos: %f\n", newPos.y);
+	//printf("newPos: %f\n", pressure.y);*/
 	/*printf("Pressure: %f\n", pressure);*/
 
 	// Unbinding VAO
