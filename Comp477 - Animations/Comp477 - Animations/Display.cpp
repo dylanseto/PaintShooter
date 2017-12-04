@@ -318,7 +318,7 @@ void Display::render(float deltaTime) {
 
 	// ------------- Drawing Particles ------------- //
 
-	if (!this->particleNormals->empty() && !this->particleNormals->empty())
+	if (!this->particleVertices->empty() && !this->particleNormals->empty())
 	{
 		// Use Particle Shader to Render Particles (Different Vertex/Fragment Shader)
 		particleShader->Use();
@@ -435,6 +435,9 @@ void Display::render(float deltaTime) {
 
 		glBindBuffer(GL_ARRAY_BUFFER, forcesTBO);
 		size_t size = 0;
+
+		cout << "COUNT" << numberOfParticles << endl;
+
 		for (int i = 0; i != numberOfParticles; i++)
 		{
 			GLfloat ID;
@@ -448,7 +451,7 @@ void Display::render(float deltaTime) {
 			glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, size, sizeof(vec3), &newSpeed);
 			size += sizeof(vec3);
 
-
+			
 			// ============= SETTING NEW POSITION/VELOCITY ============= //
 			// Liquid::setPositionVelocity(ID, newPos, newSpeed);
 			particleVertices->at(12 * ID + 1) = newPos.x;
