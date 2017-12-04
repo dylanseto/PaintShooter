@@ -27,6 +27,7 @@ void do_movement(GLfloat deltaTime);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 void shoot(Display& animationWindow);
+glm::vec3 calculateForce(float mouseHoldTime);
 
 
 // ========================= Shader File Paths ========================= // 
@@ -179,6 +180,8 @@ int main() {
 			leftMouseHoldTime += deltaTime;
 		}
 		else if (leftMouseHoldTime != 0) {
+			vec3 force = calculateForce(leftMouseHoldTime);
+			std::cout << force.x << " " << force.y << " " << force.z << endl;
 			leftMouseHoldTime = 0.0f;
 			shoot(animationWindow);
 		}
@@ -309,8 +312,21 @@ void shoot(Display& animationWindow) {
 	animationWindow.actualColors[i] = paintColor;
 	i++;
 
-	if (i == 10) {
+	if (i == NUM_SHOTS) {
 		i = 0;
 	}
+}
+
+glm::vec3 calculateForce(float mouseHoldTime) {
+	glm::vec3 force;
+
+	// Put a cap on mouseHoldTime to not shoot into infinity
+	if (mouseHoldTime >= 5.0f) {
+		mouseHoldTime = 5.0f;
+	}
+
+	force = mouseHoldTime * camera.Front;
+
+	return force;
 }
 
