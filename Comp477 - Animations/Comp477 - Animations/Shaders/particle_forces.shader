@@ -24,6 +24,7 @@ struct Wall
 uniform int num_particles;
 uniform samplerBuffer particles; //particle positions, pressure, density, velocty
 uniform float deltaTime;
+uniform vec3 force;
 uniform Wall walls[8];
 
 // Vertex Shader Output
@@ -67,7 +68,7 @@ vec3 pressureForce()
 
 		float comp = ((pressure + npressure) / 2)*(MASS / ndensity);
 		vec3 gradientWeight = -1 * (45 / (PI*pow(PARTICLE_NEIGHBOUR_DISTANCE, 6)))*(normalized)*pow(PARTICLE_NEIGHBOUR_DISTANCE - norm, 2);
-		pressureForce += comp*gradientWeight*(1/10);
+		pressureForce += comp*gradientWeight*(1/50);
 	}
 
 	return pressureForce*-1;
@@ -100,7 +101,7 @@ vec3 viscosity()
 		float norm = sqrt(pow(dif.x, 2) + pow(dif.y, 2) + pow(dif.z, 2));
 		float laplacianWeight = (45 / (PI*pow(PARTICLE_NEIGHBOUR_DISTANCE, 6)))*(PARTICLE_NEIGHBOUR_DISTANCE - norm);
 
-		viscosityForce += (nspeed*0.003)*(MASS / ndensity)*laplacianWeight;
+		viscosityForce += (nspeed*0.0005)*(MASS / ndensity)*laplacianWeight;
 		//break;
 	}
 
@@ -118,18 +119,24 @@ vec3 viscosity()
 
 // Main Method
 void main() {
+	if (deltaTime > 1)
+	{
+		newPos = position;
+		newSpeed = speed;
+		return;
+	}
 	vec4 pdensity = texelFetch(particles, 4 * int(par_ID) + 2);
 	float ndensity = pdensity.x;
 	ID = par_ID;
-	vec3 totalForces = gravityForce() + viscosity()+pressureForce()+vec3(0,0,-10);
+	vec3 totalForces = gravityForce() + viscosity()+pressureForce()+force;
 	vec3 acc = totalForces / MASS;
 
 	//highp int i = int(par_ID);
-	vec3 curSpeed = totalForces*deltaTime*0.4;
-	vec3 curPos = position + curSpeed*deltaTime*0.4;
+	vec3 curSpeed = totalForces*deltaTime;
+	vec3 curPos = position + curSpeed*deltaTime;
 	vec3 s = curSpeed;
 
-	if (curPos.y <= 0) //intersects with plane.
+	if (curPos.y < 0) //intersects with plane.
 	{
 		s = -1 * curSpeed * 0.5;
 	}
@@ -138,6 +145,6 @@ void main() {
 	//newSpeed = s; // temp
 	vec4 pspeed = texelFetch(particles, 4 * int(par_ID) + 3);
 	vec3 nspeed = vec3(pspeed.x, pspeed.y, pspeed.z);
-	newPos = position + s*deltaTime*0.4;
+	newPos = position + s*deltaTime;
 	newSpeed = s;//vec3(0,-9.81,0)*deltaTime;//vec3(ppos.x, ppos.y, ppos.z);
 }
