@@ -34,7 +34,7 @@ WorldMesh::WorldMesh() : vertexManager(&vertices, &indices, &normals) {
 		int randomZ = rand() % max + min;
 
 		//rec = Rectangle(3, 2, 1);
-		rec = Rectangle(randomX, randomY, randomZ);
+		Rectangle* rec = new Rectangle(randomX, randomY, randomZ);
 
 		float randomTransX = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX + 1)) * (gridMax / 2.2 - gridMin / 2.2) + gridMin / 2.2;
 		float randomTransZ = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX + 1)) * (gridMax / 2.2 - gridMin / 2.2) + gridMin / 2.2;
@@ -45,16 +45,17 @@ WorldMesh::WorldMesh() : vertexManager(&vertices, &indices, &normals) {
 		//rotateObject(rec.getVertices(), randomDegree);
 
 		//translateObject(rec.getVertices(), glm::vec3(5.0f, 0.0f, 0.0f));
-		translateObject(rec.getVertices(), glm::vec3(randomTransX, 0.0f, randomTransZ));
+		translateObject(rec->getVertices(), glm::vec3(randomTransX, 0.0f, randomTransZ));
 
 		float randomScale = (float)(rand() % 2 + 1) + 0.1 * (float)(rand() % 3 + 1);
 		//scaleObject(rec.getVertices(), 2);
-		scaleObject(rec.getVertices(), randomScale);
+		scaleObject(rec->getVertices(), randomScale);
 
 		// plane.printGrid();
 
 		// Sending the Rectangle objects to the Vertex Manager
-		vertexManager.updateMeshes(rec.getVertices(), rec.getIndices(), rec.getNormals());
+		vertexManager.updateMeshes(rec->getVertices(), rec->getIndices(), rec->getNormals());
+		rectangles.push_back(rec);
 		
 	}
 }
@@ -66,11 +67,19 @@ WorldMesh::~WorldMesh() { }
 
 // Test Function: Rotate object per second
 void WorldMesh::rotatePerUpdate(GLfloat deltaTime) {
-	rotateObject(rec.getVertices(), 1 * deltaTime);
+	//rotateObject(rec.getVertices(), 1 * deltaTime);
 
 	vertexManager.clearMesh();
 	// vertexManager.updateMeshes(plane.getVertices(), plane.getIndices());
-	vertexManager.updateMeshes(rec.getVertices(), rec.getIndices(), rec.getNormals());
+	//vertexManager.updateMeshes(rec.getVertices(), rec.getIndices(), rec.getNormals());
+}
+
+WorldMesh* WorldMesh::instance;
+WorldMesh * WorldMesh::getInstance()
+{
+	if (instance == nullptr) instance = new WorldMesh();
+
+	return instance;
 }
 
 

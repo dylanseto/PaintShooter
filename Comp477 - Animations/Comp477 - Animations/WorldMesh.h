@@ -41,6 +41,8 @@ class WorldMesh {
 
 		void rotatePerUpdate(GLfloat deltaTime);
 
+		static WorldMesh* getInstance();
+
 	private:
 		vector<GLfloat> vertices;
 		vector<GLuint> indices;
@@ -53,7 +55,9 @@ class WorldMesh {
 		void scaleObject(vector<GLfloat>* vertices, float scale);
 
 		// Test Object
-		Rectangle rec;
+		vector<Rectangle*> rectangles;
 		Grid plane;
+
+		static WorldMesh* instance;
 
 };

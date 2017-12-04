@@ -11,7 +11,6 @@ private:
 	static vector<Particle*> allParticles;
 	static int NUM_PARTICLES;
 
-	vector<Particle*> particles;
 	vector<GLfloat> localVertices;
 	vector<GLuint> localIndices;
 	vector<GLfloat> localNormals;
@@ -19,8 +18,7 @@ private:
 	glm::vec3 force;
 
 public:
-	Liquid();
-	Liquid(glm::vec3 force);
+	Liquid(glm::vec3 paintColor, ::vec3 force);
 
 	void updateLiquid();
 	void sortParticles();
@@ -29,7 +27,10 @@ public:
 	vector<GLfloat>* getNormals();
 
 	static vector<vec3> getPositions();
-	static vector<vec3> getForcesData();
+	static vector<vec4> getForcesData();
 	static int getNumParticles();
 	static void setPressureDesity(int id, float density, float pressure);
+	static void setPositionVelocity(int id, vec3 pos, vec3 speed);
+
+	vector<Particle*> particles;
 };

@@ -18,7 +18,7 @@
 #include "Display.h"
 #include "Skybox.h"
 
-#include "Liquid.h"
+#include "LiquidManager.h"
 
 using namespace std;
 
@@ -129,12 +129,18 @@ int main() {
 
 
 	// ---------- CREATING OUR LIQUID ---------- //
-	Liquid liq;
-	vertices = liq.getVertices();
-	normals = liq.getNormals();
+	/*LiquidManager liquidManager;
+	liquidManager.setPaintColor(paintColor);
+	
+	liquidManager.createLiquidProjectile();*/
 
-	animationWindow.setParticleVertices(vertices);
-	animationWindow.setParticleNormals(normals);
+	Liquid liq(paintColor, vec3(0, 0, 0));
+
+	vector<GLfloat>* particleVertices = liq.getVertices();
+	vector<GLfloat>* particleNormals  = liq.getNormals();
+	
+	animationWindow.setParticleVertices(particleVertices);
+	animationWindow.setParticleNormals(particleNormals);
 
 	// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -199,7 +205,7 @@ int main() {
 
 		// Check Keyboard Input
 		do_movement(deltaTime);
-		liq.updateLiquid();
+		// liq.updateLiquid();
 
 		/*
 		*	UPDATE OUR DYNAMIC OBJECT HERE BASED ON TIME (60 FPS FRAME LOCK)
@@ -207,16 +213,18 @@ int main() {
 		*		- Send new positions to be displayed
 		*/
 
-		while (updateDeltaTime >= 1.0) {
+		//while (updateDeltaTime >= 1.0) {
 
-			// world.rotatePerUpdate(updateDeltaTime);
+		//	// world.rotatePerUpdate(updateDeltaTime);
 
-			updates++;
-			updateDeltaTime--;
-		}	
+		//	updates++;
+		//	updateDeltaTime--;
+		//}	
 
 		animationWindow.setLightColor(lightColor);
 		animationWindow.setPaintColor(paintColor);
+
+		//liquidManager.update(deltaTime);
 
 		// Call Window to Render Image 
 		animationWindow.render(deltaTime);
@@ -228,7 +236,7 @@ int main() {
 		// Displays output Data every second (Frames per second, Updates per second)
 		if (glfwGetTime() - timer > 1.0) {
 			timer++;
-			//std::cout << "FPS: " << frames << " Updates:" << updates << std::endl;
+			std::cout << "FPS: " << frames << " Updates:" << updates << " DeltaTime: " << deltaTime << std::endl;
 			updates = 0, frames = 0;
 		}
 

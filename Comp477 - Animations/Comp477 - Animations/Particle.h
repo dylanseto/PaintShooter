@@ -11,17 +11,11 @@ struct Color
 class Particle
 {
 public:
-	glm::vec3 pos, speed, acceleration;
-	Color color;
 	int id;
-	float size, angle, mass;
-	float life;
+	glm::vec3 pos, speed;
 	float cameradistance;
 	float density;
 	float pressure;
-	//string hashKey = "";
-	bool moved = false;
-	glm::vec3 index;
 
 	Particle()
 	{
