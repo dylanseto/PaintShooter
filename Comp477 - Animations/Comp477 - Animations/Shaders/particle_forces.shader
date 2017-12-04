@@ -47,6 +47,10 @@ void main() {
 	ID = par_ID;
 	vec3 totalForces = gravityForce() + pressureForce();
 	vec3 acc = totalForces / MASS;
-	vec3 speed = acc*deltaTime; // TODO : add to old speed.
-	vec3 pos = position + speed*deltaTime;
+
+	//vec3 speed = acc*deltaTime; // TODO : add to old speed.
+	//vec3 pos = position + speed*deltaTime;
+
+	newPos = position + speed*deltaTime;
+	newSpeed = speed+ acc*deltaTime;
 }

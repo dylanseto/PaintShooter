@@ -90,4 +90,8 @@ class Display {
 
 		GLuint forcesTextureBuffer;
 		GLuint particleForcesBuffer;
+
+		GLuint pressureTBO;
+		GLuint forcesTBO;
+
 };
