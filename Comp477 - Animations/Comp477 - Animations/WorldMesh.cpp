@@ -42,7 +42,7 @@ WorldMesh::WorldMesh() : vertexManager(&vertices, &indices, &normals) {
 		// Rotate, Translate, Scale (Always Rotate First!)
 		int randomDegree = rand() % 45 + 1;
 		//rotateObject(rec.getVertices(), 45);
-		rotateObject(rec.getVertices(), randomDegree);
+		//rotateObject(rec.getVertices(), randomDegree);
 
 		//translateObject(rec.getVertices(), glm::vec3(5.0f, 0.0f, 0.0f));
 		translateObject(rec.getVertices(), glm::vec3(randomTransX, 0.0f, randomTransZ));
