@@ -441,9 +441,23 @@ void Display::render(float deltaTime) {
 		glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, size, sizeof(vec3), &newSpeed);
 		size += sizeof(vec3);
 
+		Liquid::setPositionVelocity(ID, newPos, newSpeed);
+		particleVertices->at(12 * ID + 0) = newPos.x;
+		particleVertices->at(12 * ID + 1) = newPos.y;
+		particleVertices->at(12 * ID + 2) = newPos.z;
+		particleVertices->at(12 * ID + 7) = newSpeed.x;
+		particleVertices->at(12 * ID + 8) = newSpeed.y;
+		particleVertices->at(12 * ID + 9) = newSpeed.z;
+		//cout << "Speed: (" << newSpeed.x << "," << newSpeed.y << "," << newSpeed.z << ")" << endl;
+		if (ID == 500)
+		{
+			printf("ID: %f\n", ID);
+			cout << "Pos: (" << newPos.x << "," << newPos.y << "," << newPos.z << ")" << endl;
+			cout << "Speed: (" << newSpeed.x << "," << newSpeed.y << "," << newSpeed.z << ")" << endl;
+		}
 		//cout << "Pos: (" << newSpeed.x << "," << newSpeed.y << "," << newSpeed.z << ")" << endl;
-		/*printf("ID: %f\n", ID);
-		printf("newPos: %f\n", newPos.y);
+		//printf("ID: %f\n", ID);
+		/*printf("newPos: %f\n", newPos.y);
 		printf("newSpeed: %f\n", newSpeed.y);*/
 	}
 	/*GLfloat ID;

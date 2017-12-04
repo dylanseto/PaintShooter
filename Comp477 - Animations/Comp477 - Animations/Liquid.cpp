@@ -195,7 +195,7 @@ vector<vec4> Liquid::getForcesData()
 
 int Liquid::getNumParticles()
 {
-	return NUM_PARTICLES;
+	return allParticles.size();
 }
 
 void Liquid::setPressureDesity(int id, float density, float pressure)
@@ -203,4 +203,10 @@ void Liquid::setPressureDesity(int id, float density, float pressure)
 	allParticles[id]->density = density;
 	allParticles[id]->pressure = pressure;
 	//cout << "pressure" << allParticles[id]->pressure << endl;
+}
+
+void Liquid::setPositionVelocity(int id, vec3 pos, vec3 speed)
+{
+	allParticles[id]->pos = pos;
+	allParticles[id]->speed = speed;
 }

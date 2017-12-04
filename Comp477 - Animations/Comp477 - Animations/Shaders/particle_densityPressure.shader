@@ -10,8 +10,8 @@ layout(location = 3) in vec3 speed;
 layout(location = 6) in vec3 normal;
 
 // Particle Constants
-#define PARTICLE_NEIGHBOUR_DISTANCE 0.5f
-#define MASS 0.02f
+#define PARTICLE_NEIGHBOUR_DISTANCE 0.2f
+#define MASS 0.2
 #define NRT 5
 
 //uniform vec3 particles[MAX_PARTICLES];
@@ -29,6 +29,11 @@ float calculateDensity()
 	//Iterate thru neighbours
 	for (int i = 0; i != num_particles; i++)
 	{
+		if (i == int(par_ID))
+		{
+			density += MASS * 1;
+			continue;
+		}
 		vec4 text = texelFetch(particles, i);
 		vec3 pos = vec3(text.x, text.y, text.z);
 

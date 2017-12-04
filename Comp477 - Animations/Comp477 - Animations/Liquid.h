@@ -31,4 +31,5 @@ public:
 	static vector<vec4> getForcesData();
 	static int getNumParticles();
 	static void setPressureDesity(int id, float density, float pressure);
+	static void setPositionVelocity(int id, vec3 pos, vec3 speed);
 };
