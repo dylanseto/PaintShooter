@@ -33,7 +33,7 @@ const GLuint WIDTH = 1280,
 
 // Number of Vertex Attribute Objects
 const GLuint NUM_VERTEX_ATTRIB_OBJ = 6;
-const GLuint NUM_PARTICLE_VERTEX_ATTRIB_OBJ = 7;
+const GLuint NUM_PARTICLE_VERTEX_ATTRIB_OBJ = 10;
 
 
 

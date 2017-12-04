@@ -37,6 +37,7 @@ const GLchar * FRAGMENT_SHADER_PATH = "./Shaders/fragment.shader";
 const GLchar * PARTICLE_VERTEX_SHADER_PATH   = "./Shaders/particle_vertex.shader";
 const GLchar * PARTICLE_FRAGMENT_SHADER_PATH = "./Shaders/particle_fragment.shader";
 const GLchar * PARTICLE_DENSITYPRESSURE_SHADER_PATH = "./Shaders/particle_densityPressure.shader";
+const GLchar * PARTICLE_FORCES_SHADER_PATH = "./Shaders/particle_forces.shader";
 
 
 
@@ -106,9 +107,11 @@ int main() {
 	Shader ourShader(VERTEX_SHADER_PATH, FRAGMENT_SHADER_PATH);
 	Shader particleShader(PARTICLE_VERTEX_SHADER_PATH, PARTICLE_FRAGMENT_SHADER_PATH);
 	DensityShader densityShader(PARTICLE_DENSITYPRESSURE_SHADER_PATH);
+	ForceShader forceShader(PARTICLE_FORCES_SHADER_PATH);
 	animationWindow.setShader(&ourShader);
 	animationWindow.setParticleShader(&particleShader);
 	animationWindow.seParticleDensityShader(&densityShader);
+	animationWindow.seParticleForceShader(&forceShader);
 
 
 	// ---------- CREATING OUR LIQUID ---------- //

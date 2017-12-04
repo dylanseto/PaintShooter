@@ -2,6 +2,7 @@
 #include "CommonLibrary.h"
 #include "Shaders\Shader.h"
 #include "DensityShader.h"
+#include "ForceShader.h"
 #include "Camera.h"
 
 class Display {
@@ -17,6 +18,7 @@ class Display {
 		void setShader(Shader* shader);
 		void setParticleShader(Shader* shader);
 		void seParticleDensityShader(DensityShader* shader);
+		void seParticleForceShader(ForceShader* shader);
 		void setCamera(Camera* cam);
 		void setParticleVertices(std::vector<GLfloat>* vertices);
 		void setParticleNormals(std::vector<glm::vec3>* normals);
@@ -45,6 +47,7 @@ class Display {
 		Shader* ourShader;
 		Shader* particleShader;
 		DensityShader* particleDensityShader;
+		ForceShader* particleForceShader;
 
 		// Vertices and Indices
 		std::vector<GLfloat>* localVertices;
@@ -77,6 +80,9 @@ class Display {
 		glm::mat4 view;
 		glm::mat4 projection;
 
-		GLuint textureBuffer;
-		GLuint particleBuffer;
+		GLuint positionTextureBuffer;
+		GLuint particlePosBuffer;
+
+		GLuint forcesTextureBuffer;
+		GLuint particleForcesBuffer;
 };

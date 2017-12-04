@@ -26,7 +26,7 @@ float specialFloor(float x)
 Liquid::Liquid()
 {
 
-	for (float r = 0; r <= 1.0f; r += 1)
+	for (float r = 0; r <= 1.0f; r += 0.5)
 	{
 		int num = 50;
 		float angle1 = 0.0f;
@@ -102,6 +102,10 @@ Liquid::Liquid()
 		localVertices.push_back(particles[i]->color.b);
 
 		localVertices.push_back(i);
+
+		localVertices.push_back(particles[i]->speed.x);
+		localVertices.push_back(particles[i]->speed.y);
+		localVertices.push_back(particles[i]->speed.z);
 		//cout << i << endl;
 
 		//cout << "y values: " << particles[i]->pos.y << endl;
@@ -171,6 +175,18 @@ vector<vec3> Liquid::getPositions()
 		positions.push_back(allParticles[i]->pos);
 	}
 	return positions;
+}
+
+vector<vec3> Liquid::getForcesData()
+{
+	vector<vec3> data;
+	for (int i = 0; i != allParticles.size(); i++)
+	{
+		data.push_back(allParticles[i]->pos);
+		data.push_back(vec3(allParticles[i]->pressure, 0, 0));
+		data.push_back(vec3(allParticles[i]->density, 0, 0));
+	}
+	return data;
 }
 
 int Liquid::getNumParticles()

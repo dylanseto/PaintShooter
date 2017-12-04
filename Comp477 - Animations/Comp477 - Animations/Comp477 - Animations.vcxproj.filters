@@ -63,7 +63,7 @@
     <ClInclude Include="DensityShader.h">
       <Filter>Header Files\Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="NeighborShader.h">
+    <ClInclude Include="ForceShader.h">
       <Filter>Header Files\Shaders</Filter>
     </ClInclude>
   </ItemGroup>
@@ -93,10 +93,10 @@
       <Filter>Source Files\Shaders</Filter>
     </ClCompile>
     <ClCompile Include="DensityShader.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Shaders</Filter>
     </ClCompile>
-    <ClCompile Include="NeighborShader.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="ForceShader.cpp">
+      <Filter>Source Files\Shaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -119,6 +119,9 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="Shaders\particle_densityPressure.shader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Shaders\particle_forces.shader">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>
