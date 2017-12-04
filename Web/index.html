@@ -246,6 +246,33 @@
       <div class="bg-faded p-4 my-4">
         <hr class="divider">
         <h2 class="text-center text-lg text-uppercase my-0">
+          <strong name="resources">Difficulties Encountered</strong>
+        </h2>
+        <hr class="divider">
+        <p>During the course of our project, we've encountered difficulties ranging from basic coding with OpenGL to implementing fluid simulation. Here is a list of obstacles we've faced:</p>
+        <ul>
+          <p>Lighting and Color</p>
+          <li>Computing vertices' normals: each vertex's normal is computed based on the two vectors that share that vertex. Because the scene objects' vertices are created one at a time and the triangles' indices are not incremental, computing the normals was a hard task.</li>
+          <li>Implementing flat shading: due to possibly wrong normals, the scene's colors were blended into another. This created a blur effect that was not pleasant to see. To fix this, we've passed our normals and object color into the shader with the flat interpolation.</li>
+          <li>Adding bloom effect: the bloom effect requires blurring the scene and render it as a texture. This caused a lot of complications as we need to buffer the data dynamically. We resolved the issue by implementing a faint glow onto the paint.</li>
+          <li>Painting the scene when a paint ball collides with an object: this difficulty arised when we needed to find a way to store where the paint ball hits, and with which color. This data was to be passed into the shader in order for it to replace the hit object's color with the paint color, but couldn't find a way to do it.</li>
+          <br>
+          <p>Fluid Particles</p>
+          <li>Simulating fluid particles with physics: because of the complexity of simulating fluid particles, applying physics to them required a lot of time and research in SPH. In addition, with so many particles to render, we had to optimize its number for the best possible performance.</li>
+          <li>Computing correct density and pressure values for the particles: due to the large amount of particles that we simulate, density and pressure values for each particle needs to be computed relative to their positioning, as well as their neighbouring particles' properties. At times, the values passed were correct, but their outputted values weren't.</li>
+          <li>Computing the force that shoots the fluid: a force needs to be applied in order for the paint ball to shoot. For this, the main difficulty that came with it was to apply a force to each particle, so that some can splatter, or fly off the center of the liquid. That is, the liquid should have proper physics. This force is used to give each particle a velocity and is part of simulating fluid particles with physics.</li>
+          <br>
+          <p>General Coding with OpenGL</p>
+          <li>Passing data to the buffers: although minor, this caused a problem in drawing the scene objects properly when data wasn't passed to the buffers correctly. One of the mistakes that led to this was indicating the wrong strides to our buffers.</li>
+          <li>Updating data in the buffers: some data must be computed in the shader, and returned back to the source code for further handling. To do this, we had to find ways to retrieve data from our shaders. Transform feedback was a solution, but it required time to implement it correctly.</li>
+          <li>Integrating individual codes into one: this is a more general problem that we couldn't have avoided. Doing individual tasks didn't cause any problems, but putting all individual parts together was difficult due to code dependency and merge conflicts.</li>
+          <li>Optimizing performance and code efficiency: trying to optimize our code was also a challenge as it needed to be changed and, at times, frequently. When some components were modified, dependent parts wouldn't function properly so it was sometimes hard to fix.</li>
+        </ul>
+      </div>
+        
+      <div class="bg-faded p-4 my-4">
+        <hr class="divider">
+        <h2 class="text-center text-lg text-uppercase my-0">
           <strong name="resources">Resources</strong>
         </h2>
         <hr class="divider">
