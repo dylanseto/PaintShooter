@@ -58,11 +58,74 @@ WorldMesh::WorldMesh() : vertexManager(&vertices, &indices, &normals) {
 		rectangles.push_back(rec);
 		
 	}
+
+	computeWallData();
 }
 
 	
 // Destructor
 WorldMesh::~WorldMesh() { }
+
+vector<float>* WorldMesh::getWallData()
+{
+	return &this->walldata;
+}
+
+void WorldMesh::computeWallData()
+{
+	//vector<wall_data> walldata;
+
+	for (int i = 0; i != rectangles.size(); i++)
+	{
+		float minX = 1000000;
+		float maxX = -1000000;
+		float minY = 1000000;
+		float maxY = -1000000;
+		float minZ = 1000000;
+		float maxZ = -1000000;
+		//cout << "suze: " << rectangles[i]->getVertices()->size() << endl;
+		for (int k = 0; k != 8; k++)
+		{
+			//if (k == 8) continue;
+			float x = rectangles[i]->getVertices()->at(6 * k);
+			float y = rectangles[i]->getVertices()->at(6 * k + 1);
+			float z = rectangles[i]->getVertices()->at(6 * k + 2);
+
+			if (minX > x)
+			{
+				minX = x;
+			}
+			if (maxX < x)
+			{
+				maxX = x;
+			}
+			if (minY > y)
+			{
+				minY = y;
+			}
+			if (maxY < y)
+			{
+				maxY = y;
+			}
+			if (minZ > z)
+			{
+				minZ = z;
+			}
+			if (maxZ < z)
+			{
+				maxZ = z;
+			}
+		}
+		walldata.push_back(maxX);
+		walldata.push_back(minX);
+		walldata.push_back(maxY);
+		walldata.push_back(minY);
+		walldata.push_back(maxZ);
+		walldata.push_back(minZ);
+
+		//walldata.push_back(wall);
+	}
+}
 
 
 // Test Function: Rotate object per second

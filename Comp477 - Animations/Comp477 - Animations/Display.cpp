@@ -1,6 +1,7 @@
 
 #include "Display.h"
 #include "Liquid.h"
+#include "WorldMesh.h"
 
 // ========== Create Windows with set parameters ========== // 
 Display::Display(std::string name, int width, int height) {
@@ -413,6 +414,9 @@ void Display::render(float deltaTime) {
 
 		GLint deltaTimeLoc = glGetUniformLocation(particleForceShader->Program, "deltaTime");
 		glUniform1f(deltaTimeLoc, deltaTime);
+
+		GLint wallDataLoc = glGetUniformLocation(particleForceShader->Program, "walls");
+		glUniform1fv(wallDataLoc, WorldMesh::getInstance()->getWallData()->size(), WorldMesh::getInstance()->getWallData()->data());
 
 		//
 		glBindBuffer(GL_ARRAY_BUFFER, this->particleForcesBuffer);

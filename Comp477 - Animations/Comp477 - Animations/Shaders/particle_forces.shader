@@ -15,17 +15,12 @@ layout(location = 6) in vec3 normal;
 #define PI 3.14159265
 #define VISCOSITY_CONST 0.001
 
-struct Wall
-{
-	vec3 vertex[8];
-};
-
 //uniform vec3 particles[MAX_PARTICLES];
 uniform int num_particles;
 uniform samplerBuffer particles; //particle positions, pressure, density, velocty
 uniform float deltaTime;
 uniform vec3 force;
-uniform Wall walls[8];
+uniform float walls[96];
 
 // Vertex Shader Output
 out float ID;
@@ -139,6 +134,25 @@ void main() {
 	if (curPos.y < 0) //intersects with plane.
 	{
 		s = -1 * curSpeed * 0.5;
+	}
+
+	for (int k = 0; k != 16; k++)
+	{
+		float minX = walls[6*k];
+		float maxX = walls[6 * k+1];
+		float minY = walls[6 * k+2];
+		float maxY = walls[6 * k+3];
+		float minZ = walls[6 * k+4];
+		float maxZ = walls[6 * k+5];
+
+		if ((curPos.x <= minX && curPos.x >= maxX)
+			&& (curPos.y <= minY && curPos.y >= maxY)
+			&& (curPos.z <= minZ && curPos.x >= maxZ))
+		{
+			//We hit a wall, we can stop.
+			s = -1 * curSpeed * 0.5;
+			break;
+		}
 	}
 
 	//vec4 ppos = texelFetch(particles, 4*i+2);

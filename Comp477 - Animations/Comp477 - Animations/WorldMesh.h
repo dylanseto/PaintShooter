@@ -10,6 +10,16 @@
 
 using namespace std;
 
+struct wall_data
+{
+	float minX;
+	float maxX;
+	float minY;
+	float maxY;
+	float minZ;
+	float maxZ;
+};
+
 class WorldMesh {
 
 	public:
@@ -19,6 +29,9 @@ class WorldMesh {
 
 		// Destructor
 		~WorldMesh();
+
+		vector<float>* getWallData();
+		void computeWallData();
 
 		// Getter: Return vertices
 		vector<GLfloat>* getVertices() {
@@ -47,6 +60,8 @@ class WorldMesh {
 		vector<GLfloat> vertices;
 		vector<GLuint> indices;
 		vector<GLfloat> normals;
+
+		vector<float> walldata;
 
 		VertexManager vertexManager;
 
