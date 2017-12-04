@@ -16,6 +16,7 @@
 #include "Camera.h"
 #include "WorldMesh.h"
 #include "Display.h"
+#include "Skybox.h"
 
 #include "Liquid.h"
 
@@ -39,6 +40,9 @@ const GLchar * PARTICLE_FRAGMENT_SHADER_PATH = "./Shaders/particle_fragment.shad
 const GLchar * PARTICLE_DENSITYPRESSURE_SHADER_PATH = "./Shaders/particle_densityPressure.shader";
 const GLchar * PARTICLE_FORCES_SHADER_PATH = "./Shaders/particle_forces.shader";
 
+const GLchar * SKYBOX_VERTEX_SHADER = "./Shaders/skybox_vertex.shader";
+const GLchar * SKYBOX_FRAGMENT_SHADER = "./Shaders/skybox_fragment.shader";
+
 
 
 // ========== Constants and Values ========== //
@@ -54,6 +58,11 @@ lastY = 300;
 bool keys[1024];
 bool firstMouse = true;
 bool lockCamera = true;
+
+// Skybox Textures IDs
+GLuint daySkyboxTextureID;
+GLuint nightSkyboxTextureID;
+GLuint activeTextureID;
 
 
 const  float fpsLimit = 1.0f / 60.0f;
@@ -125,6 +134,38 @@ int main() {
 	// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
+
+
+	// --------- Creating the Skybox --------- // 
+	Shader skyboxShader(SKYBOX_VERTEX_SHADER, SKYBOX_FRAGMENT_SHADER);
+	Skybox skybox(&skyboxShader);
+
+	// Loading Images for Day Skybox
+	std::vector<GLchar*> daySkyboxTextures;
+	daySkyboxTextures.push_back("./Textures/Day/right.jpg");
+	daySkyboxTextures.push_back("./Textures/Day/left.jpg");
+	daySkyboxTextures.push_back("./Textures/Day/top.jpg");
+	daySkyboxTextures.push_back("./Textures/Day/bottom.jpg");
+	daySkyboxTextures.push_back("./Textures/Day/back.jpg");
+	daySkyboxTextures.push_back("./Textures/Day/front.jpg");
+
+	// Loading Images for Night Skybox
+	std::vector<GLchar*> nightSkyboxTextures;
+	nightSkyboxTextures.push_back("./Textures/Night/right.jpg");
+	nightSkyboxTextures.push_back("./Textures/Night/left.jpg");
+	nightSkyboxTextures.push_back("./Textures/Night/top.jpg");
+	nightSkyboxTextures.push_back("./Textures/Night/bottom.jpg");
+	nightSkyboxTextures.push_back("./Textures/Night/back.jpg");
+	nightSkyboxTextures.push_back("./Textures/Night/front.jpg");
+
+	// Saving the Texture IDs
+	daySkyboxTextureID = skybox.loadCubeMap(daySkyboxTextures);
+	nightSkyboxTextureID = skybox.loadCubeMap(nightSkyboxTextures);
+
+	// Setting Active Texture ID
+	activeTextureID = daySkyboxTextureID;
+	skybox.setTextureID(activeTextureID);
+
 	// =============== SEND STATIC DATA TO GPU =============== 
 	// world.rotatePerUpdate(updateDeltaTime);
 	// animationWindow.sendStaticDataToBuffer();
@@ -132,6 +173,10 @@ int main() {
 
 	// =============== Game Loop ================= //
 	while (!animationWindow.isClosed()) {
+
+		if (skybox.getTextureID() != activeTextureID) {
+			skybox.setTextureID(activeTextureID);
+		}
 
 		// Check and call events
 		glfwPollEvents();
@@ -169,6 +214,9 @@ int main() {
 
 		// Call Window to Render Image 
 		animationWindow.render(lightColor);
+		skybox.draw(animationWindow.getCamera(), animationWindow.getViewMatrix(), animationWindow.getProjectionMatrix());
+		animationWindow.swapBuffer();
+
 		frames++;
 
 		// Displays output Data every second (Frames per second, Updates per second)
@@ -203,11 +251,17 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	// Toggle between Locked and Free camera movement
 	else if (key == GLFW_KEY_K && action == GLFW_PRESS) {
 		lightColor = dayColor;
+		if (activeTextureID != daySkyboxTextureID) {
+			activeTextureID = daySkyboxTextureID;
+		}
 	}
 
 	// Toggle between Locked and Free camera movement
 	else if (key == GLFW_KEY_L && action == GLFW_PRESS) {
 		lightColor = nightColor;
+		if (activeTextureID != nightSkyboxTextureID) {
+			activeTextureID = nightSkyboxTextureID;
+		}
 	}
 
 	// Smooth camera transitions

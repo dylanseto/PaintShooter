@@ -67,6 +67,17 @@ void Display::loadTextures(GLchar* fileLocation) {
 }
 
 
+Camera* Display::getCamera() {
+	return camera;
+}
+
+glm::mat4* Display::getViewMatrix() {
+	return &view;
+}
+
+glm::mat4* Display::getProjectionMatrix() {
+	return &projection;
+}
 
 // ========== Check whether window is closed ========== // 
 void Display::initWindow() {
@@ -377,10 +388,14 @@ void Display::render(glm::vec3 lightColor) {
 	// Unbinding VAO
 	glBindVertexArray(0);
 
+	
+}
+
+
+void Display::swapBuffer() {
 	// Swap the buffers
 	glfwSwapBuffers(window);
 }
-
 
 // ========== Send Static Data to Buffers ========== 
 //void Display::sendStaticDataToBuffer() {

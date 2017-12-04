@@ -63,10 +63,12 @@
     <ClInclude Include="DensityShader.h">
       <Filter>Header Files\Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="ForceShader.h">
+	<ClInclude Include="ForceShader.h">
       <Filter>Header Files\Shaders</Filter>
     </ClInclude>
-  </ItemGroup>
+	<ClInclude Include="Skybox.h">
+      <Filter>Header Files\Scene Objects</Filter>
+    </ClInclude>  </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Driver.cpp">
       <Filter>Source Files</Filter>
@@ -95,10 +97,11 @@
     <ClCompile Include="DensityShader.cpp">
       <Filter>Source Files\Shaders</Filter>
     </ClCompile>
-    <ClCompile Include="ForceShader.cpp">
+	<ClCompile Include="Skybox.cpp">
+      <Filter>Source Files\Scene Objects</Filter>
+    </ClCompile>	<ClCompile Include="ForceShader.cpp">
       <Filter>Source Files\Shaders</Filter>
-    </ClCompile>
-  </ItemGroup>
+    </ClCompile>  </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\fragment.shader">
       <Filter>Resource Files\Shaders</Filter>
