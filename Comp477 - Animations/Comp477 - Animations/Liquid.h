@@ -19,8 +19,7 @@ private:
 	glm::vec3 force;
 
 public:
-	Liquid();
-	Liquid(glm::vec3 force);
+	Liquid(glm::vec3 paintColor, ::vec3 force);
 
 	void updateLiquid();
 	void sortParticles();

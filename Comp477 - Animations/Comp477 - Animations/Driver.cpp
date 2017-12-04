@@ -129,7 +129,7 @@ int main() {
 
 
 	// ---------- CREATING OUR LIQUID ---------- //
-	Liquid liq;
+	Liquid liq(paintColor, vec3(0,0,0));
 	vertices = liq.getVertices();
 	normals = liq.getNormals();
 
@@ -370,7 +370,7 @@ void do_movement(GLfloat deltaTime) {
 
 void shoot(Display& animationWindow) {
 	static int i = 0;
-	animationWindow.actualShotPositions[i] = camera.Position;
+	animationWindow.actualShotPositions[i] = vec3(10, 0, 0);//camera.Position;
 	animationWindow.actualColors[i] = paintColor;
 	i++;
 

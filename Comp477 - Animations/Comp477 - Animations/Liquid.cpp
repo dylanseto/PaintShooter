@@ -23,7 +23,7 @@ float specialFloor(float x)
 	}
 }
 
-Liquid::Liquid()
+Liquid::Liquid(glm::vec3 paintColor, ::vec3 force)
 {
 
 	for (float r = 0; r <= 1.0f; r += 0.5)
@@ -53,9 +53,9 @@ Liquid::Liquid()
 					if (particle->pos.z <= 0.01f && particle->pos.z > 0) particle->pos.z = 0;
 					if (particle->pos.z >= 0.01f && particle->pos.z < 0) particle->pos.z = 0;
 					particle->life = -1;
-					particle->color.r = 1;
-					particle->color.g = 0;
-					particle->color.b = 0;
+					particle->color.r = paintColor.x;
+					particle->color.g = paintColor.y;
+					particle->color.b = paintColor.z;
 					particle->color.a = 1;
 					particle->mass = 1.0f;
 					particle->index = vec3(specialFloor(particle->pos.x), specialFloor(particle->pos.y), specialFloor(particle->pos.z));
@@ -75,9 +75,9 @@ Liquid::Liquid()
 			particle->pos.y = 0;
 			particle->pos.z = 0;
 			particle->life = -1;
-			particle->color.r = 1;
-			particle->color.g = 0;
-			particle->color.b = 0;
+			particle->color.r = paintColor.x;
+			particle->color.g = paintColor.y;
+			particle->color.b = paintColor.z;
 			particle->color.a = 1;
 			particle->mass = 1.0f;
 			particle->index = vec3(specialFloor(particle->pos.x), specialFloor(particle->pos.y), specialFloor(particle->pos.z));
@@ -124,10 +124,6 @@ Liquid::Liquid()
 		localNormals.push_back(particles[i]->pos.y);
 		localNormals.push_back(particles[i]->pos.z);
 	}
-}
-
-Liquid::Liquid(glm::vec3 force)
-{
 }
 
 void Liquid::updateLiquid()
