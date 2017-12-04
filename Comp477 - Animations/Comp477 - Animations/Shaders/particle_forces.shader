@@ -114,8 +114,16 @@ void main() {
 	vec3 totalForces = gravityForce() + pressureForce() + viscosity();
 	vec3 acc = totalForces / MASS;
 
-	highp int i = int(par_ID);
-	vec4 ppos = texelFetch(particles, 4*i+2);
-	newPos = position + speed*deltaTime;
-	newSpeed = speed + acc*deltaTime;//vec3(ppos.x, ppos.y, ppos.z);
+	//highp int i = int(par_ID);
+	vec3 curPos = position + speed*deltaTime;
+	vec3 s = speed;
+
+	if (curPos.y <= 0) //intersects with plane.
+	{
+		s = -1 * speed;
+	}
+
+	//vec4 ppos = texelFetch(particles, 4*i+2);
+	newPos = position + s*deltaTime;
+	newSpeed = s + acc*deltaTime;//vec3(ppos.x, ppos.y, ppos.z);
 }
