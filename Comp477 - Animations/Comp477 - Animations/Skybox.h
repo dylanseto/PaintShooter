@@ -12,8 +12,10 @@ public:
 	Skybox(Shader* shader);
 	~Skybox();
 
-	void loadCubeMap(std::vector<GLchar*> fileLocation);
+	GLuint loadCubeMap(std::vector<GLchar*> fileLocation);
 	void draw(Camera* cam, glm::mat4* view, glm::mat4* projection);
+	void setTextureID(GLuint textureID);
+	GLuint getTextureID();
 
 private:
 	std::vector<GLfloat>* localVertices;

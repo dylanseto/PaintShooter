@@ -82,7 +82,7 @@ Skybox::~Skybox() {
 }
 
 // Load Cubemap Texture Function
-void Skybox::loadCubeMap(std::vector<GLchar*> fileLocation) {
+GLuint Skybox::loadCubeMap(std::vector<GLchar*> fileLocation) {
 
 	GLuint textureID;
 
@@ -105,7 +105,7 @@ void Skybox::loadCubeMap(std::vector<GLchar*> fileLocation) {
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 
-	this->textureID = textureID;
+	return textureID;
 }
 
 void Skybox::draw(Camera* cam, glm::mat4* view, glm::mat4* projection) {
@@ -130,3 +130,12 @@ void Skybox::draw(Camera* cam, glm::mat4* view, glm::mat4* projection) {
 	glDepthFunc(GL_LESS);
 }
 
+
+void Skybox::setTextureID(GLuint textureID) {
+	this->textureID = textureID;
+}
+
+
+GLuint Skybox::getTextureID() {
+	return textureID;
+}
