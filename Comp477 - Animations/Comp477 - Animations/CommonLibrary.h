@@ -34,6 +34,9 @@ const GLuint NUM_VERTEX_ATTRIB_OBJ = 6;
 const GLuint NUM_PARTICLE_VERTEX_ATTRIB_OBJ = 12;
 const GLuint NUM_SHOTS = 10;
 
+// Liquid Life Time
+const float LIQUID_LIFE_TIME = 5.0f;
+
 
 // ================================== Object Sizes ================================== 
 

@@ -52,13 +52,6 @@ Liquid::Liquid(glm::vec3 paintColor, ::vec3 force)
 					particle->pos.z = y*glm::sin(spanDegree*k) + z*glm::cos(spanDegree*k);
 					if (particle->pos.z <= 0.01f && particle->pos.z > 0) particle->pos.z = 0;
 					if (particle->pos.z >= 0.01f && particle->pos.z < 0) particle->pos.z = 0;
-					particle->life = -1;
-					particle->color.r = paintColor.x;
-					particle->color.g = paintColor.y;
-					particle->color.b = paintColor.z;
-					particle->color.a = 1;
-					particle->mass = 1.0f;
-					particle->index = vec3(specialFloor(particle->pos.x), specialFloor(particle->pos.y), specialFloor(particle->pos.z));
 
 					particles.push_back(particle);
 					allParticles.push_back(particle);
@@ -74,13 +67,6 @@ Liquid::Liquid(glm::vec3 paintColor, ::vec3 force)
 			particle->pos.x = 0;
 			particle->pos.y = 0;
 			particle->pos.z = 0;
-			particle->life = -1;
-			particle->color.r = paintColor.x;
-			particle->color.g = paintColor.y;
-			particle->color.b = paintColor.z;
-			particle->color.a = 1;
-			particle->mass = 1.0f;
-			particle->index = vec3(specialFloor(particle->pos.x), specialFloor(particle->pos.y), specialFloor(particle->pos.z));
 			particles.push_back(particle);
 			allParticles.push_back(particle);
 
@@ -99,9 +85,10 @@ Liquid::Liquid(glm::vec3 paintColor, ::vec3 force)
 		localVertices.push_back(particles[i]->pos.y);
 		localVertices.push_back(particles[i]->pos.z);
 
-		localVertices.push_back(particles[i]->color.r);
-		localVertices.push_back(particles[i]->color.g);
-		localVertices.push_back(particles[i]->color.b);
+		//color
+		localVertices.push_back(1);
+		localVertices.push_back(0);
+		localVertices.push_back(0);
 
 		localVertices.push_back(i);
 
@@ -116,8 +103,6 @@ Liquid::Liquid(glm::vec3 paintColor, ::vec3 force)
 		//cout << "y values: " << particles[i]->pos.y << endl;
 		//buffer for Color alpha?
 	}
-
-	//}
 	for (int i = 0; i < particles.size(); i++) {
 		normalize(particles[i]->pos);
 		localNormals.push_back(particles[i]->pos.x);
