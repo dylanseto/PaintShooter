@@ -33,7 +33,7 @@ vec3 gravityForce()
 
 vec3 pressureForce()
 {
-	vec3 pressureForce;
+	vec3 pressureForce = vec3(0,0,0);
 	for (int i = 0; i != num_particles; i++)
 	{
 		if (i == par_ID) continue;
@@ -51,14 +51,16 @@ vec3 pressureForce()
 		//	ndensity = 0.01; //cheating
 		//}
 
-		if (distance(pos, position) >= PARTICLE_NEIGHBOUR_DISTANCE)
+		if (distance(position, pos) > PARTICLE_NEIGHBOUR_DISTANCE)
 		{
 			continue;
 		}
 		vec3 dif = position - pos;
+		vec3 normalized = normalize(dif);
 		float norm = sqrt(pow(dif.x, 2) + pow(dif.y, 2) + pow(dif.z, 2));
-		vec3 gradientWeight = (45/(PI*pow(PARTICLE_NEIGHBOUR_DISTANCE,6)))*(dif/norm)*pow(PARTICLE_NEIGHBOUR_DISTANCE-norm,2);
-		pressureForce += ((pressure + npressure) / 2)*(0.02 / ndensity)*gradientWeight;
+		vec3 gradientWeight = (45 / (PI*pow(PARTICLE_NEIGHBOUR_DISTANCE, 6)))*(dif/norm)*pow(PARTICLE_NEIGHBOUR_DISTANCE-norm,2);
+		pressureForce += gradientWeight;//((pressure + npressure) / 2)*(0.02 / ndensity)*gradientWeight;
+		break;
 	}
 
 	return pressureForce;
@@ -113,7 +115,7 @@ void main() {
 	vec3 acc = totalForces / MASS;
 
 	highp int i = int(par_ID);
-	vec4 ppos = texelFetch(particles, 4 * i+1);
-	newPos = vec3(ppos.x, ppos.y, ppos.z);//position + speed*deltaTime;
-	newSpeed = speed + acc*deltaTime;
+	vec4 ppos = texelFetch(particles, 4*i+2);
+	newPos = position + speed*deltaTime;
+	newSpeed = speed + acc*deltaTime;//vec3(ppos.x, ppos.y, ppos.z);
 }

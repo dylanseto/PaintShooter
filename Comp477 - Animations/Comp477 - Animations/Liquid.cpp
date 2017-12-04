@@ -50,6 +50,8 @@ Liquid::Liquid()
 					particle->pos.x = x;//x*glm::cos(spanDegree*k) - y*glm::sin(spanDegree*k);
 					particle->pos.y = y*glm::cos(spanDegree*k) - z*glm::sin(spanDegree*k);
 					particle->pos.z = y*glm::sin(spanDegree*k) + z*glm::cos(spanDegree*k);
+					if (particle->pos.z <= 0.01f && particle->pos.z > 0) particle->pos.z = 0;
+					if (particle->pos.z >= 0.01f && particle->pos.z < 0) particle->pos.z = 0;
 					particle->life = -1;
 					particle->color.r = 1;
 					particle->color.g = 0;
@@ -180,16 +182,17 @@ vector<vec3> Liquid::getPositions()
 	return positions;
 }
 
-vector<vec3> Liquid::getForcesData()
+vector<vec4> Liquid::getForcesData()
 {
-	vector<vec3> data;
+	vector<vec4> data;
 	for (int i = 0; i != allParticles.size(); i++)
 	{
-		data.push_back(allParticles[i]->pos);
+		data.push_back(vec4(allParticles[i]->pos, 0));//(allParticles[i]->pos);
 		//cout << "data Pos: (" << allParticles[i]->pos.x << "," << allParticles[i]->pos.y << "," << allParticles[i]->pos.z << ")" << endl;
-		data.push_back(vec3(allParticles[i]->pressure, 0, 0));
-		data.push_back(vec3(allParticles[i]->density, 0, 0));
-		data.push_back(allParticles[i]->speed);
+		//cout << "pressure" << allParticles[i]->pressure << endl;
+		data.push_back(vec4(allParticles[i]->pressure, 0, 0, i));
+		data.push_back(vec4(allParticles[i]->density, 0, 0, i));
+		data.push_back(vec4(allParticles[i]->speed,i));
 	}
 	return data;
 }
@@ -202,5 +205,6 @@ int Liquid::getNumParticles()
 void Liquid::setPressureDesity(int id, float density, float pressure)
 {
 	allParticles[id]->density = density;
-	allParticles[id]->density = pressure;
+	allParticles[id]->pressure = pressure;
+	//cout << "pressure" << allParticles[id]->pressure << endl;
 }

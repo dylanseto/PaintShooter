@@ -214,7 +214,7 @@ void Display::initGLBuffers() {
 
 	glGenBuffers(1, &particleForcesBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, particleForcesBuffer);
-	glBufferData(GL_ARRAY_BUFFER, 1000000 * (3 * sizeof(GLfloat)), nullptr, GL_STATIC_READ);
+	glBufferData(GL_ARRAY_BUFFER, 1000000 * (4 * sizeof(GLfloat)), nullptr, GL_STATIC_READ);
 
 
 	// Unbinding VAO
@@ -414,20 +414,17 @@ void Display::render(float deltaTime) {
 
 	//
 	glBindBuffer(GL_ARRAY_BUFFER, this->particleForcesBuffer);
-	glBufferData(GL_ARRAY_BUFFER, 4*Liquid::getNumParticles() * sizeof(glm::vec3), &Liquid::getForcesData().front(), GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 4*Liquid::getNumParticles() * sizeof(glm::vec4), &Liquid::getForcesData().front(), GL_DYNAMIC_DRAW);
 	GLint partForcesLocation = glGetUniformLocation(particleForceShader->Program, "particles");
 	glUniform1i(partForcesLocation, 1);
 	glActiveTexture(GL_TEXTURE1);
 	glBindBuffer(GL_TEXTURE_BUFFER, forcesTextureBuffer);
-	glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, forcesTextureBuffer);
+	glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, particleForcesBuffer);
 
 	glBeginTransformFeedback(GL_POINTS);
 	glDrawArrays(GL_POINTS, 0, 3 * Liquid::getNumParticles());
 	glEndTransformFeedback();
 	glFlush();
-
-
-	//// Test
 
 	glBindBuffer(GL_ARRAY_BUFFER, forcesTBO);
 	size_t size = 0;
@@ -444,7 +441,7 @@ void Display::render(float deltaTime) {
 		glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, size, sizeof(vec3), &newSpeed);
 		size += sizeof(vec3);
 
-		cout << "Pos: (" << newPos.x << "," << newPos.y << "," << newPos.z << ")" << endl;
+		//cout << "Pos: (" << newSpeed.x << "," << newSpeed.y << "," << newSpeed.z << ")" << endl;
 		/*printf("ID: %f\n", ID);
 		printf("newPos: %f\n", newPos.y);
 		printf("newSpeed: %f\n", newSpeed.y);*/

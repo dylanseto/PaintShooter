@@ -29,7 +29,7 @@ public:
 	vector<GLfloat>* getNormals();
 
 	static vector<vec3> getPositions();
-	static vector<vec3> getForcesData();
+	static vector<vec4> getForcesData();
 	static int getNumParticles();
 	static void setPressureDesity(int id, float density, float pressure);
 };
