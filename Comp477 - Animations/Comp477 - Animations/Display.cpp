@@ -158,16 +158,16 @@ void Display::initGLBuffers() {
 	glBindVertexArray(VAO[1]);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO[2]);
 
-	// Set the vertex attribute pointers : POSITION (Px, Py, Pz)
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, NUM_PARTICLE_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)0);
+	// Set the vertex attribute pointers : PARTICLE INDEX
+	glVertexAttribPointer(0, 1, GL_FLOAT, GL_FALSE, NUM_PARTICLE_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
 
-	// Set the vertex attribute pointers : COLOR (R, G, B)
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, NUM_PARTICLE_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	// Set the vertex attribute pointers : POSITION (Px, Py, Pz)
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, NUM_PARTICLE_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(1 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
 
-	// Set the vertex attribute pointers : PARTICLE INDEX
-	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, NUM_PARTICLE_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+	// Set the vertex attribute pointers : COLOR (R, G, B)
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, NUM_PARTICLE_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(4 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(2);
 
 	// Set the vertex attribute pointers : VELOCTY (x, y, z)
@@ -314,53 +314,55 @@ void Display::render(float deltaTime) {
 
 	// Drawing our Objects
 	glDrawElements(GL_TRIANGLES, localIndices->size() * 2, GL_UNSIGNED_INT, 0);
-
-
-	// ------------- Drawing Particles ------------- //
-
-	// Use Particle Shader to Render Particles (Different Vertex/Fragment Shader)
-	particleShader->Use();
-
-	GLint lightPosLoc1 = glGetUniformLocation(particleShader->Program, "lightPos");
-	glUniform3f(lightPosLoc1, localLightPos.x, localLightPos.y, localLightPos.z);
-
-	GLint lightColorLoc1 = glGetUniformLocation(particleShader->Program, "lightColor");
-	glUniform3f(lightColorLoc1, localLightColor.x, localLightColor.y, localLightColor.z);
-
-	GLint paintColorLoc1 = glGetUniformLocation(particleShader->Program, "paintColor");
-	glUniform3f(paintColorLoc1, localPaintColor.x, localPaintColor.y, localPaintColor.z);
-
-	GLint emissiveLoc1 = glGetUniformLocation(particleShader->Program, "emissive");
-	glUniform3f(emissiveLoc1, glowAmount, 0.0f, 0.0f);
-
-	GLint viewPosLoc1 = glGetUniformLocation(particleShader->Program, "viewPos");
-	glUniform3f(viewPosLoc1, camera->Position.x, camera->Position.y, camera->Position.z);
-
-	/*GLint ParticlesLoc = glGetUniformLocation(particleDensityShader->Program, "particles");
-	glUniform3fv(ParticlesLoc, Liquid::getNumParticles(), reinterpret_cast<GLfloat *>(Liquid::getPositions().data()));*/
-
-	/*GLint ParticlesLoc = glGetUniformLocation(particleDensityShader->Program, "particles");
-	glUniform1iv(glGetUniformLocation(ParticlesLoc, "v"), 10, v);*/
-	//GLint viewPosLoc1 = glGetUniformLocation(particleDensityShader->Program, "particles");
-	//glUniform3fv(viewPosLoc1, 10, glm::vec3().);
-
-
-	pvmLoc = glGetUniformLocation(particleShader->Program, "pvm");
-	glUniformMatrix4fv(pvmLoc, 1, GL_FALSE, glm::value_ptr(pvm));
-
-	// Sending Particle Data to the Buffers  
-	glBindVertexArray(VAO[1]);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO[2]);
-	glBufferData(GL_ARRAY_BUFFER, particleVertices->size() * sizeof(GLfloat), &particleVertices->front(), GL_DYNAMIC_DRAW);	// Copy our vertices to the buffer
-	glBindBuffer(GL_ARRAY_BUFFER, VBO[3]);
-	glBufferData(GL_ARRAY_BUFFER, particleNormals->size() * sizeof(GLfloat), &particleNormals->front(), GL_DYNAMIC_DRAW);
-
-	// Drawing our Particles 
-	glDrawArrays(GL_POINTS, 0, this->particleVertices->size());
-
-
+	
 
 	if (!particleVertices->empty() && !particleNormals->empty()) {
+
+		// ------------- Drawing Particles ------------- //
+
+		// Use Particle Shader to Render Particles (Different Vertex/Fragment Shader)
+		particleShader->Use();
+
+		GLint lightPosLoc1 = glGetUniformLocation(particleShader->Program, "lightPos");
+		glUniform3f(lightPosLoc1, localLightPos.x, localLightPos.y, localLightPos.z);
+
+		GLint lightColorLoc1 = glGetUniformLocation(particleShader->Program, "lightColor");
+		glUniform3f(lightColorLoc1, localLightColor.x, localLightColor.y, localLightColor.z);
+
+		GLint paintColorLoc1 = glGetUniformLocation(particleShader->Program, "paintColor");
+		glUniform3f(paintColorLoc1, localPaintColor.x, localPaintColor.y, localPaintColor.z);
+
+		GLint emissiveLoc1 = glGetUniformLocation(particleShader->Program, "emissive");
+		glUniform3f(emissiveLoc1, glowAmount, 0.0f, 0.0f);
+
+		GLint viewPosLoc1 = glGetUniformLocation(particleShader->Program, "viewPos");
+		glUniform3f(viewPosLoc1, camera->Position.x, camera->Position.y, camera->Position.z);
+
+		/*GLint ParticlesLoc = glGetUniformLocation(particleDensityShader->Program, "particles");
+		glUniform3fv(ParticlesLoc, Liquid::getNumParticles(), reinterpret_cast<GLfloat *>(Liquid::getPositions().data()));*/
+
+		/*GLint ParticlesLoc = glGetUniformLocation(particleDensityShader->Program, "particles");
+		glUniform1iv(glGetUniformLocation(ParticlesLoc, "v"), 10, v);*/
+		//GLint viewPosLoc1 = glGetUniformLocation(particleDensityShader->Program, "particles");
+		//glUniform3fv(viewPosLoc1, 10, glm::vec3().);
+
+
+		pvmLoc = glGetUniformLocation(particleShader->Program, "pvm");
+		glUniformMatrix4fv(pvmLoc, 1, GL_FALSE, glm::value_ptr(pvm));
+
+		// Sending Particle Data to the Buffers  
+		glBindVertexArray(VAO[1]);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO[2]);
+		glBufferData(GL_ARRAY_BUFFER, particleVertices->size() * sizeof(GLfloat), &particleVertices->front(), GL_DYNAMIC_DRAW);	// Copy our vertices to the buffer
+		glBindBuffer(GL_ARRAY_BUFFER, VBO[3]);
+		glBufferData(GL_ARRAY_BUFFER, particleNormals->size() * sizeof(GLfloat), &particleNormals->front(), GL_DYNAMIC_DRAW);
+
+		// Drawing our Particles 
+		glDrawArrays(GL_POINTS, 0, this->particleVertices->size());
+
+
+
+	
 		//------------ updates values
 
 		//update density + pressure

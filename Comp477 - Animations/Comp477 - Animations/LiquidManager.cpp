@@ -25,6 +25,11 @@ void LiquidManager::createLiquidProjectile() {
 		localVertices.push_back(paintColor.y);
 		localVertices.push_back(paintColor.z);
 
+		// Particle Velocity
+		localVertices.push_back(0.0f);
+		localVertices.push_back(0.0f);
+		localVertices.push_back(0.0f);
+
 		// Particle Pressure
 		localVertices.push_back(projectile.particles[i]->pressure);
 
@@ -74,9 +79,10 @@ bool LiquidManager::isEmpty() {
 void LiquidManager::update(float deltaTime) {
 
 	// Deleted the Liquid that lives past 5 seconds
-	if (liquidLifeTime >= 5.0f) {
+	if (liquidLifeTime >= LIQUID_LIFE_TIME) {
 		localVertices.clear();
 		localNormals.clear();
+		liquidLifeTime = 0.0f;
 	}
 
 	// Perform Liquid Updates

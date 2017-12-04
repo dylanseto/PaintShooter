@@ -131,14 +131,12 @@ int main() {
 	// ---------- CREATING OUR LIQUID ---------- //
 	LiquidManager liquidManager;
 	liquidManager.setPaintColor(paintColor);
+	
+	liquidManager.createLiquidProjectile();
 
 	vector<GLfloat>* particleVertices = liquidManager.getVertices();
 	vector<GLfloat>* particleNormals  = liquidManager.getNormals();
 	
-	/*Liquid liq;
-	vertices = liq.getVertices();
-	normals = liq.getNormals();*/
-
 	animationWindow.setParticleVertices(particleVertices);
 	animationWindow.setParticleNormals(particleNormals);
 
@@ -223,6 +221,8 @@ int main() {
 
 		animationWindow.setLightColor(lightColor);
 		animationWindow.setPaintColor(paintColor);
+
+		liquidManager.update(deltaTime);
 
 		// Call Window to Render Image 
 		animationWindow.render(deltaTime);

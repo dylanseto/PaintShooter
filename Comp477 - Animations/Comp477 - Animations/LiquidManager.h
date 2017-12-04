@@ -1,5 +1,6 @@
 #pragma once
 
+#include "CommonLibrary.h"
 #include "Liquid.h"
 
 class LiquidManager {
