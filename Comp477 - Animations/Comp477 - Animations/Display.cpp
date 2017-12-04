@@ -368,10 +368,19 @@ void Display::render(glm::vec3 lightColor) {
 		glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, (3 * i + 1) * sizeof(GLfloat), sizeof(GLfloat), &density);
 		glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, (3 * i + 2) * sizeof(GLfloat), sizeof(GLfloat), &pressure);
 		Liquid::setPressureDesity(ID, density, pressure);
+		particleVertices->at(12 * ID + 10) = pressure;
+		particleVertices->at(12*ID+11) = density;
 		/*printf("ID: %f\n", ID);
 		printf("Density: %f\n", density);
 		printf("Pressure: %f\n", pressure);*/
 	}
+
+	//Update
+	glBindVertexArray(VAO[1]);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO[2]);
+	glBufferData(GL_ARRAY_BUFFER, particleVertices->size() * sizeof(GLfloat), &particleVertices->front(), GL_DYNAMIC_DRAW);	// Copy our vertices to the buffer
+	glBindBuffer(GL_ARRAY_BUFFER, VBO[3]);
+	glBufferData(GL_ARRAY_BUFFER, particleNormals->size() * sizeof(glm::vec3), &particleNormals->front(), GL_DYNAMIC_DRAW);
 
 	//Calculate Forces
 	this->particleForceShader->Use();
@@ -405,8 +414,8 @@ void Display::render(glm::vec3 lightColor) {
 	/*glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, (3 * i + 1) * sizeof(GLfloat), sizeof(GLfloat), &density);
 	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, (3 * i + 2) * sizeof(GLfloat), sizeof(GLfloat), &pressure);*/
 	
-	//printf("IDD: %f\n", ID);
-	//rintf("newPos: %f\n", newPos.y);
+	/*printf("ID: %f\n", ID);
+	printf("newPos: %f\n", newPos.y);*/
 	//printf("newPos: %f\n", pressure.y);*/
 	/*printf("Pressure: %f\n", pressure);*/
 
