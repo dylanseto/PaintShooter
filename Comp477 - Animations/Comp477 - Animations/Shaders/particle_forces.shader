@@ -46,10 +46,10 @@ vec3 pressureForce()
 		vec4 pdensity = texelFetch(particles, 4 * i + 2);
 		float ndensity = pdensity.x;
 
-		if (ndensity == 0)
-		{
-			ndensity = 0.01; //cheating
-		}
+		//if (ndensity == 0)
+		//{
+		//	ndensity = 0.01; //cheating
+		//}
 
 		if (distance(pos, position) >= PARTICLE_NEIGHBOUR_DISTANCE)
 		{
@@ -78,10 +78,10 @@ vec3 viscosity()
 		vec4 pspeed = texelFetch(particles, 4 * i+3);
 		vec3 nspeed = vec3(pspeed.x, pspeed.y, pspeed.z);
 
-		if (ndensity == 0)
-		{
-			ndensity = 0.01; //cheating
-		}
+		//if (ndensity == 0)
+		//{
+		//	ndensity = 0.01; //cheating
+		//}
 
 		if (distance(pos, position) >= PARTICLE_NEIGHBOUR_DISTANCE)
 		{
@@ -108,7 +108,7 @@ vec3 viscosity()
 
 // Main Method
 void main() {
-	ID = par_ID;
+	ID = ndensity;
 	vec3 totalForces = gravityForce() + pressureForce() + viscosity();
 	vec3 acc = totalForces / MASS;
 
