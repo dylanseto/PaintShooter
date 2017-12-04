@@ -103,10 +103,10 @@ int main() {
 	animationWindow.setCamera(&camera);
 
 	// ========== Creating Our Shapes ========== //
-	WorldMesh world;
-	vector<GLfloat>*  vertices = world.getVertices();
-	vector<GLuint>*    indices = world.getIndices();
-	vector<GLfloat>* normals = world.getNormals();
+	//WorldMesh world;
+	vector<GLfloat>*  vertices = WorldMesh::getInstance()->getVertices();
+	vector<GLuint>*    indices = WorldMesh::getInstance()->getIndices();
+	vector<GLfloat>* normals = WorldMesh::getInstance()->getNormals();
 
 	animationWindow.setVertices(vertices);
 	animationWindow.setIndices(indices);
@@ -370,7 +370,7 @@ void do_movement(GLfloat deltaTime) {
 
 void shoot(Display& animationWindow) {
 	static int i = 0;
-	animationWindow.actualShotPositions[i] = vec3(10, 0, 0);//camera.Position;
+	animationWindow.actualShotPositions[i] = camera.Position;
 	animationWindow.actualColors[i] = paintColor;
 	i++;
 

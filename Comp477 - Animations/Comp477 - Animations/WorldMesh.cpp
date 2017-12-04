@@ -73,6 +73,14 @@ void WorldMesh::rotatePerUpdate(GLfloat deltaTime) {
 	vertexManager.updateMeshes(rec.getVertices(), rec.getIndices(), rec.getNormals());
 }
 
+WorldMesh* WorldMesh::instance;
+WorldMesh * WorldMesh::getInstance()
+{
+	if (instance == nullptr) instance = new WorldMesh();
+
+	return instance;
+}
+
 
 // Object Scale Function 
 void WorldMesh::scaleObject(vector<GLfloat>* vertices, float scale) {

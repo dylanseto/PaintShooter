@@ -16,10 +16,16 @@ layout(location = 6) in vec3 normal;
 #define PI 3.14159265
 #define VISCOSITY_CONST 3.5
 
+struct Wall
+{
+	vec3 vertex[8];
+};
+
 //uniform vec3 particles[MAX_PARTICLES];
 uniform int num_particles;
 uniform samplerBuffer particles; //particle positions, pressure, density, velocty
 uniform float deltaTime;
+uniform Wall walls[8];
 
 // Vertex Shader Output
 out float ID;
