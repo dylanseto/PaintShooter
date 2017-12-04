@@ -21,7 +21,6 @@ class Display {
 		void setVertices(std::vector<GLfloat>* vertices);
 		void setIndices(std::vector<GLuint>* indices);
 		void setNormals(std::vector<GLfloat>* normals);
-		void setColVertices(std::vector<GLfloat>* colVertices);
 		void setLightPos(glm::vec3 lightPos);
 		void setLightColor(glm::vec3);
 		void setPaintColor(glm::vec3);
@@ -40,7 +39,7 @@ class Display {
 
 		// DYNAMIC: VAO, VBO, EBO
 		GLuint VAO[2];
-		GLuint VBO[5];
+		GLuint VBO[4];
 		GLuint EBO;
 		
 		// Shader
@@ -51,8 +50,6 @@ class Display {
 		std::vector<GLfloat>* localVertices;
 		std::vector<GLuint>*  localIndices;
 		std::vector<GLfloat>*  localNormals;
-
-		std::vector<GLfloat>* localColVertices;
 
 		// Light Position
 		glm::vec3 localLightPos;

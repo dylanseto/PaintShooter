@@ -130,26 +130,11 @@ void Display::initGLBuffers() {
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0);
 	glEnableVertexAttribArray(2);
 
-	// ------------- Setting up Third VBO (Collisions) ------------- //
-	glBindBuffer(GL_ARRAY_BUFFER, VBO[2]);
-
-	// Set the vertex attribute pointers : POSITION (Px, Py, Pz)
-	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)0);
-	glEnableVertexAttribArray(3);
-
-	// Set the vertex attribute pointers : COLOR (R, G, B)
-	glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, NUM_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(4);
-
-	// Unbinding VBO and EBO
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
 	// ------------- Setting up Fourth VBO (Particles) ------------- //
 
 	// Binding VAO, VBO
 	glBindVertexArray(VAO[1]);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO[3]);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO[2]);
 
 	// Set the vertex attribute pointers : POSITION (Px, Py, Pz)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, NUM_PARTICLE_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)0);
@@ -161,7 +146,7 @@ void Display::initGLBuffers() {
 
 	// ------------- Setting up Fifth VBO (Particle Normals) ------------- //
 
-	glBindBuffer(GL_ARRAY_BUFFER, VBO[4]);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO[3]);
 
 	// Set the vertex attribute pointers : NORMALS
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
@@ -224,26 +209,6 @@ void Display::render() {
 		glUniform3f(collisionPositions[i], actualShotPositions[i].x, 0.0f, actualShotPositions[i].z);
 	}
 
-	//GLint shootPositionLoc = glGetUniformLocation(ourShader->Program, "shootPosition");
-	//glUniform3f(shootPositionLoc, collisionPosition.x, collisionPosition.y, collisionPosition.z);
-
-	//if (increasingPosition) {
-	//	collisionPosition.x++;
-	//	collisionPosition.z++;
-	//}
-
-	//else {
-	//	collisionPosition.x--;
-	//	collisionPosition.z--;
-	//}
-
-	//if (collisionPosition.x >= 10.0f) {
-	//	increasingPosition = !increasingPosition;
-	//}
-	//else if (collisionPosition.x <= 0.0f) {
-	//	increasingPosition = !increasingPosition;
-	//}
-
 	GLint viewPosLoc = glGetUniformLocation(ourShader->Program, "viewPos");
 	glUniform3f(viewPosLoc, camera->Position.x, camera->Position.y, camera->Position.z);
 
@@ -272,15 +237,6 @@ void Display::render() {
 
 	// ------------- Drawing Scene Objects ------------- //
 
-	static bool isPrinted = false;
-	if (!isPrinted) {
-		isPrinted = true;
-
-		for (int i = 0; i < localNormals->size(); i++) {
-			std::cout << (*localNormals)[i] <<  " ";
-		}
-	}
-
 	// Sending Data to the Buffers
 	glBindVertexArray(VAO[0]);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
@@ -289,8 +245,6 @@ void Display::render() {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, localIndices->size() * sizeof(GLuint), &localIndices->front(), GL_DYNAMIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
 	glBufferData(GL_ARRAY_BUFFER, localNormals->size() * sizeof(GLfloat), &localNormals->front(), GL_DYNAMIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO[2]);
-	glBufferData(GL_ARRAY_BUFFER, localColVertices->size() * sizeof(GLfloat), &localColVertices->front(), GL_DYNAMIC_DRAW);
 
 	// Drawing our Objects
 	glDrawElements(GL_TRIANGLES, localIndices->size() * 2, GL_UNSIGNED_INT, 0);
@@ -321,9 +275,9 @@ void Display::render() {
 
 	// Sending Particle Data to the Buffers  
 	glBindVertexArray(VAO[1]);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO[3]);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO[2]);
 	glBufferData(GL_ARRAY_BUFFER, particleVertices->size() * sizeof(GLfloat), &particleVertices->front(), GL_DYNAMIC_DRAW);	// Copy our vertices to the buffer
-	glBindBuffer(GL_ARRAY_BUFFER, VBO[4]);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO[3]);
 	glBufferData(GL_ARRAY_BUFFER, particleNormals->size() * sizeof(GLfloat), &particleNormals->front(), GL_DYNAMIC_DRAW);
 
 	// Drawing our Particles 
@@ -380,11 +334,6 @@ void Display::setIndices(std::vector<GLuint>* indices) {
 // ========== Set the Local Normals ========== // 
 void Display::setNormals(std::vector<GLfloat>* normals) {
 	localNormals = normals;
-}
-
-// ========== Set the Local Vertices ========== // 
-void Display::setColVertices(std::vector<GLfloat>* colVertices) {
-	localColVertices = colVertices;
 }
 
 

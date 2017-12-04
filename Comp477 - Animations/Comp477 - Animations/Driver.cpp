@@ -99,8 +99,6 @@ int main() {
 	animationWindow.setIndices(indices);
 	animationWindow.setNormals(normals);
 
-	animationWindow.setColVertices(vertices);
-
 	animationWindow.setLightPos(lightPos);
 
 	// Default Lighting
