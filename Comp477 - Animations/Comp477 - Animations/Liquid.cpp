@@ -113,17 +113,14 @@ Liquid::Liquid()
 
 		//cout << "y values: " << particles[i]->pos.y << endl;
 		//buffer for Color alpha?
-
-		// Adding Textures
-		//localVertices.push_back(1.0f);
-		//localVertices.push_back(1.0f);
-
-		//// Adding Texture Opacity
-		//localVertices.push_back(0.0f);
 	}
 
+	//}
 	for (int i = 0; i < particles.size(); i++) {
-		localNormals.push_back(normalize(particles[i]->pos));
+		normalize(particles[i]->pos);
+		localNormals.push_back(particles[i]->pos.x);
+		localNormals.push_back(particles[i]->pos.y);
+		localNormals.push_back(particles[i]->pos.z);
 	}
 }
 
@@ -169,7 +166,7 @@ vector<GLfloat>* Liquid::getVertices() {
 }
 
 // Getter: Get Local Normals
-vector<glm::vec3>* Liquid::getNormals() {
+vector<GLfloat>* Liquid::getNormals() {
 	return &localNormals;
 }
 
