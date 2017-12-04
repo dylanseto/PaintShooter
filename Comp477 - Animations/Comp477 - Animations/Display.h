@@ -14,7 +14,7 @@ class Display {
 		GLFWwindow* getWindow();
 
 		bool isClosed();
-		void render();
+		void render(float deltaTime);
 		void setShader(Shader* shader);
 		void setParticleShader(Shader* shader);
 		void seParticleDensityShader(DensityShader* shader);

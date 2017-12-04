@@ -219,7 +219,7 @@ int main() {
 		animationWindow.setPaintColor(paintColor);
 
 		// Call Window to Render Image 
-		animationWindow.render();
+		animationWindow.render(deltaTime);
 		skybox.draw(animationWindow.getCamera(), animationWindow.getViewMatrix(), animationWindow.getProjectionMatrix());
 		animationWindow.swapBuffer();
 

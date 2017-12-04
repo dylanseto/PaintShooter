@@ -223,7 +223,7 @@ void Display::initGLBuffers() {
 
 
 // ========== Update Window on Draw ========== // 
-void Display::render() {
+void Display::render(float deltaTime) {
 
 
 	// Rendering Commands
@@ -397,17 +397,20 @@ void Display::render() {
 	}
 
 	//Update
-	glBindVertexArray(VAO[1]);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO[2]);
-	glBufferData(GL_ARRAY_BUFFER, particleVertices->size() * sizeof(GLfloat), &particleVertices->front(), GL_DYNAMIC_DRAW);	// Copy our vertices to the buffer
-	glBindBuffer(GL_ARRAY_BUFFER, VBO[3]);
-	glBufferData(GL_ARRAY_BUFFER, particleNormals->size() * sizeof(glm::vec3), &particleNormals->front(), GL_DYNAMIC_DRAW);
+	//glBindVertexArray(VAO[1]);
+	//glBindBuffer(GL_ARRAY_BUFFER, VBO[2]);
+	//glBufferData(GL_ARRAY_BUFFER, particleVertices->size() * sizeof(GLfloat), &particleVertices->front(), GL_DYNAMIC_DRAW);	// Copy our vertices to the buffer
+	//glBindBuffer(GL_ARRAY_BUFFER, VBO[3]);
+	//glBufferData(GL_ARRAY_BUFFER, particleNormals->size() * sizeof(glm::vec3), &particleNormals->front(), GL_DYNAMIC_DRAW);
 
 	//Calculate Forces
 	this->particleForceShader->Use();
 
 	GLint numParticlesLoc2 = glGetUniformLocation(particleForceShader->Program, "num_particles");
 	glUniform1i(numParticlesLoc2, Liquid::getNumParticles());
+
+	GLint deltaTimeLoc = glGetUniformLocation(particleShader->Program, "deltaTime");
+	glUniform1f(deltaTimeLoc, deltaTime);
 
 	glBindBuffer(GL_ARRAY_BUFFER, this->particleForcesBuffer);
 	glBufferData(GL_ARRAY_BUFFER, 4*Liquid::getNumParticles() * sizeof(glm::vec3), &Liquid::getForcesData().front(), GL_DYNAMIC_DRAW);
@@ -426,12 +429,30 @@ void Display::render() {
 	//// Test
 
 	glBindBuffer(GL_ARRAY_BUFFER, forcesTBO);
-	GLfloat ID;
+	size_t size = 0;
+	for (int i = 0; i != Liquid::getNumParticles(); i++)
+	{
+		GLfloat ID;
+		vec3 newPos;
+		vec3 newSpeed;
+
+		glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, size, sizeof(GLfloat), &ID);
+		size += sizeof(GLfloat);
+		glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, size, sizeof(vec3), &newPos);
+		size += sizeof(vec3);
+		glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, size, sizeof(vec3), &newSpeed);
+		size += sizeof(vec3);
+
+		/*printf("ID: %f\n", ID);
+		printf("newPos: %f\n", newPos.y);
+		printf("newPos: %f\n", newPos.y);*/
+	}
+	/*GLfloat ID;
 	vec3 newPos;
 	vec3 newSpeed;
 	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, 0, sizeof(GLfloat), &ID);
 	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, sizeof(GLfloat), sizeof(vec3), &newPos);
-	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, sizeof(GLfloat) + sizeof(vec3), sizeof(vec3), &newSpeed);
+	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, sizeof(GLfloat) + sizeof(vec3), sizeof(vec3), &newSpeed);*/
 	/*glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, (3 * i + 1) * sizeof(GLfloat), sizeof(GLfloat), &density);
 	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, (3 * i + 2) * sizeof(GLfloat), sizeof(GLfloat), &pressure);*/
 	

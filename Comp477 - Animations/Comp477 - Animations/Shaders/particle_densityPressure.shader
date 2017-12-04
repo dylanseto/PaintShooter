@@ -27,7 +27,7 @@ float calculateDensity()
 {
 	float density = 0;
 	//Iterate thru neighbours
-	for (int i = 0; i != 200; i++)
+	for (int i = 0; i != num_particles; i++)
 	{
 		vec4 text = texelFetch(particles, i);
 		vec3 pos = vec3(text.x, text.y, text.z);
