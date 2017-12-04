@@ -7,8 +7,8 @@ layout(location = 1) in vec3 vertexColor;
 layout(location = 2) in vec3 normal;
 
 // Vertex Shader Output
-out vec3 ourColor;
-out vec3 ourNormal;
+flat out vec3 ourColor;
+flat out vec3 ourNormal;
 out vec3 ourFragPos;
 
 // Uniform Variables 
