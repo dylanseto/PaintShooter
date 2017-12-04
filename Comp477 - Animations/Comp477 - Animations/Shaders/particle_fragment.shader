@@ -25,10 +25,10 @@ void main() {
 	vec3 result;
 
 	// makes particles circular
-	vec2 circCoord = 2.0 * gl_PointCoord - 1.0;
+	/*vec2 circCoord = 2.0 * gl_PointCoord - 1.0;
 	if (dot(circCoord, circCoord) > 1.0) {
 		discard;
-	}
+	}*/
 
 	// === GLOW ===
 	if (lightColor == nightLight) {

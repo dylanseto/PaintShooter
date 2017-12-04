@@ -22,15 +22,18 @@
     <Filter Include="Header Files\Scene Objects">
       <UniqueIdentifier>{141c6963-a95b-4c37-8017-ea4fa112d33b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Shaders">
+      <UniqueIdentifier>{78a3bfb9-7408-4414-bc85-0dd6f61c0224}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shaders">
+      <UniqueIdentifier>{0151ee45-8125-4779-9151-4acf68db966c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonLibrary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="VertexManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Shaders\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
@@ -54,6 +57,15 @@
     <ClInclude Include="Particle.h">
       <Filter>Header Files\Scene Objects</Filter>
     </ClInclude>
+    <ClInclude Include="Shaders\Shader.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="DensityShader.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Skybox.h">
+      <Filter>Header Files\Scene Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Driver.cpp">
@@ -63,9 +75,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Display.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Grid.cpp">
@@ -78,6 +87,15 @@
       <Filter>Source Files\Scene Objects</Filter>
     </ClCompile>
     <ClCompile Include="Liquid.cpp">
+      <Filter>Source Files\Scene Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Source Files\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="DensityShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Skybox.cpp">
       <Filter>Source Files\Scene Objects</Filter>
     </ClCompile>
   </ItemGroup>
@@ -98,6 +116,9 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="Shaders\particle_vertex.shader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Shaders\particle_densityPressure.shader">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

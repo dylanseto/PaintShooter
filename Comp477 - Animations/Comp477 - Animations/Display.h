@@ -15,6 +15,7 @@ class Display {
 		void render();
 		void setShader(Shader* shader);
 		void setParticleShader(Shader* shader);
+		void seParticleDensityShader(Shader* shader);
 		void setCamera(Camera* cam);
 		void setParticleVertices(std::vector<GLfloat>* vertices);
 		void setParticleNormals(std::vector<GLfloat>* normals);
@@ -27,6 +28,12 @@ class Display {
 
 		std::vector<glm::vec3> actualShotPositions;
 		std::vector<glm::vec3> actualColors;
+
+		Camera* getCamera();
+		glm::mat4* getViewMatrix();
+		glm::mat4* getProjectionMatrix();
+		void swapBuffer();
+
 		// void sendStaticDataToBuffer();
 
 	private:
@@ -45,6 +52,7 @@ class Display {
 		// Shader
 		Shader* ourShader;
 		Shader* particleShader;
+		Shader* particleDensityShader;
 
 		// Vertices and Indices
 		std::vector<GLfloat>* localVertices;

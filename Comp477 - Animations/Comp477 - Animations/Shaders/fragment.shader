@@ -25,15 +25,6 @@ void main() {
 	vec3 lightDir = normalize(lightPos - ourFragPos);
 	vec3 result;
 	
-	//// === SPECULAR ===
-	//vec3 reflectDir = reflect(-lightDir, norm);
-	//float shininess = 60.0f;
-	//float spec = pow(max(dot(viewDir, reflectDir), 0.0f), shininess);
-	//vec3 specular = lightColor * spec;
-	//if (ourFragPos.y <= 0.02f) {
-	//    specular = vec3(0.0f, 0.0f, 0.0f);
-	//}
-	
 	// === AMBIENT ===
 	float ambientStrength = 0.2f;
     vec3 ambient = ambientStrength * lightColor;

@@ -25,13 +25,6 @@ Rectangle::Rectangle(GLfloat length, GLfloat height, GLfloat depth)
 				localVertices.push_back(CUBE_COLOR.x + ((float)randomColorOffset / 100));
 				localVertices.push_back(CUBE_COLOR.y + ((float)randomColorOffset / 100));
 				localVertices.push_back(CUBE_COLOR.z + ((float)randomColorOffset / 100));
-
-				//// Adding Textures
-				//localVertices.push_back(1.0f);
-				//localVertices.push_back(1.0f);
-
-				//// Adding Texture Opacity
-				//localVertices.push_back(0.0f);
 			}
 		}
 	}

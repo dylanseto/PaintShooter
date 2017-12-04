@@ -46,6 +46,11 @@ void Display::setParticleShader(Shader* shader) {
 	this->particleShader = shader;
 }
 
+void Display::seParticleDensityShader(Shader * shader)
+{
+	particleDensityShader = shader;
+}
+
 // ========== Set the Shader ========== // 
 void Display::setCamera(Camera* cam) {
 	this->camera = cam;
@@ -57,6 +62,17 @@ void Display::loadTextures(GLchar* fileLocation) {
 }
 
 
+Camera* Display::getCamera() {
+	return camera;
+}
+
+glm::mat4* Display::getViewMatrix() {
+	return &view;
+}
+
+glm::mat4* Display::getProjectionMatrix() {
+	return &projection;
+}
 
 // ========== Check whether window is closed ========== // 
 void Display::initWindow() {
@@ -130,7 +146,7 @@ void Display::initGLBuffers() {
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0);
 	glEnableVertexAttribArray(2);
 
-	// ------------- Setting up Fourth VBO (Particles) ------------- //
+	// ------------- Setting up Third VBO (Particles) ------------- //
 
 	// Binding VAO, VBO
 	glBindVertexArray(VAO[1]);
@@ -144,13 +160,24 @@ void Display::initGLBuffers() {
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, NUM_PARTICLE_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
 
-	// ------------- Setting up Fifth VBO (Particle Normals) ------------- //
+	// Set the vertex attribute pointers : PARTICLE INDEX
+	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, NUM_PARTICLE_VERTEX_ATTRIB_OBJ * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(2);
+
+	// ------------- Setting up Fourth VBO (Particle Normals) ------------- //
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO[3]);
 
 	// Set the vertex attribute pointers : NORMALS
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0);
+	glEnableVertexAttribArray(3);
+
+	// --------------- Setup TBO for density + pressure updates -------------- //
+	GLuint tbo;
+	glGenBuffers(1, &tbo);
+	glBindBuffer(GL_ARRAY_BUFFER, tbo);
+	glBufferData(GL_ARRAY_BUFFER, 10 * (3 * sizeof(GLfloat)), nullptr, GL_STATIC_READ);
+	glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, tbo);
 
 	// Unbinding VAO
 	glBindVertexArray(0);
@@ -161,7 +188,7 @@ void Display::initGLBuffers() {
 void Display::render() {
 
 	// Rendering Commands
-	glClearColor((float)114 / (float)255 * (localLightColor.x + 0.2f), (float)220 / (float)255 * (localLightColor.y + 0.2f), (float)255 / (float)255 * (localLightColor.z + 0.2f), 1.0f);
+	glClearColor((float)114 / (float)255, (float)220 / (float)255, (float)255 / (float)255, 1.0f);
 	// glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	ourShader->Use();
@@ -283,13 +310,44 @@ void Display::render() {
 	// Drawing our Particles 
 	glDrawArrays(GL_POINTS, 0, this->particleVertices->size());
 
+	// returns values to CPU
+	this->particleDensityShader->Use();
+
+	glBeginTransformFeedback(GL_POINTS);
+	glDrawArrays(GL_POINTS, 0, 100);
+	glEndTransformFeedback();
+	glFlush();
+
+	// ------------------------------ test ---------------------------------
+	GLfloat ID;
+	GLfloat density;
+	GLfloat pressure;
+	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, 0, sizeof(GLfloat), &ID);
+	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, sizeof(GLfloat), sizeof(GLfloat), &density);
+	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, 2 * sizeof(GLfloat), sizeof(GLfloat), &pressure);
+	//glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, sizeof(GLint)+2*sizeof(GLfloat), sizeof(glm::vec3), &test);
+	printf("ID: %f\n", ID);
+	printf("Density: %f\n", density);
+	printf("Pressure: %f\n", pressure);
+
+	GLfloat ID2;
+	GLfloat out2;
+	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, 3 * sizeof(GLfloat), sizeof(GLfloat), &ID2);
+	glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, 4 * sizeof(GLfloat), sizeof(GLfloat), &out2);
+	printf("ID2: %f\n", ID2); // not inputting right
+	printf("Density2: %f\n", out2);
+
 	// Unbinding VAO
 	glBindVertexArray(0);
 
+	
+}
+
+
+void Display::swapBuffer() {
 	// Swap the buffers
 	glfwSwapBuffers(window);
 }
-
 
 // ========== Send Static Data to Buffers ========== 
 //void Display::sendStaticDataToBuffer() {
