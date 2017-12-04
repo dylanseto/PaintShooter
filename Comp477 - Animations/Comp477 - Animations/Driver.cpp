@@ -129,18 +129,27 @@ int main() {
 
 
 	// ---------- CREATING OUR LIQUID ---------- //
-	/*LiquidManager liquidManager;
+	LiquidManager liquidManager;
 	liquidManager.setPaintColor(paintColor);
-	
-	liquidManager.createLiquidProjectile();*/
 
-	Liquid liq(paintColor, vec3(0, 0, 0));
+	liquidManager.createLiquidProjectile();
+
+	vector<GLfloat>* particleVertices = liquidManager.getVertices();
+	vector<GLfloat>* particleNormals  = liquidManager.getNormals();
+
+	
+	/*Liquid liq(paintColor, vec3(0, 0, 0));
 
 	vector<GLfloat>* particleVertices = liq.getVertices();
-	vector<GLfloat>* particleNormals  = liq.getNormals();
+	vector<GLfloat>* particleNormals  = liq.getNormals();*/
 	
 	animationWindow.setParticleVertices(particleVertices);
 	animationWindow.setParticleNormals(particleNormals);
+
+	animationWindow.setNumberOfParticles(liquidManager.getNumberOfParticles());
+	animationWindow.setParticlePositions(liquidManager.getPositionData());
+	animationWindow.setParticleForceData(liquidManager.getForceData());
+
 
 	// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 

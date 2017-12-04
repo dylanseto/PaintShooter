@@ -7,7 +7,7 @@ LiquidManager::LiquidManager() {
 
 void LiquidManager::createLiquidProjectile() {
 
-	Liquid projectile(paintColor, vec3(0,0,0));
+	Liquid projectile;
 
 	// LOCAL VERTICES
 	for (int i = 0; i < projectile.particles.size(); i++) {
@@ -44,6 +44,15 @@ void LiquidManager::createLiquidProjectile() {
 		localNormals.push_back(projectile.particles[i]->pos.y);
 		localNormals.push_back(projectile.particles[i]->pos.z);
 	}
+
+	// Setting Number of Particles
+	this->numberOfParticles = projectile.getNumParticles();
+
+	// Setting Positional Data
+	positionData = projectile.getPositions();
+
+	// Setting Force Data
+	forceData = projectile.getForcesData();
 }
 
 
@@ -73,6 +82,19 @@ bool LiquidManager::isEmpty() {
 
 	return false;
 }
+
+int LiquidManager::getNumberOfParticles() {
+	return numberOfParticles;
+}
+
+vector<vec3>* LiquidManager::getPositionData() {
+	return &positionData;
+}
+
+vector<vec4>* LiquidManager::getForceData() {
+	return &forceData;
+}
+
 
 
 // Update Function

@@ -23,7 +23,7 @@ float specialFloor(float x)
 	}
 }
 
-Liquid::Liquid(glm::vec3 paintColor, ::vec3 force)
+Liquid::Liquid()
 {
 
 	for (float r = 0; r <= 1.0f; r += 0.5)
@@ -78,52 +78,19 @@ Liquid::Liquid(glm::vec3 paintColor, ::vec3 force)
 	//sort particles
 	sortParticles();
 
-	//Add initial
-	for (float i = 0; i != particles.size(); i++)
-	{
-		localVertices.push_back(particles[i]->pos.x);
-		localVertices.push_back(particles[i]->pos.y);
-		localVertices.push_back(particles[i]->pos.z);
-
-		//color
-		localVertices.push_back(1);
-		localVertices.push_back(0);
-		localVertices.push_back(0);
-
-		localVertices.push_back(i);
-
-		localVertices.push_back(particles[i]->speed.x);
-		localVertices.push_back(particles[i]->speed.y);
-		localVertices.push_back(particles[i]->speed.z);
-
-		localVertices.push_back(particles[i]->pressure);
-		localVertices.push_back(particles[i]->density);
-		//cout << i << endl;
-
-		//cout << "y values: " << particles[i]->pos.y << endl;
-		//buffer for Color alpha?
-	}
-	for (int i = 0; i < particles.size(); i++) {
-		normalize(particles[i]->pos);
-		localNormals.push_back(particles[i]->pos.x);
-		localNormals.push_back(particles[i]->pos.y);
-		localNormals.push_back(particles[i]->pos.z);
-	}
-}
-
-void Liquid::updateLiquid()
-{
+	////Add initial
 	//for (float i = 0; i != particles.size(); i++)
 	//{
 	//	localVertices.push_back(particles[i]->pos.x);
 	//	localVertices.push_back(particles[i]->pos.y);
 	//	localVertices.push_back(particles[i]->pos.z);
 
-	//	localVertices.push_back(particles[i]->color.r);
-	//	localVertices.push_back(particles[i]->color.g);
-	//	localVertices.push_back(particles[i]->color.b);
+	//	//color
+	//	localVertices.push_back(1);
+	//	localVertices.push_back(0);
+	//	localVertices.push_back(0);
 
-	//	localVertices.push_back(i); // ID
+	//	localVertices.push_back(i);
 
 	//	localVertices.push_back(particles[i]->speed.x);
 	//	localVertices.push_back(particles[i]->speed.y);
@@ -131,27 +98,60 @@ void Liquid::updateLiquid()
 
 	//	localVertices.push_back(particles[i]->pressure);
 	//	localVertices.push_back(particles[i]->density);
-	//}
+	//	//cout << i << endl;
 
+	//	//cout << "y values: " << particles[i]->pos.y << endl;
+	//	//buffer for Color alpha?
+	//}
 	//for (int i = 0; i < particles.size(); i++) {
-	//	localNormals.push_back(normalize(particles[i]->pos));
+	//	normalize(particles[i]->pos);
+	//	localNormals.push_back(particles[i]->pos.x);
+	//	localNormals.push_back(particles[i]->pos.y);
+	//	localNormals.push_back(particles[i]->pos.z);
 	//}
 }
+
+//void Liquid::updateLiquid()
+//{
+//	//for (float i = 0; i != particles.size(); i++)
+//	//{
+//	//	localVertices.push_back(particles[i]->pos.x);
+//	//	localVertices.push_back(particles[i]->pos.y);
+//	//	localVertices.push_back(particles[i]->pos.z);
+//
+//	//	localVertices.push_back(particles[i]->color.r);
+//	//	localVertices.push_back(particles[i]->color.g);
+//	//	localVertices.push_back(particles[i]->color.b);
+//
+//	//	localVertices.push_back(i); // ID
+//
+//	//	localVertices.push_back(particles[i]->speed.x);
+//	//	localVertices.push_back(particles[i]->speed.y);
+//	//	localVertices.push_back(particles[i]->speed.z);
+//
+//	//	localVertices.push_back(particles[i]->pressure);
+//	//	localVertices.push_back(particles[i]->density);
+//	//}
+//
+//	//for (int i = 0; i < particles.size(); i++) {
+//	//	localNormals.push_back(normalize(particles[i]->pos));
+//	//}
+//}
 
 void Liquid::sortParticles()
 {
 	std::sort(particles.begin(), particles.end());
 }
 
-// Getter: Get Local Vertices
-vector<GLfloat>* Liquid::getVertices() {
-	return &localVertices;
-}
-
-// Getter: Get Local Normals
-vector<GLfloat>* Liquid::getNormals() {
-	return &localNormals;
-}
+//// Getter: Get Local Vertices
+//vector<GLfloat>* Liquid::getVertices() {
+//	return &localVertices;
+//}
+//
+//// Getter: Get Local Normals
+//vector<GLfloat>* Liquid::getNormals() {
+//	return &localNormals;
+//}
 
 vector<vec3> Liquid::getPositions()
 {
