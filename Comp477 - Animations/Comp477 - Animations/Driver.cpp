@@ -207,13 +207,13 @@ int main() {
 		*		- Send new positions to be displayed
 		*/
 
-		while (updateDeltaTime >= 1.0) {
+		//while (updateDeltaTime >= 1.0) {
 
-			// world.rotatePerUpdate(updateDeltaTime);
+		//	// world.rotatePerUpdate(updateDeltaTime);
 
-			updates++;
-			updateDeltaTime--;
-		}	
+		//	updates++;
+		//	updateDeltaTime--;
+		//}	
 
 		animationWindow.setLightColor(lightColor);
 		animationWindow.setPaintColor(paintColor);
@@ -228,7 +228,7 @@ int main() {
 		// Displays output Data every second (Frames per second, Updates per second)
 		if (glfwGetTime() - timer > 1.0) {
 			timer++;
-			//std::cout << "FPS: " << frames << " Updates:" << updates << std::endl;
+			std::cout << "FPS: " << frames << " Updates:" << updates << std::endl;
 			updates = 0, frames = 0;
 		}
 
