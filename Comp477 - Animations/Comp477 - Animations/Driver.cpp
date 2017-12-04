@@ -16,6 +16,7 @@
 #include "Camera.h"
 #include "WorldMesh.h"
 #include "Display.h"
+#include "Skybox.h"
 
 #include "Liquid.h"
 
@@ -122,6 +123,28 @@ int main() {
 	// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
+
+
+	const GLchar * SKYBOX_VERTEX_SHADER = "./Shaders/skybox_vertex.shader";
+	const GLchar * SKYBOX_FRAGMENT_SHADER = "./Shaders/skybox_fragment.shader";
+
+	Shader skyboxShader(SKYBOX_VERTEX_SHADER, SKYBOX_FRAGMENT_SHADER);
+
+	Skybox skybox(&skyboxShader);
+
+	std::vector<GLchar*> daySkybox;
+	daySkybox.push_back("./Textures/Night/right.jpg");
+	daySkybox.push_back("./Textures/Night/left.jpg");
+	daySkybox.push_back("./Textures/Night/top.jpg");
+	daySkybox.push_back("./Textures/Night/bottom.jpg");
+	daySkybox.push_back("./Textures/Night/back.jpg");
+	daySkybox.push_back("./Textures/Night/front.jpg");
+
+	skybox.loadCubeMap(daySkybox);
+
+
+
+
 	// =============== SEND STATIC DATA TO GPU =============== 
 	// world.rotatePerUpdate(updateDeltaTime);
 	// animationWindow.sendStaticDataToBuffer();
@@ -165,6 +188,9 @@ int main() {
 
 		// Call Window to Render Image 
 		animationWindow.render(lightColor);
+		skybox.draw(animationWindow.getCamera(), animationWindow.getViewMatrix(), animationWindow.getProjectionMatrix());
+		animationWindow.swapBuffer();
+
 		frames++;
 
 		// Displays output Data every second (Frames per second, Updates per second)

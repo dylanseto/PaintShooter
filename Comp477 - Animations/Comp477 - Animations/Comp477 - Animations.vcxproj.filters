@@ -63,6 +63,9 @@
     <ClInclude Include="DensityShader.h">
       <Filter>Header Files\Shaders</Filter>
     </ClInclude>
+    <ClInclude Include="Skybox.h">
+      <Filter>Header Files\Scene Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Driver.cpp">
@@ -91,6 +94,9 @@
     </ClCompile>
     <ClCompile Include="DensityShader.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Skybox.cpp">
+      <Filter>Source Files\Scene Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

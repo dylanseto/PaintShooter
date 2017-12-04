@@ -25,6 +25,11 @@ class Display {
 		void setLightPos(glm::vec3 lightPos);
 		void setLightColor(glm::vec3);
 
+		Camera* getCamera();
+		glm::mat4* getViewMatrix();
+		glm::mat4* getProjectionMatrix();
+		void swapBuffer();
+
 		// void sendStaticDataToBuffer();
 
 	private:
