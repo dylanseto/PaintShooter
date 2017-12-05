@@ -24,6 +24,6 @@ void main() {
 	ourFragPos = vec3(position);
 	ourNormal = vec3(normalize(normal));
 
-	gl_PointSize = 5.0f;
+	gl_PointSize = 10.0f;
 	gl_Position = pvm * vec4(position, 1.0f);
 }

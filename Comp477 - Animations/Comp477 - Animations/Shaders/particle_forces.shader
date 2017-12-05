@@ -145,27 +145,27 @@ void main() {
 		col = true;
 	}
 
-	for (int k = 0; k != 16; k++)
-	{
-		float minX = walls[6*k];
-		float maxX = walls[6 * k+1];
-		float minY = walls[6 * k+2];
-		float maxY = walls[6 * k+3];
-		float minZ = walls[6 * k+4];
-		float maxZ = walls[6 * k+5];
+	//for (int k = 0; k != 16; k++)
+	//{
+	//	float minX = walls[6*k];
+	//	float maxX = walls[6 * k+1];
+	//	float minY = walls[6 * k+2];
+	//	float maxY = walls[6 * k+3];
+	//	float minZ = walls[6 * k+4];
+	//	float maxZ = walls[6 * k+5];
 
-		if ((curPos.x <= minX && curPos.x >= maxX)
-			&& (curPos.y <= minY && curPos.y >= maxY)
-			&& (curPos.z <= minZ && curPos.x >= maxZ))
-		{
-			//We hit a wall, we can stop.
-			s = -1 * curSpeed * 0.5;
-			col = true;
-			//collided = TRUE;
-			//collidedPos = curPos;
-			break;
-		}
-	}
+	//	if ((curPos.x <= minX && curPos.x >= maxX)
+	//		&& (curPos.y <= minY && curPos.y >= maxY)
+	//		&& (curPos.z <= minZ && curPos.x >= maxZ))
+	//	{
+	//		//We hit a wall, we can stop.
+	//		s = -1 * curSpeed * 0.5;
+	//		col = true;
+	//		//collided = TRUE;
+	//		//collidedPos = curPos;
+	//		break;
+	//	}
+	//}
 	vec4 pspeed = texelFetch(particles, 4 * int(par_ID) + 3);
 	vec3 nspeed = vec3(pspeed.x, pspeed.y, pspeed.z);
 	newPos = position + s*deltaTime;
