@@ -252,7 +252,7 @@ int main() {
 		// Displays output Data every second (Frames per second, Updates per second)
 		if (glfwGetTime() - timer > 1.0) {
 			timer++;
-			std::cout << "FPS: " << frames << updates << " DeltaTime: " << deltaTime << std::endl;
+			//std::cout << "FPS: " << frames << updates << " DeltaTime: " << deltaTime << std::endl;
 			updates = 0, frames = 0;
 		}
 
@@ -340,7 +340,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 		animationWindow.setParticlePositions(liquidManager.getPositionData());
 		animationWindow.setParticleForceData(liquidManager.getForceData());
 
-		cout << "Left Mouse Button Was Held for " << leftMouseHoldTime << " seconds" << endl;
+		//cout << "Left Mouse Button Was Held for " << leftMouseHoldTime << " seconds" << endl;
 		leftMouseHold = false;
 	}
 }
