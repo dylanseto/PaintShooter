@@ -57,7 +57,7 @@ vec3 pressureForce()
 		}
 		//since the difference is really small, I multiply by 100 to do calculations
 		//and undo the multiplication at the end
-		vec3 dif = (position - pos)*1000;
+		vec3 dif = (position - pos);
 		float norm = sqrt(pow(dif.x, 2) + pow(dif.y, 2) + pow(dif.z, 2));
 		//vec3 normalized = dif;
 
@@ -124,14 +124,14 @@ void main() {
 	{
 		newPos = position;
 		newSpeed = speed;
-		collided = 10.0f;
+		collided = FALSE;
 		collidedPos = vec3(10, 10, 10);
 		return;
 	}
 	vec4 pdensity = texelFetch(particles, 4 * int(par_ID) + 2);
 	float ndensity = pdensity.x;
 	ID = par_ID;
-	vec3 totalForces = gravityForce() + viscosity()+pressureForce()+force;
+	vec3 totalForces = gravityForce() + viscosity()+force;
 	vec3 acc = totalForces / MASS;
 
 	//highp int i = int(par_ID);
@@ -145,27 +145,27 @@ void main() {
 		col = true;
 	}
 
-	//for (int k = 0; k != 16; k++)
-	//{
-	//	float minX = walls[6*k];
-	//	float maxX = walls[6 * k+1];
-	//	float minY = walls[6 * k+2];
-	//	float maxY = walls[6 * k+3];
-	//	float minZ = walls[6 * k+4];
-	//	float maxZ = walls[6 * k+5];
+	for (int k = 0; k != 16; k++)
+	{
+		float minX = walls[6*k];
+		float maxX = walls[6 * k+1];
+		float minY = walls[6 * k+2];
+		float maxY = walls[6 * k+3];
+		float minZ = walls[6 * k+4];
+		float maxZ = walls[6 * k+5];
 
-	//	if ((curPos.x <= minX && curPos.x >= maxX)
-	//		&& (curPos.y <= minY && curPos.y >= maxY)
-	//		&& (curPos.z <= minZ && curPos.x >= maxZ))
-	//	{
-	//		//We hit a wall, we can stop.
-	//		s = -1 * curSpeed * 0.5;
-	//		col = true;
-	//		//collided = TRUE;
-	//		//collidedPos = curPos;
-	//		break;
-	//	}
-	//}
+		if ((position.x >= minX && position.x <= maxX)
+			&& (position.y >= minY && position.y <= maxY)
+			&& (position.z >= minZ && position.x <= maxZ))
+		{
+			//We hit a wall, we can stop.
+			s = -1 * curSpeed * 0.5;
+			col = true;
+			//collided = TRUE;
+			//collidedPos = curPos;
+			break;
+		}
+	}
 	vec4 pspeed = texelFetch(particles, 4 * int(par_ID) + 3);
 	vec3 nspeed = vec3(pspeed.x, pspeed.y, pspeed.z);
 	newPos = position + s*deltaTime;
@@ -174,13 +174,13 @@ void main() {
 	if (col)
 	{
 		collided = TRUE;
-		collidedPos = curPos;
+		collidedPos = position;
 		return;
 	}
 	else
 	{
 		collided = FALSE;
-		collidedPos = vec3(10, 10, 10);
+		collidedPos = position;
 		return;
 	}
 

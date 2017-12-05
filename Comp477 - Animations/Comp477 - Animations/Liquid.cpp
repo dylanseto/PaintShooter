@@ -45,12 +45,11 @@ Liquid::Liquid(glm::vec3 cameraPosition)
 
 				for (int k = 0; k != spans; k++)
 				{
-					//glm::rot
 					Particle*  particle = new Particle();
 					particle->id = NUM_PARTICLES;
-					particle->pos.x = cameraPosition.x + x;//x*glm::cos(spanDegree*k) - y*glm::sin(spanDegree*k);
-					particle->pos.y = cameraPosition.y + (y*glm::cos(spanDegree*k) - z*glm::sin(spanDegree*k));
-					particle->pos.z = cameraPosition.z + (y*glm::sin(spanDegree*k) + z*glm::cos(spanDegree*k));
+					particle->pos.x =  x;//x*glm::cos(spanDegree*k) - y*glm::sin(spanDegree*k);
+					particle->pos.y = (y*glm::cos(spanDegree*k) - z*glm::sin(spanDegree*k));
+					particle->pos.z = (y*glm::sin(spanDegree*k) + z*glm::cos(spanDegree*k));
 					if (particle->pos.z <= 0.01f && particle->pos.z > 0) particle->pos.z = 0;
 					if (particle->pos.z >= 0.01f && particle->pos.z < 0) particle->pos.z = 0;
 
@@ -65,9 +64,9 @@ Liquid::Liquid(glm::vec3 cameraPosition)
 		{
 			Particle* particle = new Particle();
 			particle->id = NUM_PARTICLES;
-			particle->pos.x = cameraPosition.x;
-			particle->pos.y = cameraPosition.y;
-			particle->pos.z = cameraPosition.z;
+			particle->pos.x = 0;
+			particle->pos.y = 0;
+			particle->pos.z = 0;
 			particles.push_back(particle);
 			allParticles.push_back(particle);
 

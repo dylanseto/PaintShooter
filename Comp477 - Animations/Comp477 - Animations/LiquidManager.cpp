@@ -7,18 +7,18 @@ LiquidManager::LiquidManager() {
 
 void LiquidManager::createLiquidProjectile(glm::vec3 camPosition) {
 
-	Liquid projectile(camPosition);
+	Liquid* projectile = new Liquid(camPosition);
 
 	// LOCAL VERTICES
-	for (int i = 0; i < projectile.particles.size(); i++) {
+	for (int i = 0; i < projectile->particles.size(); i++) {
 
 		// Particle ID
-		localVertices.push_back(projectile.particles[i]->id);
+		localVertices.push_back(projectile->particles[i]->id);
 
 		// Particle Position
-		localVertices.push_back(projectile.particles[i]->pos.x);
-		localVertices.push_back(projectile.particles[i]->pos.y);
-		localVertices.push_back(projectile.particles[i]->pos.z);
+		localVertices.push_back(projectile->particles[i]->pos.x + camPosition.x);
+		localVertices.push_back(projectile->particles[i]->pos.y + camPosition.y);
+		localVertices.push_back(projectile->particles[i]->pos.z + camPosition.z);
 
 		// Particle Paint Color
 		localVertices.push_back(paintColor.x);
@@ -31,28 +31,28 @@ void LiquidManager::createLiquidProjectile(glm::vec3 camPosition) {
 		localVertices.push_back(0.0f);
 
 		// Particle Pressure
-		localVertices.push_back(projectile.particles[i]->pressure);
+		localVertices.push_back(projectile->particles[i]->pressure);
 
 		// Particle Density
-		localVertices.push_back(projectile.particles[i]->density);
+		localVertices.push_back(projectile->particles[i]->density);
 	}
 
 	// LOCAL NORMALS
-	for (int i = 0; i < projectile.particles.size(); i++) {
-		normalize(projectile.particles[i]->pos);
-		localNormals.push_back(projectile.particles[i]->pos.x);
-		localNormals.push_back(projectile.particles[i]->pos.y);
-		localNormals.push_back(projectile.particles[i]->pos.z);
+	for (int i = 0; i < projectile->particles.size(); i++) {
+		normalize(projectile->particles[i]->pos);
+		localNormals.push_back(projectile->particles[i]->pos.x);
+		localNormals.push_back(projectile->particles[i]->pos.y);
+		localNormals.push_back(projectile->particles[i]->pos.z);
 	}
 
 	// Setting Number of Particles
-	this->numberOfParticles = projectile.getNumParticles();
+	this->numberOfParticles = projectile->getNumParticles();
 
 	// Setting Positional Data
-	positionData = projectile.getPositions();
+	positionData = projectile->getPositions();
 
 	// Setting Force Data
-	forceData = projectile.getForcesData();
+	forceData = projectile->getForcesData();
 }
 
 
@@ -104,6 +104,7 @@ void LiquidManager::update(float deltaTime) {
 	if (liquidLifeTime >= LIQUID_LIFE_TIME) {
 		localVertices.clear();
 		localNormals.clear();
+		Liquid::allParticles.clear();
 
 		numberOfParticles = 0;
 		positionData.clear();

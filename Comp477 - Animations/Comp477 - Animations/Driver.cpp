@@ -329,8 +329,9 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 
 		// Create Liquid at Camera Position
 		liquidManager.createLiquidProjectile(camera.Position);
+		Display::shot++;
 
-		animationWindow.setForce(camera.Front * leftMouseHoldTime * 5.0f);
+		animationWindow.setForce(camera.Front * leftMouseHoldTime * 10.0f);
 
 		animationWindow.setParticleVertices(liquidManager.getVertices());
 		animationWindow.setParticleNormals(liquidManager.getNormals());

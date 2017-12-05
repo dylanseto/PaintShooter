@@ -32,10 +32,10 @@ const GLuint WIDTH = 1280,
 // Number of Vertex Attribute Objects
 const GLuint NUM_VERTEX_ATTRIB_OBJ = 6;
 const GLuint NUM_PARTICLE_VERTEX_ATTRIB_OBJ = 12;
-const GLuint NUM_SHOTS = 10;
+const GLuint NUM_SHOTS = 20;
 
 // Liquid Life Time
-const float LIQUID_LIFE_TIME = 15.0f;
+const float LIQUID_LIFE_TIME = 10.0f;
 
 
 // ================================== Object Sizes ================================== 

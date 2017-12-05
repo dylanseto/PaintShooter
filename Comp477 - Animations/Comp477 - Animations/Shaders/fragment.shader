@@ -11,8 +11,8 @@ uniform vec3 lightPos;
 uniform vec3 lightColor;
 uniform vec3 emissive;
 uniform vec3 viewPos;
-uniform vec3 shotPositions[10];
-uniform vec3 paintColors[10];
+uniform vec3 shotPositions[20];
+uniform vec3 paintColors[20];
 //uniform sampler2D gridTexture;
 
 // Fragment Shader Outputs

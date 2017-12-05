@@ -8,7 +8,6 @@ using namespace glm;
 class Liquid
 {
 private:
-	static vector<Particle*> allParticles;
 	int NUM_PARTICLES;
 
 	//vector<GLfloat> localVertices;
@@ -18,6 +17,7 @@ private:
 	glm::vec3 force;
 
 public:
+	static vector<Particle*> allParticles;
 	Liquid(glm::vec3 cameraPosition);
 
 	/*void updateLiquid();*/

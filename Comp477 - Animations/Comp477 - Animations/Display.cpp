@@ -468,13 +468,13 @@ void Display::render(float deltaTime) {
 			glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, size, sizeof(vec3), &collisionPoint);
 			size += sizeof(vec3);
 
-			if (collided == 1 && collisionTime == 0)
+			if (collided == 1 && collisionTime != 10)
 			{
 				//collided
-				actualShotPositions[shot] = collisionPoint;
-				actualColors[shot] = localPaintColor;
-				actualShotPositions[shot+1 % 9] = collisionPoint + vec3(0.5, 0, 0);
-				actualColors[shot+1 % 10 % 9] = localPaintColor;
+				actualShotPositions[(shot % 2)*collisionTime] = collisionPoint;
+				actualColors[(shot % 2)*collisionTime] = localPaintColor;
+				/*actualShotPositions[(shot % 2 * collisionTime)] = collisionPoint + vec3(0.5, 0, 0);
+				actualColors[(shot % 2 * collisionTime)] = localPaintColor;*/
 				collisionTime++;
 
 				if (shot == NUM_SHOTS) shot = 0;
@@ -493,8 +493,9 @@ void Display::render(float deltaTime) {
 
 			//cout << "Pos: (" << newSpeed.x << "," << newSpeed.y << "," << newSpeed.z << ")" << endl;
 			//printf("ID: %f\n", ID);
-			/*printf("newPos: %f\n", newPos.y);
-			printf("newSpeed: %f\n", newSpeed.y);*/
+			//printf("newPos: %f\n", newPos.y);
+		//	cout << "Speed: (" << newSpeed.x << "," << newSpeed.y << "," << newSpeed.z << ")" << endl;
+			//printf("newSpeed: %f\n", newPos.x);
 		}
 	}
 	/*GLfloat ID;

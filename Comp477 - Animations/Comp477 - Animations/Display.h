@@ -7,6 +7,8 @@
 
 class Display {
 	public:
+		static int shot;
+
 		// Create GLFW Display
 		Display(std::string windowName, int width, int height);
 		~Display();
@@ -118,6 +120,4 @@ class Display {
 
 		GLuint pressureTBO;
 		GLuint forcesTBO;
-
-		static int shot;
 };
