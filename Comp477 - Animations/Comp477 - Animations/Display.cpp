@@ -20,6 +20,8 @@ Display::Display(std::string name, int width, int height) {
 	actualColors = std::vector<glm::vec3>(NUM_SHOTS);
 }
 
+int Display::shot = 0;
+
 // ========== Displpay Destructor ========== // 
 Display::~Display() {
 	// Frees up the buffers when done 
@@ -196,9 +198,11 @@ void Display::initGLBuffers() {
 	glBufferData(GL_ARRAY_BUFFER, 1000000 * (3 * sizeof(GLfloat)), nullptr, GL_STATIC_READ);
 	glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, pressureTBO);
 
+	// --------------- Setup TBO for forces updates -------------- //
+
 	glGenBuffers(1, &forcesTBO);
 	glBindBuffer(GL_ARRAY_BUFFER, forcesTBO);
-	glBufferData(GL_ARRAY_BUFFER, 1000000 * (7 * sizeof(GLfloat)), nullptr, GL_STATIC_READ);
+	glBufferData(GL_ARRAY_BUFFER, 1000000 * (11 * sizeof(GLfloat)), nullptr, GL_STATIC_READ);
 	glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, forcesTBO);
 
 	/********* Texture buffer for sending particle positions to shader **********/
@@ -440,11 +444,19 @@ void Display::render(float deltaTime) {
 		glBindBuffer(GL_ARRAY_BUFFER, forcesTBO);
 		size_t size = 0;
 
+<<<<<<< HEAD
+=======
+		//cout << "COUNT" << numberOfParticles << endl;
+
+		int collisionTime = 0;
+>>>>>>> 407157f5b51f05cae8eb4eb696bd6bd6ebe633cf
 		for (int i = 0; i != numberOfParticles; i++)
 		{
 			GLfloat ID;
 			vec3 newPos;
 			vec3 newSpeed;
+			float collided;
+			vec3 collisionPoint;
 
 			glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, size, sizeof(GLfloat), &ID);
 			size += sizeof(GLfloat);
@@ -452,8 +464,23 @@ void Display::render(float deltaTime) {
 			size += sizeof(vec3);
 			glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, size, sizeof(vec3), &newSpeed);
 			size += sizeof(vec3);
+			glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, size, sizeof(GLfloat), &collided);
+			size += sizeof(GLfloat);
+			glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, size, sizeof(vec3), &collisionPoint);
+			size += sizeof(vec3);
 
-			
+			if (collided == 1 && collisionTime == 0)
+			{
+				//collided
+				actualShotPositions[shot] = collisionPoint;
+				actualColors[shot] = localPaintColor;
+				actualShotPositions[shot+1 % 9] = collisionPoint + vec3(0.5, 0, 0);
+				actualColors[shot+1 % 10 % 9] = localPaintColor;
+				collisionTime++;
+
+				if (shot == NUM_SHOTS) shot = 0;
+			}
+
 			// ============= SETTING NEW POSITION/VELOCITY ============= //
 			Liquid::setPositionVelocity(ID, newPos, newSpeed);
 			particleVertices->at(12 * ID + 1) = newPos.x;
@@ -464,7 +491,16 @@ void Display::render(float deltaTime) {
 			particleVertices->at(12 * ID + 9) = newSpeed.z;
 			//cout << "Speed: (" << newSpeed.x << "," << newSpeed.y << "," << newSpeed.z << ")" << endl;
 			//printf("ID: %f\n", ID);
+<<<<<<< HEAD
 
+=======
+			if (ID == 500)
+			{
+				/*printf("ID: %f\n", ID);
+				cout << "Pos: (" << newPos.x << "," << newPos.y << "," << newPos.z << ")" << endl;
+				cout << "Speed: (" << newSpeed.x << "," << newSpeed.y << "," << newSpeed.z << ")" << endl;*/
+			}
+>>>>>>> 407157f5b51f05cae8eb4eb696bd6bd6ebe633cf
 			//cout << "Pos: (" << newSpeed.x << "," << newSpeed.y << "," << newSpeed.z << ")" << endl;
 			//printf("ID: %f\n", ID);
 			/*printf("newPos: %f\n", newPos.y);

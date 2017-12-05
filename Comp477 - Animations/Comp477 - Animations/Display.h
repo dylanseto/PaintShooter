@@ -115,4 +115,5 @@ class Display {
 		GLuint pressureTBO;
 		GLuint forcesTBO;
 
+		static int shot;
 };
