@@ -25,8 +25,8 @@ ForceShader::ForceShader(const GLchar * computePath)
 	// Shader Program
 	this->Program = glCreateProgram();
 	glAttachShader(this->Program, vertex);
-	const GLchar* feedbackVaryings[] = { "ID", "newPos", "newSpeed" };
-	glTransformFeedbackVaryings(this->Program, 3, feedbackVaryings, GL_INTERLEAVED_ATTRIBS);
+	const GLchar* feedbackVaryings[] = { "ID", "newPos", "newSpeed", "collided", "collidedPos" };
+	glTransformFeedbackVaryings(this->Program, 5, feedbackVaryings, GL_INTERLEAVED_ATTRIBS);
 	glLinkProgram(this->Program);
 
 	// Print linking errors if any

@@ -14,6 +14,8 @@ layout(location = 6) in vec3 normal;
 #define MASS 0.2
 #define PI 3.14159265
 #define VISCOSITY_CONST 0.001
+#define FALSE 0
+#define TRUE 1
 
 //uniform vec3 particles[MAX_PARTICLES];
 uniform int num_particles;
@@ -26,6 +28,8 @@ uniform float walls[96];
 out float ID;
 out vec3 newPos;
 out vec3 newSpeed;
+out float collided;
+out vec3 collidedPos;
 
 vec3 gravityForce()
 {
@@ -114,10 +118,14 @@ vec3 viscosity()
 
 // Main Method
 void main() {
+
+	bool col = false;
 	if (deltaTime > 1)
 	{
 		newPos = position;
 		newSpeed = speed;
+		collided = 10.0f;
+		collidedPos = vec3(10, 10, 10);
 		return;
 	}
 	vec4 pdensity = texelFetch(particles, 4 * int(par_ID) + 2);
@@ -134,6 +142,7 @@ void main() {
 	if (curPos.y < 0) //intersects with plane.
 	{
 		s = -1 * curSpeed * 0.5;
+		col = true;
 	}
 
 	for (int k = 0; k != 16; k++)
@@ -151,14 +160,30 @@ void main() {
 		{
 			//We hit a wall, we can stop.
 			s = -1 * curSpeed * 0.5;
+			col = true;
+			//collided = TRUE;
+			//collidedPos = curPos;
 			break;
 		}
+	}
+	vec4 pspeed = texelFetch(particles, 4 * int(par_ID) + 3);
+	vec3 nspeed = vec3(pspeed.x, pspeed.y, pspeed.z);
+	newPos = position + s*deltaTime;
+	newSpeed = s;
+
+	if (col)
+	{
+		collided = TRUE;
+		collidedPos = curPos;
+		return;
+	}
+	else
+	{
+		collided = FALSE;
+		collidedPos = vec3(10, 10, 10);
+		return;
 	}
 
 	//vec4 ppos = texelFetch(particles, 4*i+2);
 	//newSpeed = s; // temp
-	vec4 pspeed = texelFetch(particles, 4 * int(par_ID) + 3);
-	vec3 nspeed = vec3(pspeed.x, pspeed.y, pspeed.z);
-	newPos = position + s*deltaTime;
-	newSpeed = s;//vec3(0,-9.81,0)*deltaTime;//vec3(ppos.x, ppos.y, ppos.z);
 }
