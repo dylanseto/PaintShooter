@@ -5,9 +5,9 @@ LiquidManager::LiquidManager() {
 	
 }
 
-void LiquidManager::createLiquidProjectile() {
+void LiquidManager::createLiquidProjectile(glm::vec3 camPosition) {
 
-	Liquid projectile;
+	Liquid projectile(camPosition);
 
 	// LOCAL VERTICES
 	for (int i = 0; i < projectile.particles.size(); i++) {
@@ -104,6 +104,11 @@ void LiquidManager::update(float deltaTime) {
 	if (liquidLifeTime >= LIQUID_LIFE_TIME) {
 		localVertices.clear();
 		localNormals.clear();
+
+		numberOfParticles = 0;
+		positionData.clear();
+		forceData.clear();
+
 		liquidLifeTime = 0.0f;
 	}
 
@@ -116,4 +121,17 @@ void LiquidManager::update(float deltaTime) {
 		// Increase Timer Count
 		liquidLifeTime += deltaTime;
 	}
+}
+
+
+void LiquidManager::clearData() {
+
+	localVertices.clear();
+	localNormals.clear();
+
+	numberOfParticles = 0;
+	positionData.clear();
+	forceData.clear();
+
+	liquidLifeTime = 0.0f;
 }

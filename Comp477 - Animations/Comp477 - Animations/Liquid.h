@@ -18,7 +18,7 @@ private:
 	glm::vec3 force;
 
 public:
-	Liquid();
+	Liquid(glm::vec3 cameraPosition);
 
 	/*void updateLiquid();*/
 	void sortParticles();

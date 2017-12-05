@@ -8,7 +8,7 @@ class LiquidManager {
 	public:
 		LiquidManager();
 
-		void createLiquidProjectile();
+		void createLiquidProjectile(glm::vec3 camPosition);
 		void setPaintColor(glm::vec3);
 
 		void update(float deltaTime);
@@ -16,6 +16,7 @@ class LiquidManager {
 		vector<GLfloat>* getVertices();
 		vector<GLfloat>* getNormals();
 		bool isEmpty();
+		void clearData(); 
 
 		int getNumberOfParticles();
 		vector<vec3>* getPositionData();

@@ -51,6 +51,7 @@ const GLchar * SKYBOX_FRAGMENT_SHADER = "./Shaders/skybox_fragment.shader";
 
 
 // Camera Object and movement
+Display animationWindow("Comp 477 - Computer Animations", 1280, 800);
 
 //Camera camera = Camera(glm::vec3(0.0f, 5.0f, 15.0f));
 GLfloat cameraHeight = 3.0f;
@@ -65,6 +66,12 @@ bool lockCamera = true;
 GLuint daySkyboxTextureID;
 GLuint nightSkyboxTextureID;
 GLuint activeTextureID;
+
+
+// Liquid Manager
+LiquidManager liquidManager;
+bool isClicked = false;
+float liquidTimeDelay = 0;
 
 
 const  float fpsLimit = 1.0f / 60.0f;
@@ -99,7 +106,6 @@ int updates = 0;
 int main() {
 	srand(time(NULL));
 
-	Display animationWindow("Comp 477 - Computer Animations", 1280, 800);
 	animationWindow.setCamera(&camera);
 
 	// ========== Creating Our Shapes ========== //
@@ -129,10 +135,9 @@ int main() {
 
 
 	// ---------- CREATING OUR LIQUID ---------- //
-	LiquidManager liquidManager;
 	liquidManager.setPaintColor(paintColor);
 
-	liquidManager.createLiquidProjectile();
+	// liquidManager.createLiquidProjectile(glm::vec3(0,2,0));
 
 	vector<GLfloat>* particleVertices = liquidManager.getVertices();
 	vector<GLfloat>* particleNormals  = liquidManager.getNormals();
@@ -143,8 +148,8 @@ int main() {
 	vector<GLfloat>* particleVertices = liq.getVertices();
 	vector<GLfloat>* particleNormals  = liq.getNormals();*/
 	
-	animationWindow.setParticleVertices(particleVertices);
-	animationWindow.setParticleNormals(particleNormals);
+	animationWindow.setParticleVertices(liquidManager.getVertices());
+	animationWindow.setParticleNormals(liquidManager.getNormals());
 
 	animationWindow.setNumberOfParticles(liquidManager.getNumberOfParticles());
 	animationWindow.setParticlePositions(liquidManager.getPositionData());
@@ -222,21 +227,22 @@ int main() {
 		*		- Send new positions to be displayed
 		*/
 
-		//while (updateDeltaTime >= 1.0) {
-
-		//	// world.rotatePerUpdate(updateDeltaTime);
-
-		//	updates++;
-		//	updateDeltaTime--;
-		//}	
-
 		animationWindow.setLightColor(lightColor);
 		animationWindow.setPaintColor(paintColor);
 
-		//liquidManager.update(deltaTime);
+		liquidManager.update(deltaTime);
+
+		if (liquidTimeDelay <= 6.0f) {
+			liquidTimeDelay += deltaTime;
+		}
+		else if(isClicked && liquidTimeDelay > 6.0f) {
+			isClicked = false;
+			liquidTimeDelay = 0.0f;
+		}
+
 
 		// Call Window to Render Image 
-		liquidManager.update(deltaTime);
+		
 		animationWindow.render(deltaTime);
 		skybox.draw(animationWindow.getCamera(), animationWindow.getViewMatrix(), animationWindow.getProjectionMatrix());
 		animationWindow.swapBuffer();
@@ -246,7 +252,7 @@ int main() {
 		// Displays output Data every second (Frames per second, Updates per second)
 		if (glfwGetTime() - timer > 1.0) {
 			timer++;
-			std::cout << "FPS: " << frames << " Updates:" << updates << " DeltaTime: " << deltaTime << std::endl;
+			std::cout << "FPS: " << frames << updates << " DeltaTime: " << deltaTime << std::endl;
 			updates = 0, frames = 0;
 		}
 
@@ -317,11 +323,24 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 //Mouse Button Handler
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
-	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
-		cout << "hi" << endl;
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && !isClicked && liquidTimeDelay == 0.0f) {
+		isClicked = true;
 		leftMouseHold = true;
 	}
 	else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
+
+		animationWindow.clearData();
+
+		// Create Liquid at Camera Position
+		liquidManager.createLiquidProjectile(glm::vec3(0, 2, 0));
+
+		animationWindow.setParticleVertices(liquidManager.getVertices());
+		animationWindow.setParticleNormals(liquidManager.getNormals());
+
+		animationWindow.setNumberOfParticles(liquidManager.getNumberOfParticles());
+		animationWindow.setParticlePositions(liquidManager.getPositionData());
+		animationWindow.setParticleForceData(liquidManager.getForceData());
+
 		cout << "Left Mouse Button Was Held for " << leftMouseHoldTime << " seconds" << endl;
 		leftMouseHold = false;
 	}

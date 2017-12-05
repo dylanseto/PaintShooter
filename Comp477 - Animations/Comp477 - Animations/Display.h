@@ -35,6 +35,8 @@ class Display {
 
 		void setPressureDensity(int, GLfloat, GLfloat);
 
+		void clearData();
+
 		std::vector<glm::vec3> actualShotPositions;
 		std::vector<glm::vec3> actualColors;
 

@@ -440,8 +440,6 @@ void Display::render(float deltaTime) {
 		glBindBuffer(GL_ARRAY_BUFFER, forcesTBO);
 		size_t size = 0;
 
-		cout << "COUNT" << numberOfParticles << endl;
-
 		for (int i = 0; i != numberOfParticles; i++)
 		{
 			GLfloat ID;
@@ -466,12 +464,7 @@ void Display::render(float deltaTime) {
 			particleVertices->at(12 * ID + 9) = newSpeed.z;
 			//cout << "Speed: (" << newSpeed.x << "," << newSpeed.y << "," << newSpeed.z << ")" << endl;
 			//printf("ID: %f\n", ID);
-			if (ID == 500)
-			{
-				printf("ID: %f\n", ID);
-				cout << "Pos: (" << newPos.x << "," << newPos.y << "," << newPos.z << ")" << endl;
-				cout << "Speed: (" << newSpeed.x << "," << newSpeed.y << "," << newSpeed.z << ")" << endl;
-			}
+
 			//cout << "Pos: (" << newSpeed.x << "," << newSpeed.y << "," << newSpeed.z << ")" << endl;
 			//printf("ID: %f\n", ID);
 			/*printf("newPos: %f\n", newPos.y);
@@ -513,6 +506,15 @@ void Display::swapBuffer() {
 //}
 
 
+void Display::clearData() {
+	particleVertices->clear();
+	particleNormals->clear();
+
+	numberOfParticles = 0;
+
+	particlePositions->clear();
+	particleForceData->clear();
+}
 
 
 // ========== Check whether window is closed ========== // 
