@@ -235,7 +235,7 @@ int main() {
 		if (liquidTimeDelay <= 6.0f) {
 			liquidTimeDelay += deltaTime;
 		}
-		else if(isClicked && liquidTimeDelay > 6.0f) {
+		else if(isClicked && liquidTimeDelay > LIQUID_LIFE_TIME + 1.0f) {
 			isClicked = false;
 			liquidTimeDelay = 0.0f;
 		}
@@ -332,7 +332,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 		animationWindow.clearData();
 
 		// Create Liquid at Camera Position
-		liquidManager.createLiquidProjectile(glm::vec3(0, 2, 0));
+		liquidManager.createLiquidProjectile(camera.Position);
 
 		animationWindow.setParticleVertices(liquidManager.getVertices());
 		animationWindow.setParticleNormals(liquidManager.getNormals());
