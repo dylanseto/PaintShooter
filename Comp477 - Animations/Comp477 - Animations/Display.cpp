@@ -457,7 +457,7 @@ void Display::render(float deltaTime) {
 
 			
 			// ============= SETTING NEW POSITION/VELOCITY ============= //
-			// Liquid::setPositionVelocity(ID, newPos, newSpeed);
+			Liquid::setPositionVelocity(ID, newPos, newSpeed);
 			particleVertices->at(12 * ID + 1) = newPos.x;
 			particleVertices->at(12 * ID + 2) = newPos.y;
 			particleVertices->at(12 * ID + 3) = newPos.z;
@@ -465,6 +465,7 @@ void Display::render(float deltaTime) {
 			particleVertices->at(12 * ID + 8) = newSpeed.y;
 			particleVertices->at(12 * ID + 9) = newSpeed.z;
 			//cout << "Speed: (" << newSpeed.x << "," << newSpeed.y << "," << newSpeed.z << ")" << endl;
+			//printf("ID: %f\n", ID);
 			if (ID == 500)
 			{
 				printf("ID: %f\n", ID);
