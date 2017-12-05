@@ -259,12 +259,8 @@ int main() {
 		if (leftMouseHold) {
 			leftMouseHoldTime += deltaTime;
 		}
-		else if (leftMouseHoldTime != 0) {
-			vec3 force = calculateForce(leftMouseHoldTime);
-			std::cout << force.x << " " << force.y << " " << force.z << endl;
-			leftMouseHoldTime = 0.0f;
-			shoot(animationWindow);
-		}
+
+		
 	}
 
 	return 0;
@@ -323,7 +319,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 //Mouse Button Handler
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
-	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && !isClicked && liquidTimeDelay == 0.0f) {
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
 		isClicked = true;
 		leftMouseHold = true;
 	}
@@ -333,6 +329,8 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 
 		// Create Liquid at Camera Position
 		liquidManager.createLiquidProjectile(camera.Position);
+
+		animationWindow.setForce(camera.Front * leftMouseHoldTime * 5.0f);
 
 		animationWindow.setParticleVertices(liquidManager.getVertices());
 		animationWindow.setParticleNormals(liquidManager.getNormals());

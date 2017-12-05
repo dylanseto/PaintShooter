@@ -427,6 +427,9 @@ void Display::render(float deltaTime) {
 		GLint wallDataLoc = glGetUniformLocation(particleForceShader->Program, "walls");
 		glUniform1fv(wallDataLoc, WorldMesh::getInstance()->getWallData()->size(), WorldMesh::getInstance()->getWallData()->data());
 
+		GLint forceLoc = glGetUniformLocation(particleForceShader->Program, "force");
+		glUniform3f(forceLoc, this->launchForce.x, this->launchForce.y, this->launchForce.z);
+
 		//
 		glBindBuffer(GL_ARRAY_BUFFER, this->particleForcesBuffer);
 		glBufferData(GL_ARRAY_BUFFER, 4 * numberOfParticles * sizeof(glm::vec4), &particleForceData->front(), GL_DYNAMIC_DRAW);
@@ -613,7 +616,9 @@ void Display::setPressureDensity(int id, GLfloat pressure, GLfloat density) {
 	particleForceData->at(id + 2) = glm::vec4(density, 0, 0, id);
 }
 
-
+void Display::setForce(glm::vec3 force) {
+	this->launchForce = force;
+}
 
 // Loading 2D Texture Function
 GLuint Display::load2DTexture(GLchar* fileLocation) {

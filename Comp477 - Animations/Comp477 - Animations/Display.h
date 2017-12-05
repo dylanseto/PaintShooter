@@ -34,6 +34,7 @@ class Display {
 		void setParticleForceData(std::vector<glm::vec4>*);
 
 		void setPressureDensity(int, GLfloat, GLfloat);
+		void setForce(glm::vec3 force);
 
 		void clearData();
 
@@ -79,6 +80,9 @@ class Display {
 
 		// Paint Color
 		glm::vec3 localPaintColor;
+
+		// Particle Launch Force
+		glm::vec3 launchForce;
 
 		// PARTICLES
 		std::vector<GLfloat>* particleVertices;
