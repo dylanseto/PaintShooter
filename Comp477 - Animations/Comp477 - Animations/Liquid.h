@@ -9,7 +9,7 @@ class Liquid
 {
 private:
 	static vector<Particle*> allParticles;
-	static int NUM_PARTICLES;
+	int NUM_PARTICLES;
 
 	//vector<GLfloat> localVertices;
 	//vector<GLuint> localIndices;

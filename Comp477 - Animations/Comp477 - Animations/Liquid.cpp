@@ -1,6 +1,6 @@
 #include "Liquid.h"
 
-int Liquid::NUM_PARTICLES = 0;
+
 vector<Particle*> Liquid::allParticles;
 
 // Special floor function
@@ -25,6 +25,7 @@ float specialFloor(float x)
 
 Liquid::Liquid(glm::vec3 cameraPosition)
 {
+	NUM_PARTICLES = 0;
 
 	for (float r = 0; r <= 1.0f; r += 0.5)
 	{
