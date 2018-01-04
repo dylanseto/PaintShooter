@@ -16,3 +16,9 @@ How to Compile & Run
 6. Hold left mouse button to apply a force to the shooter.
 7. Release mouse button to shoot.
 
+Known Issues/ TO-DO List
+============================
+- Issue: SPH is slow, neighbors should be calculated in one go.
+- Issue: Paint will sometimes go through the box walls because they move too fast.
+- TODO: Blending of paint colors: (1-r1-r2, 1-g1-g2, 1-b1-b2)
+- TODO: Make it so that paint colors only specific particles

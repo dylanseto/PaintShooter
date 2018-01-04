@@ -386,7 +386,7 @@ void do_movement(GLfloat deltaTime) {
 	// Enable free camera movement
 	else if (!lockCamera) {
 		// Press Space: Ascend the Camera 
-		if (keys[GLFW_KEY_SPACE])
+		if (keys[GLFW_KEY_LEFT_SHIFT])
 			camera.ProcessKeyboard(UP, deltaTime);
 		// Press Left Control: Descent the Camera 
 		if (keys[GLFW_KEY_LEFT_CONTROL])
