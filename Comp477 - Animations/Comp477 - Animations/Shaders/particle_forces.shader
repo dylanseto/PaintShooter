@@ -128,8 +128,6 @@ void main() {
 		collidedPos = vec3(10, 10, 10);
 		return;
 	}
-	vec4 pdensity = texelFetch(particles, 4 * int(par_ID) + 2);
-	float ndensity = pdensity.x;
 	ID = par_ID;
 	vec3 totalForces = gravityForce() + viscosity()+force;
 	vec3 acc = totalForces / MASS;
