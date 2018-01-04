@@ -394,7 +394,7 @@ void do_movement(GLfloat deltaTime) {
 	}
 
 	// Press Left Shift: Speed Up Camera
-	if (keys[GLFW_KEY_LEFT_SHIFT])
+	if (keys[GLFW_KEY_Z])
 		camera.setCameraSpeed(camera.getDefaultSpeed() * 2);
 	// Press C: Slow Down Camera
 	else if (keys[GLFW_KEY_C])
